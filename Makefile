@@ -31,7 +31,7 @@ LIBFT		= ./libft/libft.a
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(MLX) $(OBJ)
+$(NAME): $(LIBFT) include/libft.h $(MLX) $(OBJ)
 	$(CC) $(LDFLAGS) -o $(OBJ)
 
 %.o: %.c $(HDR)
@@ -39,6 +39,8 @@ $(NAME): $(LIBFT) $(MLX) $(OBJ)
 
 $(MLX):
 	make -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter"
+
+include/libft.h : $(LIBFT)
 
 $(LIBFT):
 	make -C libft
@@ -52,6 +54,7 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 	make -C libft fclean
+	$(RM) ./include/libft.h
 
 re: fclean all
 
