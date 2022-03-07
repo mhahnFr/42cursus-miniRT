@@ -15,7 +15,7 @@
 #include "libft.h"
 
 #include "matrix.h"
-#include "model/vertex.h"
+#include "vertex.h"
 
 t_matrix	*matrix_new_multiply(t_matrix *m1, t_matrix *m2)
 {

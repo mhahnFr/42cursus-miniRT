@@ -23,9 +23,9 @@ void	printerror(int error) {
 	else if (error == 2)
 		ft_putendl_fd("File", 1);
 	else if (error == 3)
-		ft_putchar("Memory", 1);
+		ft_putendl_fd("Memory", 1);
 	else
-		ft_putchar("Unknown error occured", 1);
+		ft_putendl_fd("Unknown error occured", 1);
 }
 
 int main(int argc, char **argv) {
