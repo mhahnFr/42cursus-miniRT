@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 18:41:33 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/07 20:54:44 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
 	if (argc != 2)
 		ret = 1;
 	else {
-		all_struct = init_mainstruct(char argv[1], &ret);
+		all_struct = init_mainstruct(argv[1], &ret);
 		if (all_struct)
 			lexer(all_struct, &ret);
 		//if (all_struct)
