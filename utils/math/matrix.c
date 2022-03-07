@@ -13,7 +13,7 @@
 #include <stdlib.h>
 
 #include "matrix.h"
-#include "model/vertex.h"
+#include "vertex.h"
 
 t_matrix	*matrix_new(
 				float **matrix,
