@@ -19,7 +19,7 @@ OBJ         = $(SRC:.c=.o)
 
 CFLAGS      = -Wall -Werror -Wextra -g
 
-INC			= -Iinclude
+INC			= -Iinclude -Imlx -Ilibft
 
 LDFLAGS     = -Lmlx -lmlx -framework OpenGL -framework AppKit
 
@@ -31,7 +31,7 @@ LIBFT		= ./libft/libft.a
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) include/libft.h $(MLX) $(OBJ)
+$(NAME): $(LIBFT) $(MLX) $(OBJ)
 	$(CC) $(LDFLAGS) -o $(OBJ)
 
 %.o: %.c $(HDR)
@@ -40,11 +40,8 @@ $(NAME): $(LIBFT) include/libft.h $(MLX) $(OBJ)
 $(MLX):
 	make -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter"
 
-include/libft.h : $(LIBFT)
-
 $(LIBFT):
 	make -C libft
-	cp ./libft/libft.h ./include
 
 clean:
 	$(RM) $(OBJ)
@@ -54,7 +51,6 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 	make -C libft fclean
-	$(RM) ./include/libft.h
 
 re: fclean all
 
