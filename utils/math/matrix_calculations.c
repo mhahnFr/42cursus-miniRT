@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrix_calculations.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/07 16:37:48 by jkasper           #+#    #+#             */
+/*   Updated: 2022/03/07 16:42:41 by jkasper          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stddef.h>
 
 #include "libft.h"
@@ -46,10 +58,10 @@ void	matrix_multiply(t_matrix *result, t_matrix *m1, t_matrix *m2)
 	}
 }
 
-void	matrix_multiply_vertex3D(
-			t_vertex3D *result,
+void	matrix_multiply_vertex3d(
+			t_vertex3d *result,
 			t_matrix *m,
-			t_vertex3D *v)
+			t_vertex3d *v)
 {
 	if (result == NULL || m == NULL || v == NULL
 		|| m->rows != 4 || m->columns != 4)

@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matrix.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/07 16:38:06 by jkasper           #+#    #+#             */
+/*   Updated: 2022/03/07 16:42:18 by jkasper          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MATRIX_H
 # define MATRIX_H
 
 # include <stdbool.h>
 
-typedef struct s_vertex3D	t_vertex3D;
+typedef struct s_vertex3d	t_vertex3d;
 
 /*
  * Represents a mathematical matrix. Contains a two dimensional float array,
@@ -57,13 +69,13 @@ t_matrix	*matrix_new_filled(
  * either the newly allocated vertex, or null if the allocation failed, no
  * matrix is given or the matrix is not in the format 4x1 or 1x4.
  */
-t_vertex3D	*matrix_cast_new_vertex3D(t_matrix *this);
+t_vertex3d	*matrix_cast_new_vertex3D(t_matrix *this);
 
 /*
  * Writes the values of the given matrix into the given vertex. Does nothing if
  * either object is missing or the matrix is not in the format 4x1 or 1x4.
  */
-void		matrix_cast_vertex3D(t_matrix *this, t_vertex3D *dest);
+void		matrix_cast_vertex3d(t_matrix *this, t_vertex3d *dest);
 
 /*
  * Multiplies the given matrices and stores the result in the given matrix.
@@ -79,9 +91,9 @@ void		matrix_multiply(t_matrix *result, t_matrix *m1, t_matrix *m2);
  * given matrix is not in the format 4x4.
  */
 void		matrix_multiply_vertex3D(
-				t_vertex3D *result,
+				t_vertex3d *result,
 				t_matrix *m,
-				t_vertex3D *v);
+				t_vertex3d *v);
 
 /*
  * Fills the given matrix with the given floating point number. Overwrites all
