@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 18:35:50 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/07 22:02:13 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@
 
 //red green blue values for an object or light 
 //inits with white: 255, 255, 255
-typedef struct s_rgb {
+//RED GREEN BLUE OPACITY REFLECTIVITY
+typedef struct s_rgbof {
 	char	R;
 	char	G;
 	char	B;
-} t_rgb;
+	char	O;
+	char	F;
+} t_rgbof;
 
 //objectlist for all lights, and objects
 typedef	struct s_object_l {
@@ -39,7 +42,9 @@ typedef	struct s_object_l {
 	t_vector			position;
 	double				width;		//in case of a sphere wifth and height are both the same
 	double				height;
-	t_rgb				color;
+	t_rgbof				color;
+	bool				emitter;
+	float				brightness;
 
 	struct s_object_l	*next;
 	struct s_object_l	*prev;
