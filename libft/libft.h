@@ -90,4 +90,7 @@ float	ft_atof(char *str);
 double	ft_atod(char *str);
 /* UTILS */
 void	ft_skip_chars(char *s, char *c, size_t *count);
+void	*ft_gc_malloc(size_t size);
+void	ft_gc_free(void *ptr);
+void	ft_gc_exit(void);
 #endif

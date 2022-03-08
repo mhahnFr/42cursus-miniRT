@@ -273,6 +273,15 @@ bool			arraylist_clear(
 					t_arraylist_remover remover);
 
 /*
+ * Searches for the given content pointer in the given list. A pointer to the
+ * element containing the given content pointer is returned. If no list is
+ * given or the given content pointer is not found in the given list, null is
+ * returned. The pointer to the first element containing the given content
+ * pointer is returned.
+ */
+t_arraylist		*arraylist_find(t_arraylist *this, void *content);
+
+/*
  * Resets the indices for the given arraylist. The index of the first element
  * will be zero, the second has the index one, and so on. Does nothing if no
  * list is given.
