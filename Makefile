@@ -21,18 +21,18 @@ UTILS_SRC   = $(addprefix utils/,$(UTILS_FILES)) $(addprefix utils/math/,$(MATH_
 
 SRC_FOLDER	= src/
 
-M_SRC    = builder.c calculator.c lexer.c main.c
-#BUILDER_SRC	= 
+M_SRC    	= builder.c calculator.c main.c
+LEXER_SRC	= lexer.c 
 
-SRC         = $(UTILS_SRC) $(addprefix src/,$(M_SRC)) #$(addprefix src/builder/, $(BUILDER_SRC))
+SRC         = $(UTILS_SRC) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_SRC))
 ##		OBJECTS			##
 
 OBJ_FOLDER	= obj/
 
-M_OBJ	= $(addprefix $(OBJ_FOLDER), $(M_SRC))
-#BUILDER_OBJ	= $(addprefix obj/builder/, $(BUILDER_SRC))
+M_OBJ		= $(addprefix $(OBJ_FOLDER), $(M_SRC))
+LEXER_OBJ	= $(addprefix obj/lexer/, $(LEXER_SRC))
 
-OBJ         =  $(M_OBJ:.c=.o) #$(BUILDER_OBJ:.c=.o)
+OBJ         =  $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o)
 ##		COMPILER		##
 NAME        = miniRT
 
@@ -43,16 +43,17 @@ LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit
 MLX         = ./mlx/libmlx.a
 LIBFT       = ./libft/libft.a
 
+##		RULES			##
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(MLX) obj $(OBJ)
+$(NAME): $(LIBFT) $(MLX) obj/ $(OBJ)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJ)
 
 $(OBJ_FOLDER)%.o: $(SRC_FOLDER)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
-obj: 
-	mkdir obj/ obj/builder
+obj/:
+	mkdir obj/ obj/lexer/
 
 $(MLX):
 	make -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter"
@@ -61,7 +62,7 @@ $(LIBFT):
 	make -C libft
 
 clean:
-	- $(RM) $(OBJ)
+	- $(RM) $(OBJ_)
 	- make -C mlx clean
 	- make -C libft clean
 

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 22:02:13 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 14:47:21 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ typedef	struct s_object_l {
 	int					obj_type;
 	t_vector			position;
 	double				width;		//in case of a sphere wifth and height are both the same
-	double				height;
-	t_rgbof				color;
+	double				height;		// in case of a plane we save the normal at the position and add the width and height here instead of building a plane from points.
+	t_rgbof				color;		// will safe some work for calculating rays crossing the plane
 	bool				emitter;
 	float				brightness;
 
