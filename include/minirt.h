@@ -89,6 +89,13 @@ typedef struct s_delegate {
 
 //functions
 
+//				Main
+/*
+ * Creates the main delegate object. Takes the file to be opened as well as a
+ * pointer to an integer in which to store the error code.
+ */
+t_delegate	*init_mainstruct(char *file, int *err);
+
 //				Painter
 /*
  * Paints the whole scene. Takes the delegate with all objects and
