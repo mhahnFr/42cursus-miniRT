@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:39:06 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 15:40:34 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 17:11:20 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,6 @@ char	**ft_realloc_charpp(char **old, size_t new_size)
 		i++;
 	}
 	if (old != NULL)
-		freetiliold(old);
+		freetili(old);
 	return (new);
 }

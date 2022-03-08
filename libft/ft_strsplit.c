@@ -1,14 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/18 11:27:24 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 16:53:04 by jkasper          ###   ########.fr       */
+/*   Created: 2022/03/08 16:53:20 by jkasper           #+#    #+#             */
+/*   Updated: 2022/03/08 17:10:50 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include <stdlib.h>
 #include "libft.h"
@@ -43,18 +44,16 @@ static char	**ft_callsplit(char *s, size_t count, size_t i, size_t ii)
 	return (rs);
 }
 
-static char	**ft_recsplit(char *s, char c, size_t count)
+static char	**ft_recsplit(char *s, char *c, size_t count)
 {
 	size_t	i;
 	size_t	ii;
 	char	**rs;
 
 	i = 0;
-	while (s[i] != '\0' && s[i] == c)
-		i++;
+	ft_skip_chars(s, c, &i);
 	ii = i;
-	while (s[ii] != c && s[ii] != '\0')
-		ii++;
+	ft_skip_chars(c, s, &ii);
 	count++;
 	if (i >= ft_strlen(s) || ii >= ft_strlen(s))
 	{
@@ -72,7 +71,7 @@ static char	**ft_recsplit(char *s, char c, size_t count)
 	return (rs);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_strsplit(char const *s, char *c)
 {
 	if (s == NULL)
 		return (NULL);

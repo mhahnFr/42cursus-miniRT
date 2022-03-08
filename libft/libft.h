@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:09:50 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 15:40:54 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 17:10:48 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define LIBFT_H
 # include <stddef.h>
 
-/* BONUS PART*/
+/* BONUS PART */
 
 typedef struct s_list
 {
@@ -30,7 +30,7 @@ typedef enum e_type
 	e_type_LONG = 2
 }	t_e_type;
 
-/* BONUS PART*/
+/* BONUS PART */
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t count, size_t size);
@@ -68,7 +68,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 int		ft_whitespaces(char c);
 long	ft_atol(const char *str);
-/* BONUS PART*/
+/* BONUS PART */
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstadd_front(t_list **lst, t_list *new);
@@ -78,11 +78,13 @@ void	*ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 int		ft_lstsize(t_list *lst);
-/* CUSTOM ADDONS*/
+/* CUSTOM ADDONS */
 int		ft_putnbbase(long long number, char *base, int len);
 long	ft_numlen(long nb, int base);
 void	*ft_realloc(void *old, size_t newsize, size_t size, int i);
 char	**ft_realloc_charpp(char **old, size_t new_size);
 int		ft_isallnum(char *str);
 int		ft_char_arr_len(char **arr);
+char	**ft_strsplit(char const *s, char *c);
+/* UTILS */
 #endif
