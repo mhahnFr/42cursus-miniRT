@@ -13,6 +13,7 @@
 #ifndef _MINIRT_H_
 #define _MINIRT_H_
 
+# include <stdbool.h>
 #include "vector.h"
 
 //Resolution in Pixel
