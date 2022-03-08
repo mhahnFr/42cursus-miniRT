@@ -30,6 +30,10 @@ typedef enum e_type
 	e_type_LONG = 2
 }	t_e_type;
 
+# define malloc(size) ft_gc_malloc(size)
+# define free(ptr) ft_gc_free(ptr)
+# define exit(code) ft_gc_exit(code)
+
 /* BONUS PART */
 int		ft_atoi(const char *str);
 void	ft_bzero(void *s, size_t n);
@@ -92,5 +96,6 @@ double	ft_atod(char *str);
 void	ft_skip_chars(char *s, char *c, size_t *count);
 void	*ft_gc_malloc(size_t size);
 void	ft_gc_free(void *ptr);
-void	ft_gc_exit(void);
+void	ft_gc_clear(void);
+void	ft_gc_exit(int code);
 #endif
