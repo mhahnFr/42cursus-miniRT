@@ -30,8 +30,8 @@ void	printerror(int error) {
 
 int main(int argc, char **argv)
 {
-	t_delegate	*all_struct;
-	int			ret;
+	t_mixer	*all_struct;
+	int		ret;
 
 	ret = 0;
 	if (argc != 2)
