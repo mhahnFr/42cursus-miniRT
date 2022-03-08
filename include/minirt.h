@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 15:22:03 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 18:36:41 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #define RESOLUTION_Y	600
 
 //objecttypes
+#define CAMERA		   -2
+#define AMBIENT		   -1
 #define LIGHT			0
 #define SPHERE			1
 #define PLANE			2
@@ -44,13 +46,26 @@ typedef	struct s_object_l {
 	t_vector			position;
 	double				width;		//in case of a sphere wifth and height are both the same
 	double				height;		// in case of a plane we save the normal at the position and add the width and height here instead of building a plane from points.
-	t_rgbof				color;		// will safe some work for calculating rays crossing the plane
+	t_vector			normal;		// will safe some work for calculating rays crossing the plane
+	t_rgbof				color;		
 	bool				emitter;
 	float				brightness;
 
 	struct s_object_l	*next;
 	struct s_object_l	*prev;
-} t_obj_l;
+}	t_obj_l;
+
+typedef struct s_ambient {
+	float	a_light;
+	t_rgbof	color;
+}	t_ambient;
+
+//camera struct 
+typedef struct s_cam {
+	t_vector	position;
+	t_vector	normal;
+	int			fov;		//between 0-180
+}	t_cam;
 
 //mainstruct for MiniRT
 typedef struct s_mixer {
@@ -59,9 +74,12 @@ typedef struct s_mixer {
 	void*	image;
 
 	t_obj_l	obj_list;
-} t_mixer;
+}	t_mixer;
 
 //functions
 
+//				lexer
+//validation
+int	validation_check(char **buffer, int size);
 
 #endif /*_MINIRT_H_*/
