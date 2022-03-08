@@ -74,10 +74,35 @@ typedef struct s_mixer {
 	void*	p_mlx_window;
 	void*	image;
 
-	t_obj_l	obj_list;
+	t_obj_l	*obj_list;
 }	t_mixer;
 
+/*
+ * The main delegate object. Consists of the camera, the ambient lighting and
+ * the mixer object.
+ */
+typedef struct s_delegate {
+	struct s_cam		cam;
+	struct s_ambient	ambient;
+	struct s_mixer		mixer;
+}	t_delegate;
+
 //functions
+
+//				Main
+/*
+ * Creates the main delegate object. Takes the file to be opened as well as a
+ * pointer to an integer in which to store the error code.
+ */
+t_delegate	*init_mainstruct(char *file, int *err);
+
+//				Painter
+/*
+ * Paints the whole scene. Takes the delegate with all objects and
+ * precalculated values as well as a pointer to an integer, in which the error
+ * code is saved.
+ */
+void	paint(void *delegate, int *ret);
 
 //				lexer
 //validation

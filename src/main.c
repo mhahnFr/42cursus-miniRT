@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 15:17:38 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 20:40:31 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ void	printerror(int error) {
 		ft_putendl_fd("Unknown error occured", 1);
 }
 
-int main(int argc, char **argv) {
-	int	ret;
-	void	*all_struct;
+int main(int argc, char **argv)
+{
+	t_delegate	*all_struct;
+	int			ret;
 
 	ret = 0;
 	if (argc != 2)
@@ -41,9 +42,9 @@ int main(int argc, char **argv) {
 			lexer(argv[1], all_struct, &ret);
 		//if (all_struct)
 		//	builder(all_struct, &ret);//maybe needed
-		if (all_struct)
+		if (all_struct != NULL)
 			calculator(all_struct, &ret);
-		if (all_struct)
+		if (all_struct != NULL)
 			paint(all_struct, &ret);
 	}
 	printerror(ret);
