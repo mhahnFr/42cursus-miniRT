@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 14:47:21 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 15:22:03 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,13 @@
 #define RESOLUTION_Y	600
 
 //objecttypes
-#define LIGHT		0
-#define SPHERE		1
-#define PLANE		2
-#define	CYLINDER	3
+#define LIGHT			0
+#define SPHERE			1
+#define PLANE			2
+#define	CYLINDER		3
 
+
+#define LEXER_BUFFER	100
 //red green blue values for an object or light 
 //inits with white: 255, 255, 255
 //RED GREEN BLUE OPACITY REFLECTIVITY

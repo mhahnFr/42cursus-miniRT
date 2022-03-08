@@ -14,8 +14,9 @@ UTILS_FILES = arraylist.c arraylist_array.c arraylist_array_unsafe.c arraylist_g
 MATH_FILES  = abs.c matrix.c matrix_calculations.c matrix_destroy.c matrix_filler.c   \
 			  matrix_new.c vector.c vector_add_sub.c vector_delete.c vector_division.c\
 			  vector_multiplications.c
+GNL_FILES	= get_next_line.c get_next_line_utils.c
 
-UTILS_SRC   = $(addprefix utils/,$(UTILS_FILES)) $(addprefix utils/math/,$(MATH_FILES))
+UTILS_SRC   = $(addprefix utils/,$(UTILS_FILES)) $(addprefix utils/math/,$(MATH_FILES)) $(addprefix utils/gnl/, $(GNL_FILES))
 ##		SOURCES			##
 
 
@@ -24,7 +25,7 @@ SRC_FOLDER	= src/
 M_SRC    	= builder.c calculator.c main.c
 LEXER_SRC	= lexer.c 
 
-SRC         = $(UTILS_SRC) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_SRC))
+SRC			= $(UTILS_SRC) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_SRC))
 ##		OBJECTS			##
 
 OBJ_FOLDER	= obj/
