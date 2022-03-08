@@ -28,22 +28,23 @@ void	printerror(int error) {
 		ft_putendl_fd("Unknown error occured", 1);
 }
 
-int main(int argc, char **argv) {
-	int	ret;
-	void	*all_struct;
+int main(int argc, char **argv)
+{
+	t_delegate	*all_struct;
+	int			ret;
 
 	ret = 0;
 	if (argc != 2)
 		ret = 1;
 	else {
 		all_struct = init_mainstruct(argv[1], &ret);
-		if (all_struct)
+		if (all_struct != NULL)
 			lexer(all_struct, &ret);
 		//if (all_struct)
 		//	builder(all_struct, &ret);//maybe needed
-		if (all_struct)
+		if (all_struct != NULL)
 			calculator(all_struct, &ret);
-		if (all_struct)
+		if (all_struct != NULL)
 			paint(all_struct, &ret);
 	}
 	printerror(ret);
