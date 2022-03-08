@@ -30,16 +30,16 @@ void	printerror(int error) {
 
 int main(int argc, char **argv)
 {
-	t_delegate	*all_struct;
-	int			ret;
+	t_mixer	*all_struct;
+	int		ret;
 
 	ret = 0;
 	if (argc != 2)
 		ret = 1;
 	else {
-		all_struct = init_mainstruct(argv[1], &ret);
+		all_struct = init_mainstruct(&ret);
 		if (all_struct != NULL)
-			lexer(all_struct, &ret);
+			lexer(all_struct, argv[1], &ret);
 		//if (all_struct)
 		//	builder(all_struct, &ret);//maybe needed
 		if (all_struct != NULL)

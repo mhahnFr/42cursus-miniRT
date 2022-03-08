@@ -22,7 +22,7 @@ UTILS_SRC   = $(addprefix utils/,$(UTILS_FILES)) $(addprefix utils/math/,$(MATH_
 
 SRC_FOLDER	= src/
 
-M_SRC    	= builder.c calculator.c main.c delegate.c
+M_SRC    	= builder.c calculator.c main.c mixer.c
 LEXER_SRC	= lexer.c 
 
 SRC			= $(UTILS_SRC) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_SRC))
