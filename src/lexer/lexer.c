@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:09:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 16:39:52 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 20:50:08 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	lexer(char *path, t_mixer *m_data, int *retval)
 	int		size;
 
 	size = 0;
+	(void) m_data;
 	buffer = loader(path, retval, &size);
 	if (buffer == NULL)
 		return(1);
@@ -69,10 +70,11 @@ int	lexer(char *path, t_mixer *m_data, int *retval)
 		*retval = 2;
 		return(1);
 	}
-	if (parser(buffer, m_data, size))
-	{
-		//free buffer and maybe m_data?
-		*retval = 3;
-		return(1);
-	}
+	//if (parser(buffer, m_data, size))
+	//{
+	//	//free buffer and maybe m_data?
+	//	*retval = 3;
+	//	return(1);
+	//}
+	return (0);
 }

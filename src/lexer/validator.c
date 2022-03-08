@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:39:55 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 20:26:08 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 20:50:40 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_float(char *str)
 
 	i = 0;
 	sw = 0;
-	if (str[i] == '-' || str[i] '+')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i] != '\0' || str[i] != '\n')
 	{
@@ -42,7 +42,7 @@ int	check_vec_float(char *str, int *count)
 
 	i = *count;
 	sw = 0;
-	if (str[i] == '-' || str[i] '+')
+	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i] != '\0' || str[i] != '\n' || str[i] != ',')
 	{

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:09:50 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 19:30:23 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 20:52:22 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,5 @@ char	**ft_strsplit(char const *s, char *c);
 float	ft_atof(char *str);
 double	ft_atod(char *str);
 /* UTILS */
+void	ft_skip_chars(char *s, char *c, size_t *count);
 #endif

@@ -6,16 +6,16 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 17:00:39 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 17:04:57 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 20:52:37 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_skip_chars(char *s, char *c, int *count)
+void	ft_skip_chars(char *s, char *c, size_t *count)
 {
-	int	i;
-	int	ii;
+	size_t	i;
+	size_t	ii;
 
 	i = *count;
 	while (s[i] != '\0')

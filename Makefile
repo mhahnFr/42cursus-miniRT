@@ -16,7 +16,10 @@ MATH_FILES  = abs.c matrix.c matrix_calculations.c matrix_destroy.c matrix_fille
 			  vector_multiplications.c
 GNL_FILES	= get_next_line.c get_next_line_utils.c
 
+UTILS_FOLDER= utils/
+
 UTILS_SRC   = $(addprefix utils/,$(UTILS_FILES)) $(addprefix utils/math/,$(MATH_FILES)) $(addprefix utils/gnl/, $(GNL_FILES))
+
 ##		SOURCES			##
 
 
@@ -30,10 +33,13 @@ SRC			= $(UTILS_SRC) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_S
 
 OBJ_FOLDER	= obj/
 
+OBJ_UTILS_FOLDER = obj/utils/
+
 M_OBJ		= $(addprefix $(OBJ_FOLDER), $(M_SRC))
 LEXER_OBJ	= $(addprefix obj/lexer/, $(LEXER_SRC))
+UTILS_OBJ	= $(addprefix obj/utils/, $(UTILS_FILES)) $(addprefix obj/utils/gnl/, $(GNL_FILES)) $(addprefix obj/utils/math/, $(MATH_FILES))
 
-OBJ         =  $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o)
+OBJ         =  $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OBJ:.c=.o)
 ##		COMPILER		##
 NAME        = miniRT
 
@@ -53,8 +59,11 @@ $(NAME): $(LIBFT) $(MLX) obj/ $(OBJ)
 $(OBJ_FOLDER)%.o: $(SRC_FOLDER)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
+$(OBJ_UTILS_FOLDER)%.o: $(UTILS_FOLDER)%.c $(HDR)
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+
 obj/:
-	mkdir obj/ obj/lexer/
+	mkdir obj/ obj/lexer/ obj/utils obj/utils/gnl obj/utils/math
 
 $(MLX):
 	make -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter"

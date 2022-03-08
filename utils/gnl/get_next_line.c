@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/14 22:37:06 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 15:25:31 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 21:02:45 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,4 @@ char	*get_next_line(int fd)
 		i++;
 		ii++;
 	}
-}
-
-int	main(void)
-{
-	int		fd;
-	char	*str;
-	int		i;
-
-	fd = open(".gitignore", O_RDONLY);
-	i = 0;
-	do
-	{
-		str = get_next_line(fd);
-		printf("%s", str);
-		free(str);
-		i++;
-	}	while (i < 10);
-
 }
