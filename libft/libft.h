@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:09:50 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 17:10:48 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/08 19:30:23 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,7 @@ char	**ft_realloc_charpp(char **old, size_t new_size);
 int		ft_isallnum(char *str);
 int		ft_char_arr_len(char **arr);
 char	**ft_strsplit(char const *s, char *c);
+float	ft_atof(char *str);
+double	ft_atod(char *str);
 /* UTILS */
 #endif
