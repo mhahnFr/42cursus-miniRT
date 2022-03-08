@@ -13,6 +13,8 @@
 #ifndef VECTOR_H
 # define VECTOR_H
 
+# include "libft.h"
+
 /*
  * Represents a vector with three dimensions.
  */

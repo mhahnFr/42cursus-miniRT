@@ -14,6 +14,7 @@
 # define MATRIX_H
 
 # include <stdbool.h>
+# include <libft.h>
 
 typedef struct s_vertex3d	t_vertex3d;
 

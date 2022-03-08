@@ -14,7 +14,8 @@
 #define _MINIRT_H_
 
 # include <stdbool.h>
-#include "vector.h"
+# include "vector.h"
+# include "libft.h"
 
 //Resolution in Pixel
 #define RESOLUTION_X	800

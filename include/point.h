@@ -13,6 +13,8 @@
 #ifndef POINT_H
 # define POINT_H
 
+# include "libft.h"
+
 /*
  * Represents a two dimensional point. Consists of the X and the Y value and
  * the colour values.

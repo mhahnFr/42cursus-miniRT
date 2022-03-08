@@ -2,6 +2,7 @@
 # define VERTEX_H
 
 # include <stdbool.h>
+# include "libft.h"
 
 typedef struct s_matrix	t_matrix;
 
