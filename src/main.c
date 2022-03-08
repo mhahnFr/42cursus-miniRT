@@ -48,5 +48,6 @@ int main(int argc, char **argv)
 		//	paint(all_struct, &ret);
 	}
 	printerror(ret);
+	ft_gc_clear();
 	return ret;
 }
