@@ -32,7 +32,7 @@ FLAGS = -Wall -Werror -Wextra -Ofast
 all : $(NAME) 
 	
 %.o : %.c
-	gcc -c $(FLAGS) $< -o $@
+	$(CC) -c $(FLAGS) $< -o $@
 
 $(NAME) : $(OBJ)
 	ar -crs $(NAME) $(OBJ)
