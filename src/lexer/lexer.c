@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:09:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/09 17:27:10 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/09 19:43:16 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	**loader(char *path, int *errnum, int *size)
 	return buffer;
 }
 
+//cant handle trailing whitespaces before nl
 int	lexer(char *path, t_mixer *m_data, int *errnum)
 {
 	char	**buffer;
@@ -79,7 +80,7 @@ int	lexer(char *path, t_mixer *m_data, int *errnum)
 	size = 0;
 	(void) m_data;
 	buffer = loader(path, errnum, &size);
-	if (buffer == NULL)
+	if (buffer == NULL || size < 3)
 		return(1);
 	if (validation_check(buffer, size))
 	{
@@ -87,12 +88,12 @@ int	lexer(char *path, t_mixer *m_data, int *errnum)
 		*errnum = 2;
 		return(1);
 	}
-	//if (parser(buffer, m_data, size))
-	//{
-	//	ft_free_char_arr(buffer);
-	//	*errnum = 3;
-	//	return(1);
-	//}
+	if (parser(buffer, m_data, size))
+	{
+		ft_free_char_arr(buffer);
+		*errnum = 3;
+		return(1);
+	}
 	ft_free_char_arr(buffer);
 	printf("file read successfull!\n");
 	return (0);

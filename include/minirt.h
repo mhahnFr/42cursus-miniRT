@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 20:47:48 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/09 20:07:05 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,5 @@ void	paint(t_mixer *delegate, int *ret);
 //validation
 int		validation_check(char **buffer, int size);
 int		lexer(char *path, t_mixer *m_data, int *retval);
+int		parser(char **buffer, t_mixer *m_data, int size);
 #endif /*_MINIRT_H_*/
