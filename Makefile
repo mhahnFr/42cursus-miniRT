@@ -1,4 +1,3 @@
-
 ##		HEADER			##
 
 HEAD_FILES	= abs.h arraylist.h hex_str_to_unsigned_int.h matrix_new.h matrix.h minirt.h \

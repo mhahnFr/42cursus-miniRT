@@ -6,14 +6,14 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:53:20 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 17:10:50 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/09 17:47:38 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include <stdlib.h>
 #include "libft.h"
-
+#include <stdio.h>
 static char	**ft_freeman(char **restr, size_t count)
 {
 	size_t	i;
@@ -51,9 +51,9 @@ static char	**ft_recsplit(char *s, char *c, size_t count)
 	char	**rs;
 
 	i = 0;
-	ft_skip_chars(s, c, &i);
+	ft_skip_s(s, c, &i);
 	ii = i;
-	ft_skip_chars(c, s, &ii);
+	ft_skip_c(s, c, &ii);
 	count++;
 	if (i >= ft_strlen(s) || ii >= ft_strlen(s))
 	{

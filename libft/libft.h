@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:09:50 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 20:52:22 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/09 17:47:06 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,11 @@ char	**ft_strsplit(char const *s, char *c);
 float	ft_atof(char *str);
 double	ft_atod(char *str);
 /* UTILS */
-void	ft_skip_chars(char *s, char *c, size_t *count);
+void	ft_skip_c(char *s, char *c, size_t *count);
+void	ft_skip_s(char *s, char *c, size_t *count);
 void	*ft_gc_malloc(size_t size);
 void	ft_gc_free(void *ptr);
 void	ft_gc_clear(void);
 void	ft_gc_exit(int code);
+void	ft_free_char_arr(char **arr);
 #endif

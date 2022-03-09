@@ -6,12 +6,19 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:39:55 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 20:50:40 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/09 17:58:58 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include <stdio.h>
 #include "libft.h"
+
+void	p_chararr(char **arr)
+{
+	for (int i = 0; arr[i] != NULL; i++)
+		printf("%s ", arr[i]);
+}
 
 int	check_float(char *str)
 {
@@ -22,11 +29,11 @@ int	check_float(char *str)
 	sw = 0;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
-	while (str[i] != '\0' || str[i] != '\n')
+	while (str[i] != '\0' && str[i] != '\n')
 	{
 		if (str[i] == '.')
 			sw++;
-		else if (!(str[i] >= '0' || str[i] >= '9'))
+		else if (!(str[i] >= '0' && str[i] <= '9'))
 			return (1);
 		i++;
 	}
@@ -44,7 +51,7 @@ int	check_vec_float(char *str, int *count)
 	sw = 0;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
-	while (str[i] != '\0' || str[i] != '\n' || str[i] != ',')
+	while (str[i] != '\0' && str[i] != '\n' && str[i] != ',')
 	{
 		if (str[i] == '.')
 			sw++;
@@ -105,7 +112,7 @@ int	check_cam_int(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] != '\n' || str[i] != '\0')
+	while (str[i] != '\n' && str[i] != '\0')
 	{
 		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (1);
@@ -121,7 +128,7 @@ int	check_rgb_int(char *str, int *count)
 	int	i;
 
 	i = *count;
-	while (str[i] != '\n' || str[i] != '\0' || str[i] != ',')
+	while (str[i] != '\n' && str[i] != '\0' && str[i] != ',')
 	{
 		if (!(str[i] >= '0' && str[i] <= '9'))
 			return (1);
@@ -266,7 +273,7 @@ int	validation_check(char **buffer, int size)
 		else
 			ret = 1;
 		i++;
-		//free splitline
+		ft_free_char_arr(splitline);
 	}
 	return ret;
 }
@@ -282,3 +289,4 @@ int	validation_check(char **buffer, int size)
 	expect token: Color									(double ',' double ',' double)
 	expect token: END OF LINE							(end of string/\n)
 	*/
+
