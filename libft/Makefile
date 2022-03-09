@@ -27,7 +27,7 @@ OBJ = $(patsubst %.c, %.o, $(SRC))
 
 OBJ_BON = $(patsubst %.c, %.o, $(BONUS))
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -Ofast
 
 all : $(NAME) 
 	
