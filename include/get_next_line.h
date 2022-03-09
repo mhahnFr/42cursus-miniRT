@@ -12,12 +12,13 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+# include "libft.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <stddef.h>
 # include <fcntl.h>
 
-#define GNL_BUFFER	100
+# define GNL_BUFFER	100
 
 char	*get_next_line(int fd);
 int		get_filled(char **str, int fd);

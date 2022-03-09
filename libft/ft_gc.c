@@ -37,8 +37,19 @@ void	ft_gc_clear(void)
 	*ft_gc_list() = NULL;
 }
 
+#ifdef DEBUG
+#include <stdio.h>
+#endif
 void	ft_gc_exit(int code)
 {
+#ifdef DEBUG
+	size_t leak_count = arraylist_size_unsafe(*ft_gc_list());
+	if (leak_count > 0) {
+		printf("%zu leaks\n", leak_count);
+	} else {
+		printf("All heap blocks were freed - NO LEAKS ARE POSSIBLE\n");
+	}
+#endif
 	arraylist_clear(ft_gc_list(), free);
 	exit(code);
 }
