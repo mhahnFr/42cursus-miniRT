@@ -66,7 +66,7 @@ obj/:
 	mkdir obj/ obj/lexer/ obj/utils obj/utils/gnl obj/utils/math
 
 $(MLX):
-	make -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter"
+	make -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter -Ofast"
 
 $(LIBFT):
 	make -C libft
