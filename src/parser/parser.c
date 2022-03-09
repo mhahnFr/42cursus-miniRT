@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/09 20:54:25 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/09 22:11:02 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,23 +76,24 @@ int	add_camera(char **line, t_cam *camera)
 	camera->position = get_vector(line[1]);
 	camera->normal = get_vector(line[2]);
 	camera->fov = ft_atoi(line[3]);
+	camera->aspect_ratio = RESOLUTION_X / RESOLUTION_Y;
 	ft_free_char_arr(line);
 	return (0);
 }
 
-int	add_light(char **line, t_obj_l	*empty)
+int	add_light(char **line, t_mixer *data)
 {
-	empty = ft_calloc(1, sizeof(t_obj_l));
-	if (empty == NULL)
+	data->obj_list = ft_calloc(1, sizeof(t_obj_l));
+	if (data->obj_list == NULL)
 	{
 		ft_free_char_arr(line);
 		return (1);
 	}
-	empty->emitter = true;
-	empty->position = get_vector(line[1]);
-	empty->brightness = ft_atof(line[2]);
-	empty->color = get_color(line[3]);
-	empty->obj_type = LIGHT;
+	data->obj_list->emitter = true;
+	data->obj_list->position = get_vector(line[1]);
+	data->obj_list->brightness = ft_atof(line[2]);
+	data->obj_list->color = get_color(line[3]);
+	data->obj_list->obj_type = LIGHT;
 	ft_free_char_arr(line);
 	return (0);
 }
@@ -188,7 +189,7 @@ int	parser(char **buffer, t_mixer *m_data, int size)
 		return (1);
 	if (add_camera(find_line(buffer, size, "C"), &(m_data->cam)))
 		return (1);
-	if (add_light(find_line(buffer, size, "L"), m_data->obj_list))
+	if (add_light(find_line(buffer, size, "L"), m_data))
 		return (1);
 	i = 0;
 	while (buffer[i] != NULL)

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/09 20:07:05 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/09 21:51:03 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct s_cam {
 	t_vector	position;
 	t_vector	normal;
 	int			fov;		//between 0-180
+	float		aspect_ratio;
+	t_vector	vecs[RESOLUTION_X][RESOLUTION_Y];
 }	t_cam;
 
 //mainstruct for MiniRT
@@ -84,10 +86,15 @@ typedef struct s_mixer {
 
 //				Main
 /*
- * Creates the main delegate object. Takes the file to be opened as well as a
- * pointer to an integer in which to store the error code.
+ * Creates the main delegate object. Takes a pointer to an integer in which to
+ * store the error code.
  */
 t_mixer	*init_mainstruct(int *err);
+
+/*
+ * Initializes the values of the camera. Takes the mixer object as parameter.
+ */
+void	rt_cam_init(t_mixer *mixer);
 
 //				Painter
 /*

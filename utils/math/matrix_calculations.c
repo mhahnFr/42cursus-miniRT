@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:37:48 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 16:42:41 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/09 20:43:07 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,22 @@ void	matrix_multiply(t_matrix *result, t_matrix *m1, t_matrix *m2)
 		}
 		i++;
 	}
+}
+
+void	matrix_multiply_vector(
+			t_vector *result,
+			t_matrix *m,
+			t_vector *v)
+{
+	if (result == NULL || m == NULL || v == NULL
+		|| m->rows != 3 || m->columns != 3)
+		return ;
+	result->x = m->values[0][0] * v->x + m->values[0][1] * v->y
+		+ m->values[0][2] * v->z;
+	result->y = m->values[1][0] * v->x + m->values[1][1] * v->y
+		+ m->values[1][2] * v->z;
+	result->z = m->values[2][0] * v->x + m->values[2][1] * v->y
+		+ m->values[2][2] * v->z;
 }
 
 void	matrix_multiply_vertex3d(

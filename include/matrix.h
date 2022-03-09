@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:38:06 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 16:42:18 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/09 22:03:56 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdbool.h>
 # include <libft.h>
+
+# include "vector.h"
 
 typedef struct s_vertex3d	t_vertex3d;
 
@@ -95,6 +97,16 @@ void		matrix_multiply_vertex3D(
 				t_vertex3d *result,
 				t_matrix *m,
 				t_vertex3d *v);
+
+/*
+ * Multiplies the given vector with the given matrix. The results are stored in
+ * the given vector. Does nothing if at least one parameter is missing or the 
+ * given matrix is not in the format 3x3.
+ */
+void		matrix_multiply_vector(
+				t_vector *result,
+				t_matrix *m,
+				t_vector *v);
 
 /*
  * Fills the given matrix with the given floating point number. Overwrites all
