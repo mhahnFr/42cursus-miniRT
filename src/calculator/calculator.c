@@ -1,5 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   calculator.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
+/*   Updated: 2022/03/10 22:43:39 by jkasper          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include "minirt.h"
+#include <math.h>
+#include <stdbool.h>
 
 void	calculator(t_mixer *mixer, int *ret)
 {
@@ -11,31 +25,76 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 	(void) ret;
 	for (int i = 0; i < RESOLUTION_Y; i++) {
 		for (int j = 0; j < RESOLUTION_X; j++) {
-			calc_intersec_objs(mixer->obj_list, &(mixer->cam.vecs[i][j]));
+			calc_intersec_first(mixer->obj_list, /* &(mixer->cam.vecs[i][j]) */);mixer i,j
 		}
 	}
 }
 
-void	calc_intersec_objs(t_obj_l *objs, t_vector *cam)
+void	skip_obj(t_obj_l **objs, int toskip)
+{
+	while ((*objs) != NULL && (*objs)->obj_type == toskip)
+		(*objs) = (*objs)->next;
+}
+
+
+t_vector	calc_intersection_sphere(t_cam cam, t_obj_l *obj) all cam.normal -> [i][j].xyz
+{
+	float		B;
+	float		C;
+	float		t0;
+	float		t1;
+	t_vector	ret;
+	
+	B = ( cam.normal.x * (cam.position.x - obj->position.x) + cam.normal.y * (cam.position.y - obj->position.y)  + cam.normal.z * (cam.position.z - obj->position.z));
+	C =  vector_scalar_product(&(cam.position), &(obj->position)) - powf(obj->height, 2);
+	t0 = ((B) - sqrtf(powf(B, 2) - C));
+	t1 = ((B) + sqrtf(powf(B, 2) - C));
+	if (sqrtf(t0) < sqrtf(t1))
+		t0 = t1;
+	ret.x = cam.position.x + cam.normal.x * t0;
+	ret.y = cam.position.y + cam.normal.y * t0;
+	ret.z = cam.position.z + cam.normal.z * t0;
+	return (ret);
+}
+
+t_vector	calc_intersec_next(t_obj_l *objs, t_mixer *mixer)
+{
+	
+	if (objs->obj_type == SPHERE && vector_scalar_product(&(mixer->cam.position), &(objs->position)) - powf(objs->height, 2) < 0)
+		return(calc_intersection_sphere(mixer->cam, objs));
+	else if (objs->obj_type == PLANE && calc_intersecs_plane(&(mixer->cam.normal), &objs->normal))//[i][j]
+		return(calc_intersection_plane(&(mixer->cam.normal), objs));
+	else if (objs->obj_type == CYLINDER)
+	{
+		// TODO
+	}	
+}
+
+bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *cam)
+{
+	t_vector	inter;
+	t_vector	inter2;
+
+	vector_substract(&inter, &intersect, cam);
+	vector_substract(&inter2, &new_intersect, cam);
+	return (vector_length(&inter) > vector_length(&inter2));
+}
+
+void	calc_intersec_first(t_obj_l *objs, t_mixer *mixer)
 {
 	t_vector	intersect;
+	t_vector	new_intersect;
 
+	skip_obj(&objs, LIGHT);
+	intersect = calc_intersec_next(objs, mixer);
+	objs = objs->next;
 	while (objs != NULL)
 	{
-		if (objs->obj_type == SPHERE)
-		{
-			// TODO
-		}
-		else if (objs->obj_type == PLANE && calc_intersecs_plane(cam, &objs->normal))
-		{
-			intersect = calc_intersection_plane(cam, objs);
-			printf("x:%f y:%f z:%f\n", intersect.x, intersect.y, intersect.z);
-		}
-		else if (objs->obj_type == CYLINDER)
-		{
-			// TODO
-		}
+		new_intersect = calc_intersec_next(objs, mixer);
+		if (calc_intersec_dist(intersect, new_intersect, &(mixer->cam.normal)))
+			intersect = new_intersect;
 		objs = objs->next;
+		skip_obj(&objs, LIGHT);
 	}
 }
 
@@ -53,20 +112,11 @@ t_vector	calc_intersection_plane(t_vector *cam, t_obj_l *objs)
 	vec2.y = cam->y;
 	vec2.z = cam->z;
 	vector_normalize(&vec2);
-	printf("x:%f y:%f z:%f\n", vec2.x, vec2.y, vec2.z);
-	printf("PLANE\n");
 	vector_multiply_digit(&vec_inter, &vec2, 0.5);
-	printf("x:%f y:%f z:%f\n", vec_inter.x, vec_inter.y, vec_inter.z);
-	printf("x:%f y:%f z:%f\n", cam->x, cam->y, cam->z);
 	vector_multiply(&vec2, &vec_inter, cam);
-	printf("x:%f y:%f z:%f\n", vec2.x, vec2.y, vec2.z);
 	vector_substract(&vec_inter, &(objs->position), &vec2);
-	printf("x:%f y:%f z:%f\n", vec_inter.x, vec_inter.y, vec_inter.z);
-	printf("a:%f b:%f \n",vector_scalar_product(&vec_inter, &(objs->normal)), vector_scalar_product(cam, &(objs->normal)));
 	d = vector_scalar_product(&vec_inter, &(objs->normal)) / vector_scalar_product(cam, &(objs->normal));
-	printf("d:%f\n", d);
 	vector_multiply_digit(&vec_inter, cam, d);
-	printf("x:%f y:%f z:%f\n", vec_inter.x, vec_inter.y, vec_inter.z);
 	vector_addition(&point, &vec2, &vec_inter);
 	return (point);
 }
