@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 15:24:03 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 15:53:45 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	printerror(int error)
 		ft_putendl_fd("Unknown error occured", 1);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_mixer	*all_struct;
 	int		ret;
@@ -66,5 +66,5 @@ int main(int argc, char **argv)
 	}
 	printerror(ret);
 	ft_gc_clear();
-	return ret;
+	return (ret);
 }

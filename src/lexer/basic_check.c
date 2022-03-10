@@ -6,11 +6,11 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:36:38 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 15:40:12 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 15:48:27 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "lexer.h"
 
 int	check_vector(char *str)
 {

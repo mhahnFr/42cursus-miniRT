@@ -6,13 +6,14 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:39:55 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 15:45:12 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 15:48:40 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include <stdio.h>
 #include "libft.h"
+#include "lexer.h"
 
 void	p_chararr(char **arr)
 {

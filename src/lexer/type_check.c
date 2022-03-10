@@ -6,11 +6,11 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:38:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 15:40:31 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 15:48:34 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "lexer.h"
 
 int	check_float(char *str)
 {

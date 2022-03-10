@@ -6,11 +6,11 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:42:30 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 15:42:54 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 15:48:31 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "lexer.h"
 
 int	check_sphere(char **splitline)
 {

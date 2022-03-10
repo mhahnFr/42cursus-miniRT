@@ -6,13 +6,14 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:09:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 15:34:59 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 15:50:25 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "get_next_line.h"
 #include "libft.h"
+#include "lexer.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
