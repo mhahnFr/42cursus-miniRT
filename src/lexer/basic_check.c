@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:36:38 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 15:48:27 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 19:52:41 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,19 @@ int	check_orientation(char *str)
 	int	i;
 
 	i = 0;
-	if (ft_atof(str + i) < 0 || ft_atof(str + i) > 1)
+	if (ft_atof(str + i) < -1 || ft_atof(str + i) > 1)
 		return (1);
 	if (check_vec_float(str, &i))
 		return (1);
 	if (str[i++] != ',')
 		return (1);
-	if (ft_atof(str + i) < 0 || ft_atof(str + i) > 1)
+	if (ft_atof(str + i) < -1 || ft_atof(str + i) > 1)
 		return (1);
 	if (check_vec_float(str, &i))
 		return (1);
 	if (str[i++] != ',')
 		return (1);
-	if (ft_atof(str + i) < 0 || ft_atof(str + i) > 1)
+	if (ft_atof(str + i) < -1 || ft_atof(str + i) > 1)
 		return (1);
 	if (check_vec_float(str, &i))
 		return (1);

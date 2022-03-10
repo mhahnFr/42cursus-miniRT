@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 15:28:22 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 19:50:15 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,24 @@ t_rgbof	get_color(char *src)
 	i = 0;
 	while (src[i] != ',')
 		i++;
-	color.g = ft_atoi(src + i);
+	color.g = ft_atoi(src + ++i);
 	while (src[i] != ',')
 		i++;
-	color.b = ft_atoi(src + i);
-	while (src[i] != ',')
-	{
-		if (src[i] == '\n' || src[i] == '\0')
-			return (color);
-		i++;
-	}
-	color.o = ft_atoi(src + i);
+	color.b = ft_atoi(src + ++i);
 	while (src[i] != ',')
 	{
 		if (src[i] == '\n' || src[i] == '\0')
 			return (color);
 		i++;
 	}
-	color.f = ft_atoi(src + i);
+	color.o = ft_atoi(src + ++i);
+	while (src[++i] != ',')
+	{
+		if (src[i] == '\n' || src[i] == '\0')
+			return (color);
+		i++; 
+	}
+	color.f = ft_atoi(src + ++i);
 	return (color);
 }
 
@@ -56,10 +56,10 @@ t_vector	get_vector(char *src)
 	vec.x = ft_atof(src);
 	while (src[i] != ',')
 		i++;
-	vec.y = ft_atof(src + i);
+	vec.y = ft_atof(src + ++i);
 	while (src[i] != ',')
 		i++;
-	vec.z = ft_atof(src + i);
+	vec.z = ft_atof(src + ++i);
 	return (vec);
 }
 
@@ -75,6 +75,7 @@ int	add_camera(char **line, t_cam *camera)
 {
 	camera->position = get_vector(line[1]);
 	camera->normal = get_vector(line[2]);
+	vector_normalize(&(camera->normal));
 	camera->fov = ft_atoi(line[3]);
 	camera->aspect_ratio = RESOLUTION_X / RESOLUTION_Y;
 	ft_free_char_arr(line);
@@ -109,8 +110,10 @@ int	add_plane(char **line, t_mixer *m_data)
 	if (curr->next == NULL)
 		return (1);
 	curr->next->emitter = false;
+	curr->next->obj_type = PLANE;
 	curr->next->position = get_vector(line[1]);
 	curr->next->normal = get_vector(line[2]);
+	vector_normalize(&(curr->next->normal));
 	curr->next->color = get_color(line[3]);
 	return (0);
 }
@@ -128,6 +131,7 @@ int	add_sphere(char **line, t_mixer *m_data)
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
 	curr->next->height = ft_atof(line[2]);
+	curr->next->obj_type = SPHERE;
 	curr->next->width = curr->height;
 	curr->next->color = get_color(line[3]);
 	return (0);
@@ -146,9 +150,11 @@ int	add_cylinder(char **line, t_mixer *m_data)
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
 	curr->next->normal = get_vector(line[2]);
+	vector_normalize(&(curr->next->normal));
 	curr->next->height = ft_atof(line[3]);
 	curr->next->width = ft_atof(line[4]);
 	curr->next->color = get_color(line[5]);
+	curr->next->obj_type = CYLINDER;
 	return (0);	
 }
 

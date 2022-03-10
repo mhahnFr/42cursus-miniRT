@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:38:17 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 16:38:18 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 19:22:51 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,22 @@ t_vector	*vector_new_multiply(t_vector *first, t_vector *second)
 	return (ret);
 }
 
-void	vector_multiply(t_vector *result, t_vector *first, t_vector *second)
+void	vector_cross(t_vector *result, t_vector *first, t_vector *second)
 {
 	if (result == NULL || first == NULL || second == NULL)
 		return ;
 	result->x = first->y * second->z - first->z * second->y;
 	result->y = first->z * second->x - first->x * second->z;
 	result->z = first->x * second->y - first->y * second->x;
+}
+
+void	vector_multiply(t_vector *result, t_vector *first, t_vector *second)
+{
+	if (result == NULL || first == NULL || second == NULL)
+		return ;
+	result->x = first->x * second->x;
+	result->y = first->y * second->y;
+	result->z = first->z * second->z;
 }
 
 float	vector_scalar_product(t_vector *one, t_vector *two)

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:38:23 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 16:38:24 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 18:08:11 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,15 @@ t_vector	*vector_new_substract(t_vector *first, t_vector *second);
  * Does nothing if at least one vector is missing.
  */
 void		vector_substract(
+				t_vector *result,
+				t_vector *first,
+				t_vector *second);
+
+/*
+ * Adds the two given vectors and stores the result in the given vector.
+ * Does nothing if at least one vector is missing.
+ */
+void		vector_addition(
 				t_vector *result,
 				t_vector *first,
 				t_vector *second);
