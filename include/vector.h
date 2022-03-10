@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:38:23 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 18:08:11 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 23:53:42 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,13 @@ void		vector_addition(
 				t_vector *second);
 
 /*
+ * Allocates a new vector containing the result of the addition of the first
+ * vector to the second one. Return either the newly allocated vector or null
+ * if the allocation failed or at least one vector is missing.
+ */
+t_vector	*vector_new_addition(t_vector *first, t_vector *second);
+
+/*
  * Calculates and returns the length of the given vector. Returns zero if no
  * vector is given.
  */
@@ -84,6 +91,16 @@ void		vector_multiply_digit(
 				t_vector *this,
 				float multiplicator);
 
+/*
+ * Calculates the distance between the two given vectors. Returns zero, if at
+ * least one vector is missing. Otherwise, the calculated distance is returned.
+ */
+float		vector_distance(t_vector *first, t_vector *second);
+
+/*
+ * Normalizes the given vector. Does nothing if no vector is given.
+ * NOTE: Does not work for vectors with a length of zero.
+ */
 void		vector_normalize(t_vector *this);
 
 /*
@@ -104,6 +121,23 @@ void		vector_division(
 t_vector	*vector_new_division(t_vector *divident, float divisor);
 
 /*
+ * Calculates the cross product of the two given vectors and stores the result
+ * in a newly allocated vector, which is returned. Returns null if the
+ * allocation failed or at least one vector is missing. Otherwise, the vector
+ * containing the result is returned.
+ */
+t_vector	*vector_new_cross_product(t_vector *first, t_vector *second);
+
+/*
+ * Calculates the cross product of the to given vectors and stores the result
+ * in the given vector. Does nothing if at least one vector is missing.
+ */
+void		vector_cross_product(
+				t_vector *result,
+				t_vector *first,
+				t_vector *second);
+
+/*
  * Multiplies the two given vectors and returns the result as a newly allocated
  * vector. Returns either the newly allocated vector or null if the allocation
  * failed or at least one vector is missing.
@@ -120,7 +154,7 @@ void		vector_multiply(
 				t_vector *second);
 
 /*
- * Claculates the scalar product of the given vectors. Returns either the
+ * Calculates the scalar product of the given vectors. Returns either the
  * calculated result or zero, if at least one vector is missing.
  */
 float		vector_scalar_product(t_vector *first, t_vector *second);
