@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 14:59:25 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 17:29:57 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,6 @@ typedef struct s_rgbof {
 //objectlist for all lights, and objects
 //
 //WIDTH: in case of a sphere wifth and height are both the same
-//HEIGHT-PLANE we save the normal at the position and add the width and height 
-//				here instead of building a plane from points.
-//NORMAL: will safe some work for calculating rays crossing the plane
 typedef struct s_object_l {
 	int					obj_type;
 	t_vector			position;
@@ -108,6 +105,13 @@ void	rt_cam_init(t_mixer *mixer);
  * code is saved.
  */
 void	paint(t_mixer *delegate, int *ret);
+
+//				Calculator
+void	calculator(t_mixer *mixer, int *ret);
+void	calc_object_ray(t_mixer *mixer, int *ret);
+void	calc_intersec_objs(t_obj_l *objs, t_vector *vec);
+t_vector	calc_intersection_plane();
+bool	calc_intersecs_plane(t_vector *vec, t_vector *normal);
 
 //				lexer
 //validation

@@ -24,11 +24,12 @@ UTILS_SRC   = $(addprefix utils/,$(UTILS_FILES)) $(addprefix utils/math/,$(MATH_
 
 SRC_FOLDER	= src/
 
-M_SRC    	= builder.c calculator.c main.c mixer.c
+M_SRC    	= builder.c main.c mixer.c
+CALC_SRC	= calculator.c
 LEXER_SRC	= lexer.c validator.c basic_check.c type_check.c object_check.c
 PARSER_SRC	= parser.c
 
-SRC			= $(UTILS_SRC) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_SRC)) $(addprefix src/parser/,$(PARSER_SRC))
+SRC			= $(UTILS_SRC) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_SRC)) $(addprefix src/parser/,$(PARSER_SRC)) $(addprefix src/calculator/,$(CALC_SRC))
 ##		OBJECTS			##
 
 OBJ_FOLDER	= obj/
@@ -37,10 +38,11 @@ OBJ_UTILS_FOLDER = obj/utils/
 
 UTILS_OBJ	= $(addprefix obj/utils/, $(UTILS_FILES)) $(addprefix obj/utils/gnl/, $(GNL_FILES)) $(addprefix obj/utils/math/, $(MATH_FILES))
 M_OBJ		= $(addprefix $(OBJ_FOLDER), $(M_SRC))
+CALC_OBJ	= $(addprefix obj/calculator/, $(CALC_SRC))
 LEXER_OBJ	= $(addprefix obj/lexer/, $(LEXER_SRC))
 PARSER_OBJ	= $(addprefix obj/parser/, $(PARSER_SRC))
 
-OBJ         =  $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OBJ:.c=.o) $(PARSER_OBJ:.c=.o)
+OBJ         =  $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OBJ:.c=.o) $(PARSER_OBJ:.c=.o) $(CALC_OBJ:.c=.o)
 ##		COMPILER		##
 NAME        = miniRT
 
@@ -64,7 +66,7 @@ $(OBJ_UTILS_FOLDER)%.o: $(UTILS_FOLDER)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 obj/:
-	mkdir obj/ obj/lexer/ obj/utils obj/utils/gnl obj/utils/math obj/parser
+	mkdir obj/ obj/lexer/ obj/utils obj/utils/gnl obj/utils/math obj/parser obj/calculator
 
 $(MLX):
 	make -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter -Ofast"
