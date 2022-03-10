@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/09 22:11:02 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/10 15:28:22 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,28 @@ t_rgbof	get_color(char *src)
 	t_rgbof	color;
 	int		i;
 
-	color.R = ft_atoi(src);
+	color.r = ft_atoi(src);
 	i = 0;
 	while (src[i] != ',')
 		i++;
-	color.G = ft_atoi(src + i);
+	color.g = ft_atoi(src + i);
 	while (src[i] != ',')
 		i++;
-	color.B = ft_atoi(src + i);
-	while (src[i] != ',')
-	{
-		if (src[i] == '\n' || src[i] == '\0')
-			return (color);
-		i++;
-	}
-	color.O = ft_atoi(src + i);
+	color.b = ft_atoi(src + i);
 	while (src[i] != ',')
 	{
 		if (src[i] == '\n' || src[i] == '\0')
 			return (color);
 		i++;
 	}
-	color.F = ft_atoi(src + i);
+	color.o = ft_atoi(src + i);
+	while (src[i] != ',')
+	{
+		if (src[i] == '\n' || src[i] == '\0')
+			return (color);
+		i++;
+	}
+	color.f = ft_atoi(src + i);
 	return (color);
 }
 

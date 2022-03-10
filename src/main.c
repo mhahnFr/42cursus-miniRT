@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/09 19:45:44 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/10 15:24:03 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,33 @@
 #include "mlx.h"
 #include "libft.h"
 
-void	printerror(int error) {
+void	print_lexer_error(int error)
+{
+	if (error == 21)
+		ft_putendl_fd("File loading failed", 1);
+	else if (error == 22)
+		ft_putendl_fd("File validation failed", 1);
+	else if (error == 23)
+		ft_putendl_fd("Memory allocation failed", 1);
+	else if (error == 24)
+		ft_putendl_fd("File descriptor error", 1);
+	else
+		ft_putendl_fd("Unknown error while parsing", 1);
+}
+
+void	printerror(int error)
+{
 	if (!error)
 		return ;
 	ft_putendl_fd("Error", 1);
-	if (error == 1)
-		ft_putendl_fd("Arguments", 1);
-	else if (error == 2)
-		ft_putendl_fd("File", 1);
+	if (error >= 30)
+		ft_putendl_fd("execution failed", 1);
+	else if (error >= 20)
+		print_lexer_error(error);
+	else if (error == 1)
+		ft_putendl_fd("bad Arguments", 1);
 	else if (error == 3)
-		ft_putendl_fd("Memory", 1);
+		ft_putendl_fd("Memory allocation failed", 1);
 	else
 		ft_putendl_fd("Unknown error occured", 1);
 }

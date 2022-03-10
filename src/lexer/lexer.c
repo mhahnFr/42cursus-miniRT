@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:09:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/09 19:43:16 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 15:34:59 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,48 +27,57 @@ int	checkfile(char *name)
 	return (0);
 }
 
-char	**loader(char *path, int *errnum, int *size)
+int	read_to_buffer(int fd, char ***alloc, int *size)
 {
 	int		i;
 	int		buff_time;
+	char	**buff;
+
+	i = 0;
+	buff_time = 1;
+	buff = *alloc;
+	buff[i] = get_next_line(fd);
+	while (buff[i] != NULL)
+	{
+		i++;
+		if (i == LEXER_BUFFER * buff_time)
+		{
+			buff = ft_realloc_charpp(buff, (LEXER_BUFFER * ++buff_time) + 1);
+			if (buff == NULL)
+				return (3);
+		}
+		buff[i] = get_next_line(fd);
+	}
+	*size = i;
+	return (0);
+}
+
+char	**loader(char *path, int *errnum, int *size)
+{
 	int		fd;
-	char	**buffer;
+	char	**buff;
 
 	if (checkfile(path))
 	{
-		*errnum = 2;
+		*errnum = 1;
 		return (NULL);
 	}
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-		*errnum = 2;
-	buffer = ft_calloc(LEXER_BUFFER + 1, sizeof(char *));
-	if (buffer == NULL)
+	{
+		*errnum = 4;
+		return (NULL);
+	}
+	buff = ft_calloc(LEXER_BUFFER + 1, sizeof(char *));
+	if (buff == NULL)
 	{
 		close(fd);
 		*errnum = 3;
-		return NULL;
+		return (NULL);
 	}
-	i = 0;
-	buff_time = 1;
-	buffer[i] = get_next_line(fd);
-	while (buffer[i] != NULL)
-	{
-		i++;
-		if (i == LEXER_BUFFER * buff_time) 
-		{
-			buffer = ft_realloc_charpp(buffer, (LEXER_BUFFER * ++buff_time) + 1);
-			if (buffer == NULL)
-			{
-				*errnum = 3;
-				break ;
-			}
-		}
-		buffer[i] = get_next_line(fd);
-	}
-	*size = i;
+	*errnum = read_to_buffer(fd, &buff, size);
 	close(fd);
-	return buffer;
+	return (buff);
 }
 
 //cant handle trailing whitespaces before nl
@@ -80,21 +89,21 @@ int	lexer(char *path, t_mixer *m_data, int *errnum)
 	size = 0;
 	(void) m_data;
 	buffer = loader(path, errnum, &size);
-	if (buffer == NULL || size < 3)
-		return(1);
+	if (buffer == NULL || size < 3 || *errnum)
+	{
+		*errnum += 20;
+		return (*errnum);
+	}
 	if (validation_check(buffer, size))
 	{
-		ft_free_char_arr(buffer);
-		*errnum = 2;
-		return(1);
+		*errnum = 22;
+		return (*errnum);
 	}
 	if (parser(buffer, m_data, size))
 	{
-		ft_free_char_arr(buffer);
-		*errnum = 3;
-		return(1);
+		*errnum = 23;
+		return (1);
 	}
-	ft_free_char_arr(buffer);
 	printf("file read successfull!\n");
 	return (0);
 }
