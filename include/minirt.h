@@ -6,49 +6,53 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/09 20:07:05 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/10 14:58:01 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef _MINIRT_H_
-#define _MINIRT_H_
+#ifndef MINIRT_H
+# define MINIRT_H
 
 # include <stdbool.h>
 # include "vector.h"
 # include "libft.h"
 
 //Resolution in Pixel
-#define RESOLUTION_X	800
-#define RESOLUTION_Y	600
+# define RESOLUTION_X	800
+# define RESOLUTION_Y	600
 
 //objecttypes
-#define CAMERA		   -2
-#define AMBIENT		   -1
-#define LIGHT			0
-#define SPHERE			1
-#define PLANE			2
-#define	CYLINDER		3
+# define CAMERA		   -2
+# define AMBIENT	   -1
+# define LIGHT			0
+# define SPHERE			1
+# define PLANE			2
+# define CYLINDER		3
 
-
-#define LEXER_BUFFER	100
+# define LEXER_BUFFER	100
 //red green blue values for an object or light 
 //inits with white: 255, 255, 255
 //RED GREEN BLUE OPACITY REFLECTIVITY
 typedef struct s_rgbof {
-	char	R;
-	char	G;
-	char	B;
-	char	O;
-	char	F;
-} t_rgbof;
+	char	r;
+	char	g;
+	char	b;
+	char	o;
+	char	f;
+}	t_rgbof;
 
 //objectlist for all lights, and objects
-typedef	struct s_object_l {
+//
+//WIDTH: in case of a sphere wifth and height are both the same
+//HEIGHT-PLANE we save the normal at the position and add the width and height 
+//				here instead of building a plane from points.
+//NORMAL: will safe some work for calculating rays crossing the plane
+typedef struct s_object_l {
 	int					obj_type;
 	t_vector			position;
-	double				width;		//in case of a sphere wifth and height are both the same
-	double				height;		// in case of a plane we save the normal at the position and add the width and height here instead of building a plane from points.
-	t_vector			normal;		// will safe some work for calculating rays crossing the plane
+	double				width;
+	double				height;
+	t_vector			normal;
 	t_rgbof				color;		
 	bool				emitter;
 	float				brightness;
@@ -63,19 +67,20 @@ typedef struct s_ambient {
 }	t_ambient;
 
 //camera struct 
+//FOV between 0-180
 typedef struct s_cam {
 	t_vector	position;
 	t_vector	normal;
-	int			fov;		//between 0-180
+	int			fov;
 }	t_cam;
 
 //mainstruct for MiniRT
 typedef struct s_mixer {
-	void*	p_mlx_init;
-	void*	p_mlx_window;
-	void*	image;
+	void				*p_mlx_init;
+	void				*p_mlx_window;
+	void				*image;
 
-	t_obj_l	*obj_list;
+	t_obj_l				*obj_list;
 	struct s_cam		cam;
 	struct s_ambient	ambient;
 }	t_mixer;
@@ -102,4 +107,4 @@ void	paint(t_mixer *delegate, int *ret);
 int		validation_check(char **buffer, int size);
 int		lexer(char *path, t_mixer *m_data, int *retval);
 int		parser(char **buffer, t_mixer *m_data, int size);
-#endif /*_MINIRT_H_*/
+#endif /*MINIRT_H*/
