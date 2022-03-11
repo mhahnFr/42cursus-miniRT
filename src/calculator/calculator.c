@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/11 16:24:21 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/11 16:29:00 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 #include "minirt.h"
 #include <math.h>
 #include <stdbool.h>
+
+void	draw_point(int x, int y, void *buf, t_rgbof color)
+{
+	char	*dst;
+
+	dst = buf->raw + (long)x * (buf->depth / 8) + (long)y
+		* buf->line_size;
+	*(unsigned int *) dst = (0 << 24) + (color.r << 16) + (color.g << 8)
+	+ (color.b << 0);
+}
 
 void	calculator(t_mixer *mixer, int *ret)
 {
@@ -27,7 +37,7 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 	for (int i = 0; i < RESOLUTION_Y; i++) {
 		for (int j = 0; j < RESOLUTION_X; j++) {
 			color = calc_intersec_first(mixer->obj_list, mixer, &(mixer->cam.vecs[i][j]));
-			
+			draw_point(j, i, mixer->image, color);
 		}
 	}
 	printf("finished!\n");
