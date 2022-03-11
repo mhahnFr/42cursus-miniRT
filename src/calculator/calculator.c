@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/11 16:09:02 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/11 16:24:21 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ void	calculator(t_mixer *mixer, int *ret)
 
 void	calc_object_ray(t_mixer *mixer, int *ret)
 {
+	t_rgbof	color;
 	(void) ret;
 	for (int i = 0; i < RESOLUTION_Y; i++) {
 		for (int j = 0; j < RESOLUTION_X; j++) {
-			calc_intersec_first(mixer->obj_list, mixer, &(mixer->cam.vecs[i][j]));
+			color = calc_intersec_first(mixer->obj_list, mixer, &(mixer->cam.vecs[i][j]));
+			
 		}
 	}
 	printf("finished!\n");
@@ -83,7 +85,7 @@ bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *ca
 	return (vector_length(&inter) > vector_length(&inter2));
 }
 
-void	calc_intersec_first(t_obj_l *objs, t_mixer *mixer, t_vector *ray)
+t_rgbof	calc_intersec_first(t_obj_l *objs, t_mixer *mixer, t_vector *ray)
 {
 	t_vector	*intersect;
 	t_vector	*new_intersect;
