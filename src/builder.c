@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:49:44 by mhahn             #+#    #+#             */
-/*   Updated: 2022/03/10 19:15:50 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/11 16:02:49 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	rt_cam_init(t_mixer *mixer)
 			matrix->values[1][1] = 0;
 			matrix->values[1][2] = cos(angle_y);
 			matrix_multiply_vector(&mixer->cam.vecs[i][j], matrix, &inter);
-			printf("x:%f y:%f z:%f\n", mixer->cam.vecs[i][j].x, mixer->cam.vecs[i][j].y, mixer->cam.vecs[i][j].z);
+			//printf("x:%f y:%f z:%f\n", mixer->cam.vecs[i][j].x, mixer->cam.vecs[i][j].y, mixer->cam.vecs[i][j].z);
 			j++;
 		}
 		i++;

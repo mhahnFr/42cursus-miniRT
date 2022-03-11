@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/11 01:55:25 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/11 16:01:33 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,13 @@ void	skip_obj(t_obj_l **objs, int toskip);
  * a sphere. Takes the camera object, the sphere object and the ray for which
  * to calculate the intersecting vector.
  */
-t_vector	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray);
+t_vector	*calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray);
 
 /*
  * Calculates the intersecting vector for the given ray vector for the next
  * object in the given list.
  */
-t_vector	calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray);
+t_vector	*calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray);
 
 /*
  * Returns wether the first intersecting vector is closer to the given camera
@@ -148,7 +148,7 @@ void	calc_intersec_first(t_obj_l *objs, t_mixer *mixer, t_vector *ray);
  * Calculates the intersecting vector for the given object and the camera
  * vector. The given object is expected to be a plane.
  */
-t_vector	calc_intersection_plane(t_vector *cam, t_obj_l *objs);
+t_vector	*calc_intersection_plane(t_vector *cam, t_obj_l *objs);
 
 /*
  * Returns wether the given vector intersects an infinite plane with the given
