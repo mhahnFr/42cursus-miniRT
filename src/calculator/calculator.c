@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 22:43:39 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/11 01:42:33 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 	(void) ret;
 	for (int i = 0; i < RESOLUTION_Y; i++) {
 		for (int j = 0; j < RESOLUTION_X; j++) {
-			calc_intersec_first(mixer->obj_list, /* &(mixer->cam.vecs[i][j]) */);mixer i,j
+			calc_intersec_first(mixer->obj_list, mixer, &(mixer->cam.vecs[i][j]));
 		}
 	}
 }
@@ -37,7 +37,7 @@ void	skip_obj(t_obj_l **objs, int toskip)
 }
 
 
-t_vector	calc_intersection_sphere(t_cam cam, t_obj_l *obj) all cam.normal -> [i][j].xyz
+t_vector	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray)
 {
 	float		B;
 	float		C;
@@ -45,25 +45,25 @@ t_vector	calc_intersection_sphere(t_cam cam, t_obj_l *obj) all cam.normal -> [i]
 	float		t1;
 	t_vector	ret;
 	
-	B = ( cam.normal.x * (cam.position.x - obj->position.x) + cam.normal.y * (cam.position.y - obj->position.y)  + cam.normal.z * (cam.position.z - obj->position.z));
+	B = ( ray->x * (cam.position.x - obj->position.x) + ray->y * (cam.position.y - obj->position.y) + ray->z * (cam.position.z - obj->position.z));
 	C =  vector_scalar_product(&(cam.position), &(obj->position)) - powf(obj->height, 2);
 	t0 = ((B) - sqrtf(powf(B, 2) - C));
 	t1 = ((B) + sqrtf(powf(B, 2) - C));
 	if (sqrtf(t0) < sqrtf(t1))
 		t0 = t1;
-	ret.x = cam.position.x + cam.normal.x * t0;
-	ret.y = cam.position.y + cam.normal.y * t0;
-	ret.z = cam.position.z + cam.normal.z * t0;
+	ret.x = cam.position.x + ray->x * t0;
+	ret.y = cam.position.y + ray->y * t0;
+	ret.z = cam.position.z + ray->z * t0;
 	return (ret);
 }
 
-t_vector	calc_intersec_next(t_obj_l *objs, t_mixer *mixer)
+t_vector	calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray)
 {
 	
 	if (objs->obj_type == SPHERE && vector_scalar_product(&(mixer->cam.position), &(objs->position)) - powf(objs->height, 2) < 0)
-		return(calc_intersection_sphere(mixer->cam, objs));
-	else if (objs->obj_type == PLANE && calc_intersecs_plane(&(mixer->cam.normal), &objs->normal))//[i][j]
-		return(calc_intersection_plane(&(mixer->cam.normal), objs));
+		return (calc_intersection_sphere(mixer->cam, objs, ray));
+	else if (objs->obj_type == PLANE && calc_intersecs_plane(ray, &objs->normal))
+		return (calc_intersection_plane(ray, objs));
 	else if (objs->obj_type == CYLINDER)
 	{
 		// TODO
@@ -80,18 +80,18 @@ bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *ca
 	return (vector_length(&inter) > vector_length(&inter2));
 }
 
-void	calc_intersec_first(t_obj_l *objs, t_mixer *mixer)
+void	calc_intersec_first(t_obj_l *objs, t_mixer *mixer, t_vector *ray)
 {
 	t_vector	intersect;
 	t_vector	new_intersect;
 
 	skip_obj(&objs, LIGHT);
-	intersect = calc_intersec_next(objs, mixer);
+	intersect = calc_intersec_next(objs, mixer, ray);
 	objs = objs->next;
 	while (objs != NULL)
 	{
-		new_intersect = calc_intersec_next(objs, mixer);
-		if (calc_intersec_dist(intersect, new_intersect, &(mixer->cam.normal)))
+		new_intersect = calc_intersec_next(objs, mixer, ray);
+		if (calc_intersec_dist(intersect, new_intersect, ray))
 			intersect = new_intersect;
 		objs = objs->next;
 		skip_obj(&objs, LIGHT);
@@ -105,9 +105,6 @@ t_vector	calc_intersection_plane(t_vector *cam, t_obj_l *objs)
 	t_vector	vec_inter;
 	float		d;
 
-	vector_create(&vec2, 0, 0, 0);
-	vector_create(&vec_inter, 0, 0, 0);
-	vector_create(&point, 0, 0, 0);
 	vec2.x = cam->x;
 	vec2.y = cam->y;
 	vec2.z = cam->z;
