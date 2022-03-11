@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 17:29:57 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/11 01:55:25 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,52 @@ void	paint(t_mixer *delegate, int *ret);
 
 //				Calculator
 void	calculator(t_mixer *mixer, int *ret);
+
+/*
+ * Iterates over all vectors of the camera stored in the given mixer object and
+ * calculates their intersecting vectors, if there are any.
+ */
 void	calc_object_ray(t_mixer *mixer, int *ret);
-void	calc_intersec_objs(t_obj_l *objs, t_vector *vec);
-t_vector	calc_intersection_plane();
+/*
+ * Skips the objects of the given type at the beginning of the given list.
+ */
+void	skip_obj(t_obj_l **objs, int toskip);
+
+/*
+ * Calculates the intersecting vector of the given object, which is treated as
+ * a sphere. Takes the camera object, the sphere object and the ray for which
+ * to calculate the intersecting vector.
+ */
+t_vector	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray);
+
+/*
+ * Calculates the intersecting vector for the given ray vector for the next
+ * object in the given list.
+ */
+t_vector	calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray);
+
+/*
+ * Returns wether the first intersecting vector is closer to the given camera
+ * vector or the second one.
+ */
+bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *cam);
+
+/*
+ * Calculates the first intersecting vector for the given ray vector and the
+ * given object list.
+ */
+void	calc_intersec_first(t_obj_l *objs, t_mixer *mixer, t_vector *ray);
+
+/*
+ * Calculates the intersecting vector for the given object and the camera
+ * vector. The given object is expected to be a plane.
+ */
+t_vector	calc_intersection_plane(t_vector *cam, t_obj_l *objs);
+
+/*
+ * Returns wether the given vector intersects an infinite plane with the given
+ * normal.
+ */
 bool	calc_intersecs_plane(t_vector *vec, t_vector *normal);
 
 //				lexer
