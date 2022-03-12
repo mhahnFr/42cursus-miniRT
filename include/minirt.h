@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/11 16:01:33 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/12 22:24:57 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 
 # include <stdbool.h>
 # include "vector.h"
+# include "renderer_image.h"
 # include "libft.h"
 
 //Resolution in Pixel
-# define RESOLUTION_X	800
-# define RESOLUTION_Y	600
+# define RESOLUTION_X	400
+# define RESOLUTION_Y	200
+# define CAM_SIZE		100
 
 //objecttypes
 # define CAMERA		   -2
@@ -34,11 +36,11 @@
 //inits with white: 255, 255, 255
 //RED GREEN BLUE OPACITY REFLECTIVITY
 typedef struct s_rgbof {
-	char	r;
-	char	g;
-	char	b;
-	char	o;
-	char	f;
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+	unsigned char	o;
+	unsigned char	f;
 }	t_rgbof;
 
 //objectlist for all lights, and objects
@@ -70,14 +72,14 @@ typedef struct s_cam {
 	t_vector	normal;
 	int			fov;
 	float		aspect_ratio;
-	t_vector	vecs[RESOLUTION_X][RESOLUTION_Y];
+	t_vector	vecs[RESOLUTION_Y][RESOLUTION_X];
 }	t_cam;
 
 //mainstruct for MiniRT
 typedef struct s_mixer {
 	void				*p_mlx_init;
 	void				*p_mlx_window;
-	void				*image;
+	t_renderer_image	*image;
 
 	t_obj_l				*obj_list;
 	struct s_cam		cam;
@@ -124,13 +126,13 @@ void	skip_obj(t_obj_l **objs, int toskip);
  * a sphere. Takes the camera object, the sphere object and the ray for which
  * to calculate the intersecting vector.
  */
-t_vector	*calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray);
+bool	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray, t_vector *ret);
 
 /*
  * Calculates the intersecting vector for the given ray vector for the next
  * object in the given list.
  */
-t_vector	*calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray);
+bool	calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray, t_vector *ret);
 
 /*
  * Returns wether the first intersecting vector is closer to the given camera
@@ -142,13 +144,13 @@ bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *ca
  * Calculates the first intersecting vector for the given ray vector and the
  * given object list.
  */
-void	calc_intersec_first(t_obj_l *objs, t_mixer *mixer, t_vector *ray);
+t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x);
 
 /*
  * Calculates the intersecting vector for the given object and the camera
  * vector. The given object is expected to be a plane.
  */
-t_vector	*calc_intersection_plane(t_vector *cam, t_obj_l *objs);
+bool	calc_intersection_plane(t_vector *cam, t_obj_l *objs, t_vector *ret);
 
 /*
  * Returns wether the given vector intersects an infinite plane with the given

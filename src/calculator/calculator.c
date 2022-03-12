@@ -6,16 +6,17 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/11 16:29:00 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/12 22:21:11 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "minirt.h"
+#include "renderer_image.h"
 #include <math.h>
 #include <stdbool.h>
 
-void	draw_point(int x, int y, void *buf, t_rgbof color)
+void	draw_point(int x, int y, t_renderer_image *buf, t_rgbof color)
 {
 	char	*dst;
 
@@ -32,12 +33,11 @@ void	calculator(t_mixer *mixer, int *ret)
 
 void	calc_object_ray(t_mixer *mixer, int *ret)
 {
-	t_rgbof	color;
 	(void) ret;
 	for (int i = 0; i < RESOLUTION_Y; i++) {
 		for (int j = 0; j < RESOLUTION_X; j++) {
-			color = calc_intersec_first(mixer->obj_list, mixer, &(mixer->cam.vecs[i][j]));
-			draw_point(j, i, mixer->image, color);
+			//printf("x: %i y: %i\n", j, i);
+			calc_intersec_first(mixer, &(mixer->cam.vecs[i][j]), i, j);
 		}
 	}
 	printf("finished!\n");
@@ -50,39 +50,30 @@ void	skip_obj(t_obj_l **objs, int toskip)
 }
 
 
-t_vector	*calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray)
+bool	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray, t_vector *ret)
 {
-	float		B;
-	float		C;
-	float		t0;
-	float		t1;
-	t_vector	*ret;
+	float		a;
+	float		b;
+	float		c;
+	t_vector	OC;
 	
-	B = ( ray->x * (cam.position.x - obj->position.x) + ray->y * (cam.position.y - obj->position.y) + ray->z * (cam.position.z - obj->position.z));
-	C =  vector_scalar_product(&(cam.position), &(obj->position)) - powf(obj->height, 2);
-	t0 = ((B) - sqrtf(powf(B, 2) - C));
-	t1 = ((B) + sqrtf(powf(B, 2) - C));
-	if (sqrtf(t0) < sqrtf(t1))
-		t0 = t1;
-	ret = vector_new(cam.position.x + ray->x * t0, cam.position.y + ray->y * t0, cam.position.z + ray->z * t0);
-	return (ret);
+	vector_substract(&OC, &(cam.position), &(obj->position));
+	a = vector_scalar_product(ray, ray);
+	b = 2 * vector_scalar_product(&OC, ray);
+	c = vector_scalar_product(&OC, &OC) - powf(obj->height, 2);
+	return ((powf(b,2) - 4 * a *c) > 0);
+
 }
 
-//t_vector	calc_intersection_cylinder(t_cam cam, t_obj_l *obj, t_vector *ray)
-//{
-//
-//}
-
-t_vector	*calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray)
+bool	calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray, t_vector	*inter)
 {
-	
-	if (objs->obj_type == SPHERE && vector_scalar_product(&(mixer->cam.position), &(objs->position)) - powf(objs->height, 2) < 0)
-		return (calc_intersection_sphere(mixer->cam, objs, ray));
-	else if (objs->obj_type == PLANE && calc_intersecs_plane(ray, &objs->normal))
-		return (calc_intersection_plane(ray, objs));
+	if (objs->obj_type == SPHERE)
+		return (calc_intersection_sphere(mixer->cam, objs, ray, inter));
+	//else if (objs->obj_type == PLANE && calc_intersecs_plane(ray, &objs->normal))
+	//	return (calc_intersection_plane(ray, objs, inter));
 	//else if (objs->obj_type == CYLINDER)
 	//	return (calc_intersection_cylinder(mixer->cam, objs, ray))
-	return (NULL);
+	return (false);
 }
 
 bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *cam)
@@ -95,39 +86,64 @@ bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *ca
 	return (vector_length(&inter) > vector_length(&inter2));
 }
 
-t_rgbof	calc_intersec_first(t_obj_l *objs, t_mixer *mixer, t_vector *ray)
+t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x)
 {
 	t_vector	*intersect;
 	t_vector	*new_intersect;
+	t_obj_l		*objs;
+	t_rgbof		black;
 	bool		sw;
+	bool		first;
+	bool		secon;
 
+	objs = mixer->obj_list;
 	sw = false;
-	intersect = calc_intersec_next(objs, mixer, ray);
+	intersect = ft_calloc(1, sizeof(t_vector));
+	new_intersect = ft_calloc(1, sizeof(t_vector));
+	first = calc_intersec_next(objs, mixer, ray, intersect);
 	objs = objs->next;
+	black.r = (255 - ((y * 2) % 255)) / 2;
+	black.g = 255 - ((y * 2) % 255);
+	black.b = 255;
 	while (objs != NULL)
 	{
-		if (sw == false &&calc_intersec_next(objs, mixer, ray) != NULL)
+		if (sw == false && calc_intersec_next(objs, mixer, ray, intersect))
 		{
-			intersect = calc_intersec_next(objs, mixer, ray);
+			//printf("%f\n", vector_distance(intersect, ray));
+			if (vector_distance(ray, intersect) < 10)
+				black = objs->color;
 			sw = true;
 		}
 		else if (sw == true)
 		{
-			new_intersect = calc_intersec_next(objs, mixer, ray);
-			if (new_intersect != NULL && calc_intersec_dist(*intersect, *new_intersect, ray))
+			if (calc_intersec_next(objs, mixer, ray, new_intersect) && calc_intersec_dist(*intersect, *new_intersect, ray))
+			{
+				//if (objs->obj_type == SPHERE)
+				//	printf("obj: SPHERE\n");
+				//else
+				//	printf("obj: PLANE\n");
+				//if (new_intersect != NULL)
+				//	printf("x:%f y:%f z:%f\n", new_intersect->x, new_intersect->y, new_intersect->z);
 				intersect = new_intersect;
+				//printf("%f %f %f\n", intersect->x, intersect->y, intersect->z);
+				if (vector_distance(ray, intersect) < 10)
+					black = objs->color;	
+			}
 		}
 		//printf("here %i\n", objs->obj_type);
 		objs = objs->next;
 		skip_obj(&objs, CYLINDER);
 		skip_obj(&objs, LIGHT);
 	}
+	draw_point(x, y, mixer->image, black);
+	free(intersect);
+	free(new_intersect);
+	return (black);
 }
 
-t_vector	*calc_intersection_plane(t_vector *cam, t_obj_l *objs)
+bool	calc_intersection_plane(t_vector *cam, t_obj_l *objs, t_vector *point)
 {
 	t_vector	vec2;
-	t_vector	*point;
 	t_vector	vec_inter;
 	float		d;
 
@@ -140,8 +156,8 @@ t_vector	*calc_intersection_plane(t_vector *cam, t_obj_l *objs)
 	vector_substract(&vec_inter, &(objs->position), &vec2);
 	d = vector_scalar_product(&vec_inter, &(objs->normal)) / vector_scalar_product(cam, &(objs->normal));
 	vector_multiply_digit(&vec_inter, cam, d);
-	point = vector_new_addition(&vec2, &vec_inter);
-	return (point);
+	vector_addition(point, &vec2, &vec_inter);
+	return (true);
 }
 
 bool	calc_intersecs_plane(t_vector *vec, t_vector *normal)

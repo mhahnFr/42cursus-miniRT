@@ -1,7 +1,7 @@
 ##		HEADER			##
 
 HEAD_FILES	= abs.h arraylist.h hex_str_to_unsigned_int.h matrix_new.h matrix.h minirt.h \
-			  point.h vector.h vertex.h
+			  point.h vector.h vertex.h renderer_image.h
 
 HDR         = $(addprefix include/,$(HEAD_FILES))
 ##		UTILITIES		##
@@ -28,8 +28,9 @@ M_SRC    	= builder.c main.c mixer.c
 CALC_SRC	= calculator.c
 LEXER_SRC	= lexer.c validator.c basic_check.c type_check.c object_check.c
 PARSER_SRC	= parser.c
+PAINTER_SRC = renderer_image.c
 
-SRC			= $(UTILS_SRC) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_SRC)) $(addprefix src/parser/,$(PARSER_SRC)) $(addprefix src/calculator/,$(CALC_SRC))
+SRC			= $(UTILS_SRC) $(addprefix src/painter/,$(PAINTER_SRC)) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_SRC)) $(addprefix src/parser/,$(PARSER_SRC)) $(addprefix src/calculator/,$(CALC_SRC))
 ##		OBJECTS			##
 
 OBJ_FOLDER	= obj/
@@ -41,12 +42,13 @@ M_OBJ		= $(addprefix $(OBJ_FOLDER), $(M_SRC))
 CALC_OBJ	= $(addprefix obj/calculator/, $(CALC_SRC))
 LEXER_OBJ	= $(addprefix obj/lexer/, $(LEXER_SRC))
 PARSER_OBJ	= $(addprefix obj/parser/, $(PARSER_SRC))
+PAINTER_OBJ = $(addprefix obj/painter/,$(PAINTER_SRC))
 
-OBJ         =  $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OBJ:.c=.o) $(PARSER_OBJ:.c=.o) $(CALC_OBJ:.c=.o)
+OBJ         =  $(PAINTER_OBJ:.c=.o) $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OBJ:.c=.o) $(PARSER_OBJ:.c=.o) $(CALC_OBJ:.c=.o)
 ##		COMPILER		##
 NAME        = miniRT
 
-CFLAGS      = -Wall -Werror -Wextra -g
+CFLAGS      = -Ofast#-Wall -Werror -Wextra -g
 INC         = -Iinclude -Imlx -Ilibft
 LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit
 
@@ -66,7 +68,7 @@ $(OBJ_UTILS_FOLDER)%.o: $(UTILS_FOLDER)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 obj/:
-	mkdir obj/ obj/lexer/ obj/utils obj/utils/gnl obj/utils/math obj/parser obj/calculator
+	mkdir obj/ obj/lexer/ obj/utils obj/utils/gnl obj/utils/math obj/parser obj/calculator obj/painter
 
 $(MLX):
 	make -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter -Ofast"
