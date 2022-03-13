@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/13 17:30:14 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/13 17:32:56 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 //Resolution in Pixel
 # define RESOLUTION_X	400
 # define RESOLUTION_Y	200
-# define CAM_SIZE		100
+# define CAM_SIZE		10
 # define INIT_RAYS		5
 
 //objecttypes
