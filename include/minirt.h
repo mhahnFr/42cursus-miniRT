@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/13 15:36:47 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/13 17:30:14 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define RESOLUTION_X	400
 # define RESOLUTION_Y	200
 # define CAM_SIZE		100
+# define INIT_RAYS		5
 
 //objecttypes
 # define CAMERA		   -2
@@ -42,7 +43,6 @@ typedef struct s_rgbof {
 	unsigned char	o;
 	unsigned char	f;
 }	t_rgbof;
-
 //objectlist for all lights, and objects
 //
 //WIDTH: in case of a sphere wifth and height are both the same
@@ -142,11 +142,13 @@ bool	calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray, t_vector *
  */
 bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *cam);
 
+t_rgbof	calc_random_rays(t_mixer *mixer, t_vector *ray, int y, int x);
+
 /*
  * Calculates the first intersecting vector for the given ray vector and the
  * given object list.
  */
-t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x);
+t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, t_rgbof pcolor);
 
 /*
  * Calculates the intersecting vector for the given object and the camera

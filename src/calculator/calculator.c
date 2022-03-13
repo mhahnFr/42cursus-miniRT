@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/13 15:38:52 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/13 17:31:25 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ void	calculator(t_mixer *mixer, int *ret)
 
 void	calc_object_ray(t_mixer *mixer, int *ret)
 {
+	t_rgbof	color;
 	(void) ret;
 	for (int i = 0; i < RESOLUTION_Y; i++) {
 		for (int j = 0; j < RESOLUTION_X; j++) {
-			//printf("x: %i y: %i\n", j, i);
-			calc_intersec_first(mixer, &(mixer->cam.vecs[i][j]), i, j);
+			color = calc_random_rays(mixer, &(mixer->cam.vecs[i][j]), i, j);
+			draw_point(j, i, mixer->image, color);
 		}
 	}
 	printf("finished!\n");
@@ -72,6 +73,7 @@ bool	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray, t_vector *
 		vector_multiply_digit(&OC, ray, temp);
 		vector_addition(ret, &(cam.position), &OC);
 		vector_substract(&OC, ret, &(obj->position));
+		vector_division(&(obj->col_normal), &OC, obj->height);
 		return (true);
 	}
 	temp = (-b + sqrtf(d)) / a;
@@ -108,12 +110,36 @@ bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *ca
 	return (vector_length(&inter) < vector_length(&inter2));
 }
 
-t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x)
+t_rgbof	calc_random_rays(t_mixer *mixer, t_vector *ray, int y, int x)
+{
+	t_rgbof	res_col;
+	t_rgbof	add_col;
+	float	steps;
+
+	res_col.r = (255 - (y % 255)) / 2;
+	res_col.g = 255 - (y % 255);
+	res_col.b = 254;
+	steps = 1 / (INIT_RAYS + 1);
+	for (int i =0; i < INIT_RAYS; i++) {
+		ray->x += steps * i;
+		ray->y += steps * i;
+		ray->z += steps * i;
+		add_col	= calc_intersec_first(mixer, ray, res_col);
+		res_col.r /= 2;
+		res_col.g /= 2;
+		res_col.b /= 2;
+		res_col.r += add_col.r / 2;
+		res_col.g += add_col.g / 2;
+		res_col.b += add_col.b / 2;
+	}
+	return (res_col);
+}
+
+t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, t_rgbof pcolor)
 {
 	t_vector	*intersect;
 	t_vector	*new_intersect;
 	t_obj_l		*objs;
-	t_rgbof		black;
 	float		distsf;
 	bool		sw;
 	bool		first;
@@ -125,15 +151,14 @@ t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x)
 	new_intersect = ft_calloc(1, sizeof(t_vector));
 	first = calc_intersec_next(objs, mixer, ray, intersect);
 	objs = objs->next;
-	black.r = (255 - (y % 255)) / 2;
-	black.g = 255 - (y % 255);
-	black.b = 255;
 	while (objs != NULL)
 	{
 		if (sw == false && calc_intersec_next(objs, mixer, ray, intersect))
 		{
 			distsf = objs->disthit;
-			black = objs->color;
+			pcolor.r = (int)(objs->color.r * sqrtf((objs->col_normal.x * 0.75) + 2));
+			pcolor.g = (int)(objs->color.g * sqrtf((objs->col_normal.y * 0.75) + 2));
+			pcolor.b = (int)(objs->color.b * sqrtf((objs->col_normal.z * 0.75) + 2));
 			sw = true;
 		}
 		else if (sw == true)
@@ -141,15 +166,16 @@ t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x)
 			if (calc_intersec_next(objs, mixer, ray, new_intersect) && distsf > objs->disthit)
 			{
 				intersect = new_intersect;
-				black = objs->color;	
+				pcolor.r = (int)(objs->color.r * sqrtf((objs->col_normal.x * 0.75) + 2));
+				pcolor.g = (int)(objs->color.g * sqrtf((objs->col_normal.y * 0.75) + 2));
+				pcolor.b = (int)(objs->color.b * sqrtf((objs->col_normal.z * 0.75) + 2));
 			}
+			else
+				free(new_intersect);
 		}
 		objs = objs->next;
 	}
-	draw_point(x, y, mixer->image, black);
-	free(intersect);
-	free(new_intersect);
-	return (black);
+	return (pcolor);
 }
 
 bool	calc_intersection_plane(t_vector *cam, t_obj_l *objs, t_vector *point)
@@ -171,6 +197,7 @@ bool	calc_intersection_plane(t_vector *cam, t_obj_l *objs, t_vector *point)
 	vector_multiply_digit(&vec_inter, cam, d);
 	vector_addition(point, &vec2, &vec_inter);
 	objs->disthit = d;
+	objs->col_normal = objs->normal;
 	return (true);
 }
 
