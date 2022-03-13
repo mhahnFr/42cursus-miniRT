@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/13 17:32:56 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/13 18:00:49 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ typedef struct s_rgbof {
 	unsigned char	b;
 	unsigned char	o;
 	unsigned char	f;
+
+	unsigned int				cal_r;
+	unsigned int				cal_g;
+	unsigned int				cal_b;
 }	t_rgbof;
 //objectlist for all lights, and objects
 //

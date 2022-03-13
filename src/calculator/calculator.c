@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/13 17:31:25 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/13 18:03:47 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,22 +116,25 @@ t_rgbof	calc_random_rays(t_mixer *mixer, t_vector *ray, int y, int x)
 	t_rgbof	add_col;
 	float	steps;
 
-	res_col.r = (255 - (y % 255)) / 2;
-	res_col.g = 255 - (y % 255);
-	res_col.b = 254;
-	steps = 1 / (INIT_RAYS + 1);
-	for (int i =0; i < INIT_RAYS; i++) {
+	res_col.cal_r = (255 - (y % 255)) / 2;
+	res_col.cal_g = 255 - (y % 255);
+	res_col.cal_b = 254;
+	res_col.r = res_col.cal_r;
+	res_col.g = res_col.cal_g;
+	res_col.b = res_col.cal_b;
+	steps = 1 / INIT_RAYS;
+	for (int i = 0; i < INIT_RAYS; i++) {
 		ray->x += steps * i;
 		ray->y += steps * i;
 		ray->z += steps * i;
 		add_col	= calc_intersec_first(mixer, ray, res_col);
-		res_col.r /= 2;
-		res_col.g /= 2;
-		res_col.b /= 2;
-		res_col.r += add_col.r / 2;
-		res_col.g += add_col.g / 2;
-		res_col.b += add_col.b / 2;
+		res_col.cal_r += add_col.r;
+		res_col.cal_g += add_col.g;
+		res_col.cal_b += add_col.b;
 	}
+	res_col.r = res_col.cal_r / (INIT_RAYS + 1);
+	res_col.g = res_col.cal_g / (INIT_RAYS + 1);
+	res_col.b = res_col.cal_b / (INIT_RAYS + 1);
 	return (res_col);
 }
 
