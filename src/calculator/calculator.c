@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/12 22:21:11 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/13 14:54:47 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ bool	calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray, t_vector	*
 {
 	if (objs->obj_type == SPHERE)
 		return (calc_intersection_sphere(mixer->cam, objs, ray, inter));
-	//else if (objs->obj_type == PLANE && calc_intersecs_plane(ray, &objs->normal))
-	//	return (calc_intersection_plane(ray, objs, inter));
+	else if (objs->obj_type == PLANE && calc_intersecs_plane(ray, &objs->normal))
+		return (calc_intersection_plane(ray, objs, inter));
 	//else if (objs->obj_type == CYLINDER)
 	//	return (calc_intersection_cylinder(mixer->cam, objs, ray))
 	return (false);
@@ -102,15 +102,15 @@ t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x)
 	new_intersect = ft_calloc(1, sizeof(t_vector));
 	first = calc_intersec_next(objs, mixer, ray, intersect);
 	objs = objs->next;
-	black.r = (255 - ((y * 2) % 255)) / 2;
-	black.g = 255 - ((y * 2) % 255);
+	black.r = (255 - (y % 255)) / 2;
+	black.g = 255 - (y % 255);
 	black.b = 255;
 	while (objs != NULL)
 	{
 		if (sw == false && calc_intersec_next(objs, mixer, ray, intersect))
 		{
 			//printf("%f\n", vector_distance(intersect, ray));
-			if (vector_distance(ray, intersect) < 10)
+			//if (vector_distance(ray, intersect) < 10)
 				black = objs->color;
 			sw = true;
 		}
@@ -126,7 +126,7 @@ t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x)
 				//	printf("x:%f y:%f z:%f\n", new_intersect->x, new_intersect->y, new_intersect->z);
 				intersect = new_intersect;
 				//printf("%f %f %f\n", intersect->x, intersect->y, intersect->z);
-				if (vector_distance(ray, intersect) < 10)
+				//if (vector_distance(ray, intersect) < 10)
 					black = objs->color;	
 			}
 		}
@@ -157,6 +157,8 @@ bool	calc_intersection_plane(t_vector *cam, t_obj_l *objs, t_vector *point)
 	d = vector_scalar_product(&vec_inter, &(objs->normal)) / vector_scalar_product(cam, &(objs->normal));
 	vector_multiply_digit(&vec_inter, cam, d);
 	vector_addition(point, &vec2, &vec_inter);
+	if (d < 0)
+		return (false);
 	return (true);
 }
 
