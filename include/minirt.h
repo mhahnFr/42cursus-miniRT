@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/13 14:42:58 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/13 15:36:47 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct s_object_l {
 	t_rgbof				color;		
 	bool				emitter;
 	float				brightness;
+	t_vector			col_normal;
+	float				disthit;
 
 	struct s_object_l	*next;
 	struct s_object_l	*prev;

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/13 14:54:47 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/13 15:38:52 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,36 @@ bool	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray, t_vector *
 	float		a;
 	float		b;
 	float		c;
+	float		d;
 	t_vector	OC;
 	
 	vector_substract(&OC, &(cam.position), &(obj->position));
 	a = vector_scalar_product(ray, ray);
-	b = 2 * vector_scalar_product(&OC, ray);
+	b = vector_scalar_product(&OC, ray);
 	c = vector_scalar_product(&OC, &OC) - powf(obj->height, 2);
-	return ((powf(b,2) - 4 * a *c) > 0);
-
+	d = powf(b,2) - a *c;
+	if (d < 0)
+		return (false);
+	float	temp = (-b - sqrtf(d) ) / a;
+	if (temp  > 0)
+	{
+		obj->disthit = temp;
+		vector_multiply_digit(&OC, ray, temp);
+		vector_addition(ret, &(cam.position), &OC);
+		vector_substract(&OC, ret, &(obj->position));
+		return (true);
+	}
+	temp = (-b + sqrtf(d)) / a;
+	if (temp > 0)
+	{
+		obj->disthit = temp;
+		vector_multiply_digit(&OC, ray, temp);
+		vector_addition(ret, &(cam.position), &OC);
+		vector_substract(&OC, ret, &(obj->position));
+		vector_division(&(obj->col_normal), &OC, obj->height);
+		return (true);
+	}
+	return (false);
 }
 
 bool	calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray, t_vector	*inter)
@@ -83,7 +105,7 @@ bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *ca
 
 	vector_substract(&inter, &intersect, cam);
 	vector_substract(&inter2, &new_intersect, cam);
-	return (vector_length(&inter) > vector_length(&inter2));
+	return (vector_length(&inter) < vector_length(&inter2));
 }
 
 t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x)
@@ -92,6 +114,7 @@ t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x)
 	t_vector	*new_intersect;
 	t_obj_l		*objs;
 	t_rgbof		black;
+	float		distsf;
 	bool		sw;
 	bool		first;
 	bool		secon;
@@ -109,31 +132,19 @@ t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, int y, int x)
 	{
 		if (sw == false && calc_intersec_next(objs, mixer, ray, intersect))
 		{
-			//printf("%f\n", vector_distance(intersect, ray));
-			//if (vector_distance(ray, intersect) < 10)
-				black = objs->color;
+			distsf = objs->disthit;
+			black = objs->color;
 			sw = true;
 		}
 		else if (sw == true)
 		{
-			if (calc_intersec_next(objs, mixer, ray, new_intersect) && calc_intersec_dist(*intersect, *new_intersect, ray))
+			if (calc_intersec_next(objs, mixer, ray, new_intersect) && distsf > objs->disthit)
 			{
-				//if (objs->obj_type == SPHERE)
-				//	printf("obj: SPHERE\n");
-				//else
-				//	printf("obj: PLANE\n");
-				//if (new_intersect != NULL)
-				//	printf("x:%f y:%f z:%f\n", new_intersect->x, new_intersect->y, new_intersect->z);
 				intersect = new_intersect;
-				//printf("%f %f %f\n", intersect->x, intersect->y, intersect->z);
-				//if (vector_distance(ray, intersect) < 10)
-					black = objs->color;	
+				black = objs->color;	
 			}
 		}
-		//printf("here %i\n", objs->obj_type);
 		objs = objs->next;
-		skip_obj(&objs, CYLINDER);
-		skip_obj(&objs, LIGHT);
 	}
 	draw_point(x, y, mixer->image, black);
 	free(intersect);
@@ -155,10 +166,11 @@ bool	calc_intersection_plane(t_vector *cam, t_obj_l *objs, t_vector *point)
 	vector_multiply(&vec2, &vec_inter, cam);
 	vector_substract(&vec_inter, &(objs->position), &vec2);
 	d = vector_scalar_product(&vec_inter, &(objs->normal)) / vector_scalar_product(cam, &(objs->normal));
-	vector_multiply_digit(&vec_inter, cam, d);
-	vector_addition(point, &vec2, &vec_inter);
 	if (d < 0)
 		return (false);
+	vector_multiply_digit(&vec_inter, cam, d);
+	vector_addition(point, &vec2, &vec_inter);
+	objs->disthit = d;
 	return (true);
 }
 
