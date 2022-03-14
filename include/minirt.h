@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/13 18:00:49 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/14 20:44:03 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define RESOLUTION_X	400
 # define RESOLUTION_Y	200
 # define CAM_SIZE		10
-# define INIT_RAYS		5
+# define INIT_RAYS		2
 
 //objecttypes
 # define CAMERA		   -2
@@ -132,7 +132,7 @@ void	skip_obj(t_obj_l **objs, int toskip);
  * a sphere. Takes the camera object, the sphere object and the ray for which
  * to calculate the intersecting vector.
  */
-bool	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray, t_vector *ret);
+bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret);
 
 /*
  * Calculates the intersecting vector for the given ray vector for the next
@@ -165,6 +165,10 @@ bool	calc_intersection_plane(t_vector *cam, t_obj_l *objs, t_vector *ret);
  * normal.
  */
 bool	calc_intersecs_plane(t_vector *vec, t_vector *normal);
+
+t_rgbof	diffuse_get(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
+
+t_rgbof	color_rgb(int r, int g, int b);
 
 //				lexer
 //validation

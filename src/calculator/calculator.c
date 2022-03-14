@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/13 18:03:47 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/14 20:43:09 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	skip_obj(t_obj_l **objs, int toskip)
 }
 
 
-bool	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray, t_vector *ret)
+bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret)
 {
 	float		a;
 	float		b;
@@ -59,7 +59,7 @@ bool	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray, t_vector *
 	float		d;
 	t_vector	OC;
 	
-	vector_substract(&OC, &(cam.position), &(obj->position));
+	vector_substract(&OC, origin, &(obj->position));
 	a = vector_scalar_product(ray, ray);
 	b = vector_scalar_product(&OC, ray);
 	c = vector_scalar_product(&OC, &OC) - powf(obj->height, 2);
@@ -71,7 +71,7 @@ bool	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray, t_vector *
 	{
 		obj->disthit = temp;
 		vector_multiply_digit(&OC, ray, temp);
-		vector_addition(ret, &(cam.position), &OC);
+		vector_addition(ret, origin, &OC);
 		vector_substract(&OC, ret, &(obj->position));
 		vector_division(&(obj->col_normal), &OC, obj->height);
 		return (true);
@@ -81,7 +81,7 @@ bool	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray, t_vector *
 	{
 		obj->disthit = temp;
 		vector_multiply_digit(&OC, ray, temp);
-		vector_addition(ret, &(cam.position), &OC);
+		vector_addition(ret, origin, &OC);
 		vector_substract(&OC, ret, &(obj->position));
 		vector_division(&(obj->col_normal), &OC, obj->height);
 		return (true);
@@ -92,7 +92,7 @@ bool	calc_intersection_sphere(t_cam cam, t_obj_l *obj, t_vector *ray, t_vector *
 bool	calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray, t_vector	*inter)
 {
 	if (objs->obj_type == SPHERE)
-		return (calc_intersection_sphere(mixer->cam, objs, ray, inter));
+		return (hit_sphere(&(mixer->cam.position), objs, ray, inter));
 	else if (objs->obj_type == PLANE && calc_intersecs_plane(ray, &objs->normal))
 		return (calc_intersection_plane(ray, objs, inter));
 	//else if (objs->obj_type == CYLINDER)
@@ -113,28 +113,11 @@ bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *ca
 t_rgbof	calc_random_rays(t_mixer *mixer, t_vector *ray, int y, int x)
 {
 	t_rgbof	res_col;
-	t_rgbof	add_col;
-	float	steps;
 
-	res_col.cal_r = (255 - (y % 255)) / 2;
-	res_col.cal_g = 255 - (y % 255);
-	res_col.cal_b = 254;
-	res_col.r = res_col.cal_r;
-	res_col.g = res_col.cal_g;
-	res_col.b = res_col.cal_b;
-	steps = 1 / INIT_RAYS;
-	for (int i = 0; i < INIT_RAYS; i++) {
-		ray->x += steps * i;
-		ray->y += steps * i;
-		ray->z += steps * i;
-		add_col	= calc_intersec_first(mixer, ray, res_col);
-		res_col.cal_r += add_col.r;
-		res_col.cal_g += add_col.g;
-		res_col.cal_b += add_col.b;
-	}
-	res_col.r = res_col.cal_r / (INIT_RAYS + 1);
-	res_col.g = res_col.cal_g / (INIT_RAYS + 1);
-	res_col.b = res_col.cal_b / (INIT_RAYS + 1);
+	res_col.r = (255 - (y % 255)) / 2;
+	res_col.g = 255 - (y % 255);
+	res_col.b = 254;
+	res_col	= calc_intersec_first(mixer, ray, res_col);
 	return (res_col);
 }
 
@@ -143,25 +126,21 @@ t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, t_rgbof pcolor)
 	t_vector	*intersect;
 	t_vector	*new_intersect;
 	t_obj_l		*objs;
+	t_obj_l		*curr;
 	float		distsf;
 	bool		sw;
-	bool		first;
-	bool		secon;
 
 	objs = mixer->obj_list;
+	curr = NULL;
 	sw = false;
 	intersect = ft_calloc(1, sizeof(t_vector));
 	new_intersect = ft_calloc(1, sizeof(t_vector));
-	first = calc_intersec_next(objs, mixer, ray, intersect);
-	objs = objs->next;
 	while (objs != NULL)
 	{
 		if (sw == false && calc_intersec_next(objs, mixer, ray, intersect))
 		{
 			distsf = objs->disthit;
-			pcolor.r = (int)(objs->color.r * sqrtf((objs->col_normal.x * 0.75) + 2));
-			pcolor.g = (int)(objs->color.g * sqrtf((objs->col_normal.y * 0.75) + 2));
-			pcolor.b = (int)(objs->color.b * sqrtf((objs->col_normal.z * 0.75) + 2));
+			curr = objs;
 			sw = true;
 		}
 		else if (sw == true)
@@ -169,15 +148,18 @@ t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, t_rgbof pcolor)
 			if (calc_intersec_next(objs, mixer, ray, new_intersect) && distsf > objs->disthit)
 			{
 				intersect = new_intersect;
-				pcolor.r = (int)(objs->color.r * sqrtf((objs->col_normal.x * 0.75) + 2));
-				pcolor.g = (int)(objs->color.g * sqrtf((objs->col_normal.y * 0.75) + 2));
-				pcolor.b = (int)(objs->color.b * sqrtf((objs->col_normal.z * 0.75) + 2));
+				distsf = objs->disthit;
+				curr = objs;
 			}
 			else
 				free(new_intersect);
 		}
 		objs = objs->next;
 	}
+	if (curr != NULL)
+	pcolor = curr->color;
+	if (curr != NULL)
+		pcolor = diffuse_get(mixer, curr, intersect);
 	return (pcolor);
 }
 
@@ -208,3 +190,4 @@ bool	calc_intersecs_plane(t_vector *vec, t_vector *normal)
 {
 	return (vector_scalar_product(vec, normal) != 0);
 }
+
