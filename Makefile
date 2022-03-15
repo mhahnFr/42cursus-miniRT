@@ -28,7 +28,7 @@ M_SRC    	= builder.c main.c mixer.c
 CALC_SRC	= calculator.c color.c diffuse.c
 LEXER_SRC	= lexer.c validator.c basic_check.c type_check.c object_check.c
 PARSER_SRC	= parser.c
-PAINTER_SRC = renderer_image.c
+PAINTER_SRC = renderer_image.c key_handler.c
 
 SRC			= $(UTILS_SRC) $(addprefix src/painter/,$(PAINTER_SRC)) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_SRC)) $(addprefix src/parser/,$(PARSER_SRC)) $(addprefix src/calculator/,$(CALC_SRC))
 ##		OBJECTS			##

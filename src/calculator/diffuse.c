@@ -6,11 +6,12 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/14 20:43:39 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/15 18:26:00 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -89,11 +90,15 @@ t_rgbof	diffuse_get(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
 	t_rgbof	ret;
 
 	factor = diffuse_nearest(mixer, &(obj->col_normal), obj, intersect);
-	if (obj->obj_type == PLANE)
-		printf("%f\n", factor);
+	//if (obj->obj_type == PLANE)
+	//	printf("%f\n", factor);
 	ret = obj->color;
-	if (factor > 10 || factor < 0.1)
+	if (factor > 1 || factor < 0.01)
 		factor = 1;
+	else if (factor < 0.1)
+		factor = 0.1;
+	//else
+	//	factor = sqrtf(factor);
 	ret = color_rgb((int) (ret.r * factor), (int) (ret.g * factor), (int) (ret.b * factor));
 	return (ret);
 }

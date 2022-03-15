@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/11 17:25:09 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/15 18:24:43 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int	main(int argc, char **argv)
 	ret = 0;
 	if (argc != 2)
 		ret = 1;
-	else {
+	else
+	{
 		all_struct = init_mainstruct(&ret);
 		if (all_struct != NULL)
 			lexer(argv[1], all_struct, &ret);
@@ -62,14 +63,17 @@ int	main(int argc, char **argv)
 		if (all_struct != NULL && ret == 0)
 			calculator(all_struct, &ret);
 		if (ret != 0)
+		{
+			printerror(ret);
+			ft_gc_clear();
 			exit(1);
-		//if (all_struct != NULL)
-		//	paint(all_struct, &ret);
-		all_struct->p_mlx_window = mlx_new_window(all_struct->p_mlx_init, RESOLUTION_X, RESOLUTION_Y, "TRASH!");
-		mlx_put_image_to_window(all_struct->p_mlx_init, all_struct->p_mlx_window, all_struct->image->mlx_img, 0, 0);
-		mlx_loop(all_struct->p_mlx_init);
+		}
 	}
-	printerror(ret);
+	all_struct->p_mlx_window = mlx_new_window(all_struct->p_mlx_init, RESOLUTION_X, RESOLUTION_Y, "TRASH!");
+	mlx_put_image_to_window(all_struct->p_mlx_init, all_struct->p_mlx_window, all_struct->image->mlx_img, 0, 0);
+	mlx_key_hook(all_struct->p_mlx_window, key_handler, all_struct);
+	mlx_hook(all_struct->p_mlx_window, 17, 0, key_redcross, all_struct);
+	mlx_loop(all_struct->p_mlx_init);
 	ft_gc_clear();
 	return (ret);
 }

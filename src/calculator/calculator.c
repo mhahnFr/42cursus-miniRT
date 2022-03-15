@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/14 20:43:09 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/15 15:42:40 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,8 @@ t_rgbof	calc_random_rays(t_mixer *mixer, t_vector *ray, int y, int x)
 {
 	t_rgbof	res_col;
 
-	res_col.r = (255 - (y % 255)) / 2;
-	res_col.g = 255 - (y % 255);
+	res_col.r = (255 - (y / 255)) / 2;
+	res_col.g = 255 - (y / 255);
 	res_col.b = 254;
 	res_col	= calc_intersec_first(mixer, ray, res_col);
 	return (res_col);

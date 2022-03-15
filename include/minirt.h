@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/14 20:44:03 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/15 18:24:25 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include "libft.h"
 
 //Resolution in Pixel
-# define RESOLUTION_X	400
-# define RESOLUTION_Y	200
+# define RESOLUTION_X	900
+# define RESOLUTION_Y	700
 # define CAM_SIZE		10
 # define INIT_RAYS		2
 
@@ -33,6 +33,7 @@
 # define CYLINDER		3
 
 # define LEXER_BUFFER	100
+# define ESC_KEY		53
 //red green blue values for an object or light 
 //inits with white: 255, 255, 255
 //RED GREEN BLUE OPACITY REFLECTIVITY
@@ -170,6 +171,9 @@ t_rgbof	diffuse_get(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
 
 t_rgbof	color_rgb(int r, int g, int b);
 
+//MLX window handler
+int		key_redcross(t_mixer *p_null);
+int		key_handler(int key, t_mixer *p_null);
 //				lexer
 //validation
 int		validation_check(char **buffer, int size);
