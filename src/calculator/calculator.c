@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 16:45:46 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/18 18:19:01 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,28 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 	printf("finished!\n");
 }
 
+t_vector	*vector_rand(t_vector *self, float x_range, float y_range, float z_range, float j, float i)
+{
+	t_vector inter;
+	t_vector u;
+	t_vector v;
+	float angle_x, angle_y;
+
+	i += (float) (rand() % 10) / 10;
+	j += (float) (rand() % 10) / 10;
+	angle_x = (float) j / RESOLUTION_X;
+	angle_y = (float) i / RESOLUTION_Y;
+	vector_create(&inter, RESOLUTION_X, 0, 0);
+	vector_multiply_digit(&u, &inter, angle_x);
+	vector_create(&inter, 0, RESOLUTION_Y, 0);
+	vector_multiply_digit(&v, &inter, angle_y);
+	vector_addition(&inter, &u, &v);
+	vector_create(&u, -(((float )RESOLUTION_X) / 2), -(((float) RESOLUTION_Y) / 2), -(((float) RESOLUTION_Y)/ 2));
+	vector_addition(self, &u, &inter);
+	vector_normalize(self);
+	return (self);
+}
+
 t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 {
 	//antialiasing
@@ -58,7 +80,7 @@ t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 	color.cal_b = color.b;
 	while (i > 0)
 	{
-		add = calc_intersect_vector(NULL, mixer->obj_list, &(mixer->cam.position), cam_vec);
+		add = calc_intersect_vector(NULL, mixer->obj_list, &(mixer->cam.position), vector_rand(cam_vec, 1, 1, 0, x, y));
 		color = color_add_cal(color, add);
 		i--;
 	}
