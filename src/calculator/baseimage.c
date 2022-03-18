@@ -6,13 +6,12 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 15:26:25 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/18 16:32:23 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "vector.h"
-
 
 bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *inter)
 {
@@ -39,6 +38,7 @@ t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *orig
 	float		distsf;
 	bool		sw;
 
+	sw = false;
 	color = color_rgb(0,0,0);
 	while (list != NULL)
 	{

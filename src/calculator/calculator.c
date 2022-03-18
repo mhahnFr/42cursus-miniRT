@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 15:44:49 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/18 16:32:16 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,11 @@ t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 	while (i > 0)
 	{
 		add = calc_intersect_vector(NULL, mixer->obj_list, &(mixer->cam.position), cam_vec);
-		color_print(add);
 		color_add_cal(color, add);
 		i--;
 	}
-	color_print(color);
-	return (color_cal_rgb(color, ANTI_ALIASING));
+	return (color_cal_rgb(color, ANTI_ALIASING + 1));
+//	return (color);
 }
 
 //LEGACY:

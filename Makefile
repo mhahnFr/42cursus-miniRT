@@ -48,7 +48,7 @@ OBJ         =  $(PAINTER_OBJ:.c=.o) $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OB
 ##		COMPILER		##
 NAME        = miniRT
 
-CFLAGS      = -Ofast#-Wall -Werror -Wextra -g
+CFLAGS      = -g #-Wall -Werror -Wextra -g
 INC         = -Iinclude -Imlx -Ilibft
 LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit
 
