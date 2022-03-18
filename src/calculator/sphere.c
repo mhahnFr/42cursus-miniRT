@@ -6,12 +6,13 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:40:43 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 15:29:28 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/18 22:25:20 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include <math.h>
+#include <float.h>
 
 bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret)
 {
@@ -29,7 +30,7 @@ bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret)
 	if (d < 0)
 		return (false);
 	float	temp = (-b - sqrtf(d) ) / a;
-	if (temp  > 0)
+	if (temp < FLT_MAX && temp > 0)
 	{
 		obj->disthit = temp;
 		vector_multiply_digit(&OC, ray, temp);
@@ -39,7 +40,7 @@ bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret)
 		return (true);
 	}
 	temp = (-b + sqrtf(d)) / a;
-	if (temp > 0)
+	if (temp < FLT_MAX && temp > 0)
 	{
 		obj->disthit = temp;
 		vector_multiply_digit(&OC, ray, temp);

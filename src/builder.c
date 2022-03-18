@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:49:44 by mhahn             #+#    #+#             */
-/*   Updated: 2022/03/12 21:45:00 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/18 22:08:44 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 void	rt_cam_init(t_mixer *mixer)
 {
-	t_matrix	*matrix;
+	//t_matrix	*matrix;
 	t_vector	inter;
 	size_t		i;
 	size_t		j;

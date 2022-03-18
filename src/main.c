@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 16:24:00 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/18 22:10:05 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	main(int argc, char **argv)
 	int		ret;
 
 	ret = 0;
+	all_struct = NULL;
 	if (argc != 2)
 		ret = 1;
 	else

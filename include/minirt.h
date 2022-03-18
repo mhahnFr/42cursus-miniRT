@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 18:38:22 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/18 22:28:08 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define RESOLUTION_Y	700
 # define CAM_SIZE		10
 # define ANTI_ALIASING	10
+# define MAX_BOUNCES	15
 
 //objecttypes
 # define CAMERA		   -2
@@ -171,7 +172,9 @@ t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *orig
 
 t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x);
 
-t_rgbof	diffuse_get(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
+t_rgbof	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
+
+t_rgbof	diffuse_get(t_mixer *mixer, t_obj_l *obj, t_vector intersect);
 
 
 t_rgbof	color_rgb(int r, int g, int b);
