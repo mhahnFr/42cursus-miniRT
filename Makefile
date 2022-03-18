@@ -64,6 +64,9 @@ $(NAME): $(LIBFT) $(MLX) obj/ $(OBJ)
 $(OBJ_FOLDER)%.o: $(SRC_FOLDER)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
+run: $(NAME)
+	./$(NAME) test2.rt
+
 $(OBJ_UTILS_FOLDER)%.o: $(UTILS_FOLDER)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
