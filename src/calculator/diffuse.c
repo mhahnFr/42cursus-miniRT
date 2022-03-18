@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 15:24:58 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/18 19:03:58 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,15 +102,17 @@ t_rgbof	diffuse_get(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
 
 	factor = diffuse_nearest(mixer, &(obj->col_normal), obj, intersect);
 	////if (obj->obj_type == PLANE)
-	////	printf("%f\n", factor);
+	//printf("%f\n", factor);
 	ret = obj->color;
-	//factor *= 0.5;
-	if (factor > 1 || factor < 0.01)
+	factor *= 0.5;
+	if (factor < 0.01)
 		factor = 1;
 	else if (factor < 0.1)
 		factor = 0.1;
-	//else
-	//	factor = sqrtf(factor);
+	else
+		factor = sqrtf(factor);
+	if (factor > 1)
+		factor = 1;
 	//factor = 1;
 	ret = color_rgb((int) (ret.r * factor), (int) (ret.g * factor), (int) (ret.b * factor));
 	return (ret);

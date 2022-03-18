@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 16:44:41 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/18 19:01:59 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *int
 	return (ret);
 }
 
-t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *origin, t_vector *ray)
+t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *origin, t_vector *ray, t_mixer *mixer)
 {
 	t_vector	intersect;
 	t_vector	new_intersect;
@@ -46,7 +46,8 @@ t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *orig
 		{
 			distsf = list->disthit;
 			sw = true;
-			color = list->color;
+			color = diffuse_get(mixer, list, &intersect);
+//			color = list->color;
 		}
 		else if (nointersec != list && sw == true)
 		{
@@ -54,7 +55,8 @@ t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *orig
 			{
 				intersect = new_intersect;
 				distsf = list->disthit;
-				color = list->color;
+				color = diffuse_get(mixer, list, &intersect);
+				//color = list->color;
 			}
 		}
 		list = list->next;

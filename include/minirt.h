@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 17:32:02 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/18 18:38:22 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ bool	intersec_plane(t_vector *cam, t_obj_l *objs, t_vector *ret);
  */
 bool	fast_intersec_plane(t_vector *vec, t_vector *normal);
 
-t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *origin, t_vector *ray);
+t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *origin, t_vector *ray, t_mixer *mixer);
 
 t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x);
 
