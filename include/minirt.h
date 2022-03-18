@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/15 18:24:25 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/18 15:43:22 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define RESOLUTION_X	900
 # define RESOLUTION_Y	700
 # define CAM_SIZE		10
-# define INIT_RAYS		2
+# define ANTI_ALIASING	1
 
 //objecttypes
 # define CAMERA		   -2
@@ -139,7 +139,7 @@ bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret);
  * Calculates the intersecting vector for the given ray vector for the next
  * object in the given list.
  */
-bool	calc_intersec_next(t_obj_l *objs, t_mixer *mixer, t_vector *ray, t_vector *ret);
+bool	calc_intersec_next(t_obj_l *objs, t_vector *mixer, t_vector *ray, t_vector *ret);
 
 /*
  * Returns wether the first intersecting vector is closer to the given camera
@@ -159,17 +159,27 @@ t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, t_rgbof pcolor);
  * Calculates the intersecting vector for the given object and the camera
  * vector. The given object is expected to be a plane.
  */
-bool	calc_intersection_plane(t_vector *cam, t_obj_l *objs, t_vector *ret);
+bool	intersec_plane(t_vector *cam, t_obj_l *objs, t_vector *ret);
 
 /*
  * Returns wether the given vector intersects an infinite plane with the given
  * normal.
  */
-bool	calc_intersecs_plane(t_vector *vec, t_vector *normal);
+bool	fast_intersec_plane(t_vector *vec, t_vector *normal);
+
+t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *origin, t_vector *ray);
+
+t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x);
 
 t_rgbof	diffuse_get(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
 
+
 t_rgbof	color_rgb(int r, int g, int b);
+t_rgbof	color_add(t_rgbof first, t_rgbof second);
+t_rgbof	color_add_cal(t_rgbof first, t_rgbof second);
+t_rgbof	color_add_cal_cal(t_rgbof first, t_rgbof second);
+t_rgbof	color_cal_rgb(t_rgbof color, float factor);
+void	color_print(t_rgbof color);
 
 //MLX window handler
 int		key_redcross(t_mixer *p_null);

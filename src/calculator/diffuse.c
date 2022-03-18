@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/15 18:26:00 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/18 15:24:58 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,19 @@
 
 bool	diffuse_next(t_obj_l *objs, t_vector *start, t_vector *ray, t_vector	*inter)
 {
+	bool	ret;
+
+	ret = false;
 	if (objs->obj_type == SPHERE)
-		return (hit_sphere(start, objs, ray, inter));
-	else if (objs->obj_type == PLANE && calc_intersecs_plane(ray, &objs->normal))
-		return (calc_intersection_plane(ray, objs, inter));
+		ret = hit_sphere(start, objs, ray, inter);
+	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
+	{
+		ret = intersec_plane(ray, objs, inter);
+		//objs->disthit = vector_distance(start, inter);
+	}
 	//else if (objs->obj_type == CYLINDER)
 	//	return (calc_intersection_cylinder(mixer->cam, objs, ray))
-	return (false);
+	return (ret);
 }
 
 float	diffuse_nearest(t_mixer *mixer, t_vector *ray, t_obj_l *curr, t_vector *start)
@@ -78,6 +84,11 @@ float	diffuse_nearest(t_mixer *mixer, t_vector *ray, t_obj_l *curr, t_vector *st
 			}
 			else
 				free(new_intersect);
+			if (objs->disthit > 0 && distsf > 0)
+			{
+				printf("%i\n", objs->obj_type);
+				printf("%f %f\n", objs->disthit, distsf);
+			}
 		}
 		objs = objs->next;
 	}
@@ -90,15 +101,17 @@ t_rgbof	diffuse_get(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
 	t_rgbof	ret;
 
 	factor = diffuse_nearest(mixer, &(obj->col_normal), obj, intersect);
-	//if (obj->obj_type == PLANE)
-	//	printf("%f\n", factor);
+	////if (obj->obj_type == PLANE)
+	////	printf("%f\n", factor);
 	ret = obj->color;
+	//factor *= 0.5;
 	if (factor > 1 || factor < 0.01)
 		factor = 1;
 	else if (factor < 0.1)
 		factor = 0.1;
 	//else
 	//	factor = sqrtf(factor);
+	//factor = 1;
 	ret = color_rgb((int) (ret.r * factor), (int) (ret.g * factor), (int) (ret.b * factor));
 	return (ret);
 }

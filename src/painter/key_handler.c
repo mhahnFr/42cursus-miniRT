@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 18:15:32 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/15 18:21:15 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/18 15:28:07 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ int	key_handler(int key, t_mixer *p_null)
 {
 	if (key == ESC_KEY)
 		key_escape(p_null);
+	return (0);
 }
 
 int	key_redcross(t_mixer *p_null)
 {
 	key_escape(p_null);
+	return (1);
 }

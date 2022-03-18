@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:19:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/14 20:02:13 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/18 15:35:24 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_rgbof	color_rgb(int r, int g, int b)
 		ret.g = 255;
 	if (b > 255)
 		ret.b = 255;
-	return (ret);	
+	return (ret);
 }
 
 t_rgbof	color_add(t_rgbof first, t_rgbof second)
@@ -50,3 +50,40 @@ t_rgbof	color_add(t_rgbof first, t_rgbof second)
 	return (first);
 }
 
+t_rgbof	color_add_cal_cal(t_rgbof first, t_rgbof second)
+{
+	first.cal_r += second.cal_r;
+	first.cal_g += second.cal_g;
+	first.cal_b += second.cal_b;
+	return (first);
+}
+
+t_rgbof	color_add_cal(t_rgbof first, t_rgbof second)
+{
+	first.cal_r += second.r;
+	first.cal_g += second.g;
+	first.cal_b += second.b;
+	return (first);
+}
+
+
+t_rgbof	color_cal_rgb(t_rgbof color, float factor)
+{
+	if (factor > 1)
+	{
+		color.r = color.cal_r / factor;
+		color.g = color.cal_g / factor;
+		color.b = color.cal_b / factor;
+	} else
+	{
+		color.r = color.cal_r * factor;
+		color.g = color.cal_g * factor;
+		color.b = color.cal_b * factor;
+	}
+	return (color);
+}
+
+void	color_print(t_rgbof color)
+{
+	printf("r: %i	cal: %i\ng: %i	cal: %i\nb: %i	cal: %i\n\n", color.r, color.cal_r, color.g, color.cal_g, color.b, color.cal_b);
+}
