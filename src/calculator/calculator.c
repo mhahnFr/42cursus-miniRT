@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 16:32:16 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/18 16:45:46 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,15 @@ t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 	i = ANTI_ALIASING;
 	color = calc_intersect_vector(NULL, mixer->obj_list, &(mixer->cam.position), cam_vec);
 	color.cal_r = color.r;
-	color.cal_r = color.g;
-	color.cal_r = color.b;
+	color.cal_g = color.g;
+	color.cal_b = color.b;
 	while (i > 0)
 	{
 		add = calc_intersect_vector(NULL, mixer->obj_list, &(mixer->cam.position), cam_vec);
-		color_add_cal(color, add);
+		color = color_add_cal(color, add);
 		i--;
 	}
 	return (color_cal_rgb(color, ANTI_ALIASING + 1));
-//	return (color);
 }
 
 //LEGACY:

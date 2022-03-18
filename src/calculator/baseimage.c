@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 16:32:23 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/18 16:44:41 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *orig
 	bool		sw;
 
 	sw = false;
-	color = color_rgb(0,0,0);
+	color = color_rgb(255, 255, 255);
 	while (list != NULL)
 	{
 		if (nointersec != list  && sw == false && intersec_next(list, origin, ray, &intersect))
