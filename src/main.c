@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 22:10:05 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/19 14:42:57 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,13 @@ int	main(int argc, char **argv)
 			ft_gc_clear();
 			exit(1);
 		}
+		all_struct->p_mlx_window = mlx_new_window(all_struct->p_mlx_init, RESOLUTION_X, RESOLUTION_Y, "TRASH!");
+		mlx_put_image_to_window(all_struct->p_mlx_init, all_struct->p_mlx_window, all_struct->image->mlx_img, 0, 0);
+		mlx_key_hook(all_struct->p_mlx_window, key_handler, all_struct);
+		mlx_hook(all_struct->p_mlx_window, 17, 0, key_redcross, all_struct);
+		mlx_loop(all_struct->p_mlx_init);
 	}
-	all_struct->p_mlx_window = mlx_new_window(all_struct->p_mlx_init, RESOLUTION_X, RESOLUTION_Y, "TRASH!");
-	mlx_put_image_to_window(all_struct->p_mlx_init, all_struct->p_mlx_window, all_struct->image->mlx_img, 0, 0);
-	mlx_key_hook(all_struct->p_mlx_window, key_handler, all_struct);
-	mlx_hook(all_struct->p_mlx_window, 17, 0, key_redcross, all_struct);
-	mlx_loop(all_struct->p_mlx_init);
+	printerror(ret);
 	ft_gc_clear();
 	return (ret);
 }

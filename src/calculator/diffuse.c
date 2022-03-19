@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 22:30:05 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/19 14:51:21 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ bool	diffuse_next(t_obj_l *objs, t_vector *start, t_vector *ray, t_vector	*inter
 bool	diffuse_nearest(t_mixer *mixer, t_vector *ray, t_obj_l *curr, t_vector *start, t_vector *result)
 {
 	t_vector	intersect;
+	static int	i = 0;
 	t_vector	new_intersect;
 	t_obj_l		*objs;
 	float		distsf;

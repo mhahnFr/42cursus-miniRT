@@ -6,12 +6,13 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:19:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 15:35:24 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/19 14:41:06 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include <unistd.h>
+#include <stdio.h>
 
 t_rgbof	color_rgb(int r, int g, int b)
 {
