@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 15:23:25 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/19 18:50:04 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define RESOLUTION_Y	700
 # define CAM_SIZE		10
 # define ANTI_ALIASING	10
-# define MAX_BOUNCES	15
+# define MAX_BOUNCES	10
 
 //objecttypes
 # define CAMERA		   -2
@@ -72,6 +72,9 @@ typedef struct s_ambient {
 	float	a_light;
 	t_rgbof	color;
 }	t_ambient;
+
+//needed to avoid stack-overflow in recursive diffuse
+//typedef struct s_inter
 
 //camera struct 
 //FOV between 0-180
@@ -182,6 +185,7 @@ t_rgbof	color_add(t_rgbof first, t_rgbof second);
 t_rgbof	color_add_cal(t_rgbof first, t_rgbof second);
 t_rgbof	color_add_cal_cal(t_rgbof first, t_rgbof second);
 t_rgbof	color_cal_rgb(t_rgbof color, float factor);
+void	color_rgb_cal_result_mul(t_rgbof *res, t_rgbof color, float factor);
 void	color_print(t_rgbof color);
 
 //MLX window handler

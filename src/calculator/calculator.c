@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 14:45:16 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/19 18:37:41 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 		color = color_add_cal(color, add);
 		i--;
 	}
-	printf("x:	%i	y:	%i\n", x, y);
 	return (color_cal_rgb(color, ANTI_ALIASING + 1));
 }
 

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/11 16:06:14 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/19 19:15:35 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ int	add_ambient(char **line, t_ambient *ambient)
 {
 	ambient->a_light = ft_atof(line[1]);
 	ambient->color = get_color(line[2]);
+	ambient->color.cal_r = ambient->color.r;
+	ambient->color.cal_g = ambient->color.g;
+	ambient->color.cal_b = ambient->color.b;
 	ft_free_char_arr(line);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:19:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 14:41:06 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/19 18:40:05 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,12 @@ t_rgbof	color_add_cal(t_rgbof first, t_rgbof second)
 	return (first);
 }
 
+void	color_rgb_cal_result_mul(t_rgbof *res, t_rgbof color, float factor)
+{
+	(*res).cal_r += color.r * factor;
+	(*res).cal_g += color.g * factor;
+	(*res).cal_b += color.b * factor;
+}
 
 t_rgbof	color_cal_rgb(t_rgbof color, float factor)
 {

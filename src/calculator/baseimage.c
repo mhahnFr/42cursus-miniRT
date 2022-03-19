@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/18 22:13:38 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/19 18:53:16 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,22 @@ t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *orig
 			distsf = list->disthit;
 			sw = true;
 			curr = list;
-//			color = list->color;
 		}
 		else if (nointersec != list && sw == true && intersec_next(list, origin, ray, &intersect) && distsf > list->disthit)
 		{
-				//intersect = new_intersect;
 			distsf = list->disthit;
 			curr = list;
-//				color = diffuse_main(mixer, list, &intersect);
-				//color = list->color;
 		}
 		list = list->next;
 	}
-	color = color_cal_rgb(mixer->ambient.color, mixer->ambient.a_light);
+	color = mixer->ambient.color;
 	if (curr == NULL)
 		return (color);
 	color = diffuse_main(mixer, curr, &intersect);
-	color.cal_r += curr->color.r;
-	color.cal_g += curr->color.g;
-	color.cal_b += curr->color.b;
-	color_cal_rgb(color, 2);
+	//color.cal_r = 0;
+	//color.cal_g = 0;
+	//color.cal_b = 0;
+	color_rgb_cal_result_mul(&color, curr->color, 1);
+	color = color_cal_rgb(color, MAX_BOUNCES + 1);
 	return (color);
 }
