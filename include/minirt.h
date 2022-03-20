@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 18:50:04 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/20 19:47:39 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # define CAM_SIZE		10
 # define ANTI_ALIASING	10
 # define MAX_BOUNCES	10
-
 //objecttypes
 # define CAMERA		   -2
 # define AMBIENT	   -1
@@ -73,8 +72,13 @@ typedef struct s_ambient {
 	t_rgbof	color;
 }	t_ambient;
 
-//needed to avoid stack-overflow in recursive diffuse
-//typedef struct s_inter
+typedef struct s_diffuse
+{
+	t_obj_l		*hit;
+	t_vector	*ray;
+	t_vector	*origin;
+	int			ray_count;
+}	t_diff;
 
 //camera struct 
 //FOV between 0-180
@@ -95,6 +99,7 @@ typedef struct s_mixer {
 	t_obj_l				*obj_list;
 	struct s_cam		cam;
 	struct s_ambient	ambient;
+	t_diff				diff_sh;
 }	t_mixer;
 
 //functions
@@ -177,7 +182,7 @@ t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x);
 
 t_rgbof	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
 
-t_rgbof	diffuse_get(t_mixer *mixer, t_obj_l *obj, t_vector intersect);
+t_rgbof	diffuse_get(t_mixer *mixer, t_diff diff);
 
 
 t_rgbof	color_rgb(int r, int g, int b);
