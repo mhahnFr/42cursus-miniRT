@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/22 17:59:28 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/22 22:41:41 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,8 @@ t_rgbof	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
 
 t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result);
 
+t_vector	rgbof_cast_vector(t_rgbof self);
+t_rgbof		vector_cast_rgbof(t_vector self);
 
 t_rgbof	color_rgb(int r, int g, int b);
 t_rgbof	color_add(t_rgbof first, t_rgbof second);

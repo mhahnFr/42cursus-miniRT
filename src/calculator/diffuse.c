@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/22 20:44:32 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/22 22:36:07 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,19 +142,20 @@ t_vector	diffuse_randi1() {
 
 t_rgbof	vector_cast_rgbof(t_vector vec)
 {
-	t_rgbof c;
-	c.r = ((vec.x + 1) / 2) * 255;
-	c.g = ((vec.y + 1) / 2) * 255;
-	c.b = ((vec.z + 1) / 2) * 255;
+	t_rgbof	c;
+
+	c.r = vec.x * 255;
+	c.g = vec.y * 255;
+	c.b = vec.z * 255;
 	return (c);
 }
 
 t_vector	rgbof_cast_vector(t_rgbof color)
 {
 	t_vector vec;
-	vec.x = color.r / 255;
-	vec.y = color.g / 255;
-	vec.z = color.b / 255;
+	vec.x = (float) color.r / 255;
+	vec.y = (float) color.g / 255;
+	vec.z = (float) color.b / 255;
 	return (vec);
 }
 
@@ -166,7 +167,6 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 
 	if (diff.ray_count < MAX_BOUNCES && diffuse_nearest(mixer, &diff, diff.origin, result))
 	{
-		//force_hit();
 		vector_addition(&inter, result, &diff.hit->col_normal);
 		inter2 = diffuse_rand();
 		vector_addition(&inter3, &inter, &inter2); // = target
@@ -174,14 +174,11 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 		diff.origin = vector_new(result->x, result->y, result->z);
 		diff.ray_count += 1;
 		inter2 = diffuse_get(mixer, diff, result);
-		vector_multiply_digit(&inter, &inter2, 0.5);
+		vector_multiply_digit(&inter, &inter2, 0.5f);
 		return (inter);
 	}
 	else
-	{
-		vector_create(&inter, 1, 1, 1);
 		return (rgbof_cast_vector(mixer->ambient.color));
-	}
 }
 
 t_rgbof	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
