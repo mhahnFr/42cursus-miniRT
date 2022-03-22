@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 18:53:16 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/22 20:19:57 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *orig
 
 	sw = false;
 	curr = NULL;
+
 	//color = color_rgb(255, 255, 255);
-	while (list != NULL)
+/*	while (list != NULL)
 	{
 		if (nointersec != list  && sw == false && intersec_next(list, origin, ray, &intersect))
 		{
@@ -58,12 +59,12 @@ t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *orig
 	}
 	color = mixer->ambient.color;
 	if (curr == NULL)
-		return (color);
-	color = diffuse_main(mixer, curr, &intersect);
+		return (color);*/
+	color = diffuse_main(mixer, NULL, ray);
 	//color.cal_r = 0;
 	//color.cal_g = 0;
 	//color.cal_b = 0;
-	color_rgb_cal_result_mul(&color, curr->color, 1);
-	color = color_cal_rgb(color, MAX_BOUNCES + 1);
+	//color_rgb_cal_result_mul(&color, curr->color, 1);
+	//color = color_cal_rgb(color, /*MAX_BOUNCES*/mixer->diff_sh.ray_count + 1);
 	return (color);
 }

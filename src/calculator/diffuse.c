@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/20 19:59:21 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/22 20:44:32 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ bool	diffuse_nearest(t_mixer *mixer, t_diff *diff, t_vector *start, t_vector *re
 	sw = false;
 	while (objs != NULL)
 	{
-		if (diff->hit != objs  && sw == false && diffuse_next(diff->hit, start, diff->ray, &intersect))
+		if (diff->hit != objs  && sw == false && diffuse_next(objs, start, diff->ray, &intersect))
 		{
 			distsf = objs->disthit;
 			sw = true;
@@ -96,14 +96,26 @@ t_vector	diffuse_rand()
 	t_vector	tmp;
 	float x, y, z;
 	
-	x = (float) (rand() % 100) / 100;
-	y = (float) (rand() % 100) / 100;
-	z = (float) (rand() % 100) / 100;
-	tmp.x += x;
-	tmp.y += y;
-	tmp.z += z;
+	x = (float) (arc4random() % 100) / 100;
+	y = (float) (arc4random() % 100) / 100;
+	z = (float) (arc4random() % 100) / 100;
+	tmp.x = x;
+	tmp.y = y;
+	tmp.z = z;
 	vector_normalize(&tmp);
 	return (tmp);
+}
+
+t_vector	diffuse_randi1() {
+	t_vector ret;
+	t_vector inter;
+
+	do {
+		vector_create(&inter, drand48(), drand48(), drand48());
+		vector_multiply_digit(&inter, &inter, 2);
+		vector_create(&ret, inter.x - 1, inter.y - 1, inter.z - 1);
+	} while ((ret.x * ret.x + ret.y * ret.y + ret.z * ret.z) >= 1);
+	return (ret);
 }
 
 /*t_rgbof	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
@@ -128,29 +140,47 @@ t_vector	diffuse_rand()
 	return (color_cal_rgb(color, DIFFUSE));
 }*/
 
-t_rgbof	diffuse_get(t_mixer *mixer, t_diff diff)
+t_rgbof	vector_cast_rgbof(t_vector vec)
+{
+	t_rgbof c;
+	c.r = ((vec.x + 1) / 2) * 255;
+	c.g = ((vec.y + 1) / 2) * 255;
+	c.b = ((vec.z + 1) / 2) * 255;
+	return (c);
+}
+
+t_vector	rgbof_cast_vector(t_rgbof color)
+{
+	t_vector vec;
+	vec.x = color.r / 255;
+	vec.y = color.g / 255;
+	vec.z = color.b / 255;
+	return (vec);
+}
+
+t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 {
 	t_vector	inter;
-	t_vector	result;
 	t_vector	inter2;
 	t_vector	inter3;
 
-	if (diff.ray_count < MAX_BOUNCES && diffuse_nearest(mixer, &diff, diff.origin, &result))
+	if (diff.ray_count < MAX_BOUNCES && diffuse_nearest(mixer, &diff, diff.origin, result))
 	{
-		vector_addition(&inter, &result, diff.origin);
-		inter3 = diffuse_rand();
-		vector_addition(&inter2, &inter, &inter3);
-		vector_substract(&inter, &inter2, &result);
-		diff.ray_count++;
-		vector_addition(diff.origin, &diff.hit->position, &diff.hit->col_normal);
-		diff.ray = &inter;
-		return (color_cal_rgb(diffuse_get(mixer, diff), 0.5f));
+		//force_hit();
+		vector_addition(&inter, result, &diff.hit->col_normal);
+		inter2 = diffuse_rand();
+		vector_addition(&inter3, &inter, &inter2); // = target
+		vector_substract(diff.ray, &inter3, result);
+		diff.origin = vector_new(result->x, result->y, result->z);
+		diff.ray_count += 1;
+		inter2 = diffuse_get(mixer, diff, result);
+		vector_multiply_digit(&inter, &inter2, 0.5);
+		return (inter);
 	}
 	else
 	{
-		//float t = 0.5 * (obj->col_normal.y + 1.0f);
-		diff.ray_count = 0;
-		return (mixer->ambient.color);
+		vector_create(&inter, 1, 1, 1);
+		return (rgbof_cast_vector(mixer->ambient.color));
 	}
 }
 
@@ -160,10 +190,15 @@ t_rgbof	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
 	mixer->diff_sh.ray = intersect;
 	mixer->diff_sh.hit = obj;
 	mixer->diff_sh.ray_count = 0;
-	vector_addition(mixer->diff_sh.origin, &obj->col_normal, &obj->position);
-	color = diffuse_get(mixer, mixer->diff_sh);
+	mixer->diff_sh.origin = vector_new(mixer->cam.position.x, mixer->cam.position.y, mixer->cam.position.z);
+	//mixer->diff_sh.origin = vector_new(obj->col_normal.x, obj->col_normal.y, obj->col_normal.z);
+	//vector_addition(mixer->diff_sh.origin, &obj->col_normal, &obj->position);
+	t_vector* res = vector_new(0, 0, 0);
+	color = vector_cast_rgbof(diffuse_get(mixer, mixer->diff_sh, res));
 	color.cal_r = color.r;
 	color.cal_g = color.g;
 	color.cal_b = color.b;
+	if (mixer->diff_sh.ray_count < 1)
+		mixer->diff_sh.ray_count = 1;
 	return (color);
 }
