@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/22 22:39:54 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/25 13:35:24 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_o
 	vector_multiply(&intersect, &intersect, &inter);
 	vector_multiply_digit(&intersect, &intersect, light->brightness);
 	*color = vector_cast_rgbof(intersect);
-	printf("%f %f %f\n", intersect.x, intersect.y, intersect.z);
+	
 	return (true);
 }
 
@@ -88,17 +88,19 @@ bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_rgbof *color, t_vector interse
 	return (false);
 }
 
-t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *origin, t_vector *ray, t_mixer *mixer)
+bool	trace_hardshadow(t_mixer *mixer, t_rgbof *color, t_vector *origin, t_vector *ray)
 {
 	t_vector	intersect;
 	t_vector	intersect2;
 	t_obj_l		*curr;
-	t_rgbof		color;
 	float		distsf;
 	bool		sw;
+	t_obj_l		*list;
+	t_obj_l		*nointersec = NULL;
 
 	sw = false;
 	curr = NULL;
+	list = mixer->obj_list;
 	while (list != NULL)
 	{
 		if (nointersec != list  && sw == false && intersec_next(list, origin, ray, &intersect))
@@ -116,15 +118,21 @@ t_rgbof	calc_intersect_vector(t_obj_l *nointersec, t_obj_l *list, t_vector *orig
 		}
 		list = list->next;
 	}
-	//uf (curr == NULL || trace_light(mixer, curr, &color, intersect2))
-	color = diffuse_main(mixer, NULL, ray);
-	//color = mixer->ambient.color;
-	if (curr != NULL) trace_light(mixer, curr, &color, intersect2);
-	//else color = diffuse_main(mixer, NULL, ray);
-	//color.cal_r = 0;
-	//color.cal_g = 0;
-	//color.cal_b = 0;
-	//color_rgb_cal_result_mul(&color, curr->color, 1);
-	//color = color_cal_rgb(color, /*MAX_BOUNCES*/mixer->diff_sh.ray_count + 1);
+	if (curr != NULL)
+		trace_light(mixer, curr, color, intersect2);
+	return (curr != NULL);
+}
+
+t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer)
+{
+	t_rgbof		color;
+	t_vector	cp;
+
+	cp.x = ray->x;
+	cp.y = ray->y;
+	cp.z = ray->z;
+	//color = color_rgb(255,255,255);
+	color = diffuse_main(mixer, NULL, &cp);
+	trace_hardshadow(mixer, &color, origin, ray);
 	return (color);
 }

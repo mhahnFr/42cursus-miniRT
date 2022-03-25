@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 18:37:41 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/25 13:20:40 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 	(void) ret;
 	for (int i = 0; i < RESOLUTION_Y; i++) {
 		for (int j = 0; j < RESOLUTION_X; j++) {
-			color = calc_cam_ray(mixer, &(mixer->cam.vecs[i][j]), i, j);
+			color = calc_antialiasing(mixer, &(mixer->cam.vecs[i][j]), i, j);
 			draw_point(j, i, mixer->image, color);
 		}
 	}
@@ -67,7 +67,7 @@ t_vector	*vector_rand(t_vector *self, float j, float i)
 	return (self);
 }
 
-t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x)
+t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 {
 	//antialiasing
 	int		i;
@@ -75,13 +75,13 @@ t_rgbof	calc_cam_ray(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 	t_rgbof	add;
 
 	i = ANTI_ALIASING;
-	color = calc_intersect_vector(NULL, mixer->obj_list, &(mixer->cam.position), cam_vec, mixer);
+	color = calc_shader(&(mixer->cam.position), cam_vec, mixer);
 	color.cal_r = color.r;
 	color.cal_g = color.g;
 	color.cal_b = color.b;
 	while (i > 0)
 	{
-		add = calc_intersect_vector(NULL, mixer->obj_list, &(mixer->cam.position), vector_rand(cam_vec, x, y), mixer);
+		add = calc_shader(&(mixer->cam.position), vector_rand(cam_vec, x, y), mixer);
 		color = color_add_cal(color, add);
 		i--;
 	}
