@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/25 14:32:27 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/25 14:50:53 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,9 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 		diff.origin = vector_new(result->x, result->y, result->z);
 		diff.ray_count += 1;
 		inter2 = diffuse_get(mixer, diff, result);
-		vector_multiply_digit(&inter, &inter2, 0.5f);
+		inter3 = rgbof_cast_vector(diff.hit->color);
+		vector_multiply(&inter2, &inter2, &inter3);
+		vector_multiply_digit(&inter, &inter2, 0.6f);
 		return (inter);
 	}
 	else
