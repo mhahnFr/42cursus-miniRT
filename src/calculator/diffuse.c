@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/25 14:50:53 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/25 16:23:59 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,9 @@ t_vector	diffuse_rand()
 	x = (float) (arc4random() % 100) / 100;
 	y = (float) (arc4random() % 100) / 100;
 	z = (float) (arc4random() % 100) / 100;
-	tmp.x = x;
-	tmp.y = y;
-	tmp.z = z;
+	tmp.x = x - 0.5;
+	tmp.y = y - 0.5;
+	tmp.z = z - 0.5;
 	vector_normalize(&tmp);
 	return (tmp);
 }
