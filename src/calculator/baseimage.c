@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/25 16:24:04 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/25 17:23:31 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,6 @@ t_vector	rgbof_light_strenght(t_vector *inter, t_vector *origin, t_obj_l *light,
 	float	fact;
 
 	*inter = rgbof_cast_vector(light->color);
-	//if (curr == ori)
-	//{
-	//	vector_multiply_digit(inter, inter, 0.1);
-	//	return (*inter);
-	//}
-	//fact = vector_distance(inter, origin);
-	//fact /= 1;
-		//fact = sqrtf(vector_distance(inter, origin));
 	fact = 0.0f;
 	vector_multiply_digit(inter, inter, fact);
 	return (*inter);

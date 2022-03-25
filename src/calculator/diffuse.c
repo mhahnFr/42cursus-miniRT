@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/25 16:23:59 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/25 17:25:21 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 	objs->col_normal = objs->normal;
 	return (true);
 } */
-
 
 bool	diffuse_next(t_obj_l *objs, t_vector *start, t_vector *ray, t_vector *inter)
 {
@@ -119,28 +118,6 @@ t_vector	diffuse_randi1() {
 	} while ((ret.x * ret.x + ret.y * ret.y + ret.z * ret.z) >= 1);
 	return (ret);
 }
-
-/*t_rgbof	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
-{
-	int		i;
-	t_rgbof	color;
-	t_rgbof	add;
-
-	i = DIFFUSE;
-	vector_multiply_digit(&obj->col_normal, &obj->col_normal, obj->height);
-	color = obj->color;
-	//color = diffuse_get(mixer, obj, intersect);
-	color.cal_r = color.r;
-	color.cal_g = color.g;
-	color.cal_b = color.b;
-	while (i > 0)
-	{
-		add = diffuse_get(mixer, obj, diffuse_rand(*intersect));
-		color = color_add_cal(color, add);
-		i--;
-	}
-	return (color_cal_rgb(color, DIFFUSE));
-}*/
 
 t_rgbof	vector_cast_rgbof(t_vector vec)
 {
