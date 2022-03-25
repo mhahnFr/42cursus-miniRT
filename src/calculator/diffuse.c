@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/25 13:34:13 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/25 14:32:27 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <float.h>
 
 /* bool	calc_intersection_plane(t_vector *cam, t_obj_l *objs, t_vector *point)
 {
@@ -37,6 +38,7 @@
 	objs->col_normal = objs->normal;
 	return (true);
 } */
+
 
 bool	diffuse_next(t_obj_l *objs, t_vector *start, t_vector *ray, t_vector *inter)
 {
