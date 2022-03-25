@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/25 14:44:34 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/25 15:18:30 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_vector	rgbof_light_strenght(t_vector *inter, t_vector *origin, t_obj_l *light,
 	//fact = vector_distance(inter, origin);
 	//fact /= 1;
 		//fact = sqrtf(vector_distance(inter, origin));
+	fact = 0.0f;
 	vector_multiply_digit(inter, inter, fact);
 	return (*inter);
 }
@@ -157,7 +158,8 @@ t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer)
 	cp.y = ray->y;
 	cp.z = ray->z;
 	color = color_rgb(255,255,255);
-	color = diffuse_main(mixer, NULL, &cp);
-	//trace_hardshadow(mixer, &color, origin, ray);
+	trace_hardshadow(mixer, &color, origin, ray);
+	if (color.r == color.g && color.g == color.b && color.b == 0)
+		color = diffuse_main(mixer, NULL, &cp);
 	return (color);
 }
