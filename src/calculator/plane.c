@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:40:11 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/25 17:40:19 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/25 18:20:09 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ bool	intersec_plane(t_vector *cam, t_obj_l *objs, t_vector *point)
 	vector_multiply_digit(&vec_inter, cam, d);
 	vector_addition(point, &vec2, &vec_inter);
 	objs->disthit = d;
-	//this line below is important, we need to know if ray hits the normal correctly...
-	objs->col_normal = objs->normal;
+	if (vector_scalar_product(cam, &objs->normal) > 0)
+		vector_multiply_digit(&objs->col_normal, &objs->normal, -1);
+	else
+		objs->col_normal = objs->normal;
 	return (true);
 }
 
