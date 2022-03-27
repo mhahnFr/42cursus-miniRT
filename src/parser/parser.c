@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 19:15:35 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/26 18:27:17 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,8 @@ int	parser(char **buffer, t_mixer *m_data, int size)
 	i = 0;
 	while (buffer[i] != NULL)
 	{
-		add_object(buffer[i], m_data);
+		if (ft_strncmp(buffer[i], "#", 1))
+			add_object(buffer[i], m_data);
 		i++;
 	}
 	return (0);

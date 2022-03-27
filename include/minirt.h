@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/26 01:27:56 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/27 19:11:47 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include "libft.h"
 
 //Resolution in Pixel
-# define RESOLUTION_X	900
-# define RESOLUTION_Y	700
+# define RESOLUTION_X	400
+# define RESOLUTION_Y	300
 //# define CAM_SIZE		10
 # define ANTI_ALIASING	0
 # define MAX_BOUNCES	10
@@ -88,6 +88,9 @@ typedef struct s_cam {
 	int			fov;
 	float		aspect_ratio;
 	t_vector	vecs[RESOLUTION_Y][RESOLUTION_X];
+	t_vector	hori;
+	t_vector	vert;
+	t_vector	llc;
 }	t_cam;
 
 //mainstruct for MiniRT

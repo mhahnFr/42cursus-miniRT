@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:39:55 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 15:48:40 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/26 18:27:15 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ int	validation_check(char **buffer, int size)
 	while (i < size && !ret)
 	{
 		splitline = ft_strsplit(buffer[i++], " 	");
-		if (!ft_strncmp(splitline[0], "C", 2))
+		if (!ft_strncmp(splitline[0], "#", 1))
+			ret = 0;
+		else if (!ft_strncmp(splitline[0], "C", 2))
 			ret = check_camera(splitline);
 		else if (!ft_strncmp(splitline[0], "A", 2))
 			ret = check_ambient(splitline);
