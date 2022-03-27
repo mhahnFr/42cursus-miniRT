@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:49:44 by mhahn             #+#    #+#             */
-/*   Updated: 2022/03/27 21:32:40 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/27 21:39:42 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	rt_cam_init(t_mixer *mixer)
 			mixer->cam.vecs[i][ii].z = 0;
 			vector_substract(&mixer->cam.vecs[i][ii], &mixer->cam.vecs[i][ii], &mixer->cam.position);
 			vector_normalize(&mixer->cam.vecs[i][ii]);
+			https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays?url=3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays
 			ii++;
 		}
 		i++;
