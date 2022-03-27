@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/27 19:09:45 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/27 21:30:03 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 			color = calc_antialiasing(mixer, &(mixer->cam.vecs[i][j]), i, j);
 			draw_point(j, i, mixer->image, color);
 		}
+		printf("%f %f %f \n", mixer->cam.vecs[i][150].x, mixer->cam.vecs[i][150].y, mixer->cam.vecs[i][150].z);
 	}
 	printf("finished!\n");
 }
@@ -75,8 +76,8 @@ t_vector	*get_cam_ray(t_vector *self, float j, float i, t_cam cam)
 	float		angle_x;
 	float		angle_y;
 
-	i += (float) (rand() % 10) / 10;
-	j += (float) (rand() % 10) / 10;
+	//i += (float) (rand() % 10) / 10;
+	//j += (float) (rand() % 10) / 10;
 	angle_x = (float) j / RESOLUTION_X;
 	angle_y = (float) i / RESOLUTION_Y;
 	vector_multiply_digit(&inter, &cam.hori, j);
@@ -85,6 +86,7 @@ t_vector	*get_cam_ray(t_vector *self, float j, float i, t_cam cam)
 	vector_addition(&inter, &inter3, &inter2);
 	vector_substract(self, &inter, &cam.position);
 	vector_normalize(self);
+	
 	return (self);
 }
 
@@ -96,7 +98,7 @@ t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 	t_rgbof	add;
 
 	i = ANTI_ALIASING;
-	color = calc_shader(&(mixer->cam.position), get_cam_ray(cam_vec, x, y, mixer->cam), mixer);
+	color = calc_shader(&(mixer->cam.position), cam_vec, mixer);
 	color.cal_r = color.r;
 	color.cal_g = color.g;
 	color.cal_b = color.b;
