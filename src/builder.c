@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:49:44 by mhahn             #+#    #+#             */
-/*   Updated: 2022/03/27 21:39:42 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/28 18:46:40 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,53 +19,50 @@
 void	rt_cam_init(t_mixer *mixer)
 {
 	float		alpha;
-	float		h_width;
-	float		h_height;
-	t_vector	inter;
-	t_vector	inter2;
+	float		aspect = (float) RESOLUTION_Y / RESOLUTION_X;
 	size_t		i;
 	size_t		ii;
-	t_vector	w;
-	t_vector	u;
-	t_vector	v;
-	t_vector	nup;
-	t_vector	hori;
-	t_vector	vert;
+	t_vector	ey;
+	t_vector	norm;
+	t_vector	cp;
+	t_vector	px;
+	t_vector	py;
+	t_vector	s;
 
-	//i = 0;
-	//alpha = (float) mixer->cam.fov * M_PI / 180;
-	////h_width = (float) RESOLUTION_X;
-	float aspect = (float) RESOLUTION_X / RESOLUTION_Y;
-	//h_height =  aspect * h_width;
-	//vector_addition(&w, &mixer->cam.position, &mixer->cam.normal);
-	//vector_create(&nup, 0, 1, 0);
-	//vector_cross_product(&u, &nup, &w);
-	//vector_normalize(&u);
-	//vector_cross_product(&v, &w, &u);
-	//t_vector lower_left_corner;
-	////vector_create(&lower_left_corner, -h_width, -h_height, -1.0);
-	//vector_multiply_digit(&inter, &u, h_width);
-	//vector_multiply_digit(&inter2, &v, h_height);
-	//vector_substract(&inter, &mixer->cam.position, &inter);
-	//vector_substract(&inter2, &inter, &inter2);
-	//vector_substract(&lower_left_corner, &inter2, &w);
-	//vector_multiply_digit(&hori, &u, 2 * h_width);
-	//vector_multiply_digit(&vert, &v, 2 * h_height);
-	//mixer->cam.hori = hori;
-	//mixer->cam.vert = vert;
-	//mixer->cam.llc = lower_left_corner;
+	vector_create(&ey, 0,1,0);
+	norm = mixer->cam.normal;
+	cp = mixer->cam.position;
+	t_vector	right;
+	t_vector	left;
+	t_vector	inter;
+
+//px
+	vector_addition(&right, &cp, &norm);
+	vector_normalize(&norm);
+	vector_cross_product(&inter, &ey, &norm);
+	vector_normalize(&inter);
+	vector_multiply_digit(&px, &inter, tan(((mixer->cam.fov / 2) * M_PI/180.0f)));
+//py
+	vector_cross_product(&inter, &px, &norm);
+	vector_normalize(&inter);
+	vector_multiply_digit(&py, &inter, vector_length(&px) * aspect);
+//s
+	vector_addition(&inter, &px, &py);
+	vector_addition(&s, &inter, &norm);
+//step
+	mixer->cam.step.x = -inter.x * 2 / RESOLUTION_X;
+	mixer->cam.step.y = -inter.y * 2 / RESOLUTION_Y;
+	mixer->cam.step.z = 0;
 	i = 0;
 	while (i < RESOLUTION_Y)
 	{
 		ii = 0;
 		while (ii < RESOLUTION_X)
 		{
-			mixer->cam.vecs[i][ii].x = (2 * (ii + 0.5) / RESOLUTION_X - 1) * aspect * tan(mixer->cam.fov / 2 * M_PI / 180);
-			mixer->cam.vecs[i][ii].y = (1 - 2 * (i + 0.5) / RESOLUTION_Y) * aspect * tan(mixer->cam.fov / 2 * M_PI / 180);
-			mixer->cam.vecs[i][ii].z = 0;
-			vector_substract(&mixer->cam.vecs[i][ii], &mixer->cam.vecs[i][ii], &mixer->cam.position);
+			mixer->cam.vecs[i][ii].x = s.x + (mixer->cam.step.x * ii);
+			mixer->cam.vecs[i][ii].y = s.y + (mixer->cam.step.y * i);
+			mixer->cam.vecs[i][ii].z = s.z;
 			vector_normalize(&mixer->cam.vecs[i][ii]);
-			https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays?url=3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays
 			ii++;
 		}
 		i++;
