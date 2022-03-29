@@ -48,7 +48,7 @@ OBJ         =  $(PAINTER_OBJ:.c=.o) $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OB
 ##		COMPILER		##
 NAME        = miniRT
 
-CFLAGS      = -Wall -Wextra -g -pedantic  #-Werror
+CFLAGS      = -Wall -Wextra -g -pedantic #-Werror
 INC         = -Iinclude -Imlx -Ilibft
 LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit
 
@@ -65,7 +65,7 @@ $(OBJ_FOLDER)%.o: $(SRC_FOLDER)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 run: $(NAME)
-	./$(NAME) test2.rt
+	./$(NAME) test3.rt
 
 $(OBJ_UTILS_FOLDER)%.o: $(UTILS_FOLDER)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
