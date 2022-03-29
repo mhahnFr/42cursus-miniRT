@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 14:42:57 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 18:18:24 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ void	print_lexer_error(int error)
 		ft_putendl_fd("Memory allocation failed", 1);
 	else if (error == 24)
 		ft_putendl_fd("File descriptor error", 1);
+	else if (error == 25)
+		ft_putendl_fd("At least one required object missing", 1);
 	else
-		ft_putendl_fd("Unknown error while parsing", 1);
+		ft_putendl_fd("Error while parsing", 1);
 }
 
 void	printerror(int error)

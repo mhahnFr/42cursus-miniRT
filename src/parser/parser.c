@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 15:32:30 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 19:37:48 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ t_vector	get_vector(char *src)
 
 int	add_ambient(char **line, t_ambient *ambient)
 {
+	if (line == NULL)
+		return (5);
 	ambient->a_light = ft_atof(line[1]);
 	ambient->color = get_color(line[2]);
 	ambient->color.cal_r = ambient->color.r;
@@ -76,6 +78,8 @@ int	add_ambient(char **line, t_ambient *ambient)
 
 int	add_camera(char **line, t_cam *camera)
 {
+	if (line == NULL)
+		return (5);
 	camera->position = get_vector(line[1]);
 	camera->position.y *= -1;
 	camera->normal = get_vector(line[2]);
@@ -88,18 +92,24 @@ int	add_camera(char **line, t_cam *camera)
 
 int	add_light(char **line, t_mixer *data)
 {
-	data->obj_list = ft_calloc(1, sizeof(t_obj_l));
-	if (data->obj_list == NULL)
+	t_obj_l	*curr;
+
+	curr = data->obj_list;
+	while(curr->next != NULL)
+		curr = curr->next;
+	curr->next = ft_calloc(1, sizeof(t_obj_l));
+	if (curr->next == NULL)
 	{
 		ft_free_char_arr(line);
-		return (1);
+		return (3);
 	}
-	data->obj_list->emitter = true;
-	data->obj_list->position = get_vector(line[1]);
-	data->obj_list->position.y *= -1;
-	data->obj_list->brightness = ft_atof(line[2]);
-	data->obj_list->color = get_color(line[3]);
-	data->obj_list->obj_type = LIGHT;
+	data->light_count++;
+	curr->next->emitter = true;
+	curr->next->position = get_vector(line[1]);
+	curr->next->position.y *= -1;
+	curr->next->brightness = ft_atof(line[2]);
+	curr->next->color = get_color(line[3]);
+	curr->next->obj_type = LIGHT;
 	ft_free_char_arr(line);
 	return (0);
 }
@@ -113,7 +123,7 @@ int	add_plane(char **line, t_mixer *m_data)
 		curr = curr->next;
 	curr->next = ft_calloc(1, sizeof(t_obj_l));
 	if (curr->next == NULL)
-		return (1);
+		return (3);
 	curr->next->emitter = false;
 	curr->next->obj_type = PLANE;
 	curr->next->position = get_vector(line[1]);
@@ -134,7 +144,7 @@ int	add_sphere(char **line, t_mixer *m_data)
 		curr = curr->next;
 	curr->next = ft_calloc(1, sizeof(t_obj_l));
 	if (curr->next == NULL)
-		return (1);
+		return (3);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
 	curr->next->position.y *= -1;
@@ -155,7 +165,7 @@ int	add_cylinder(char **line, t_mixer *m_data)
 		curr = curr->next;
 	curr->next = ft_calloc(1, sizeof(t_obj_l));
 	if (curr->next == NULL)
-		return (1);
+		return (3);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
 	curr->next->position.y *= -1;
@@ -171,9 +181,10 @@ int	add_cylinder(char **line, t_mixer *m_data)
 
 int	add_object(char *buffer, t_mixer *m_data)
 {
+	if (buffer == NULL)
+		return (5);
 	if (ft_strnstr(buffer, "A", ft_strlen(buffer)) || \
-	ft_strnstr(buffer, "C", ft_strlen(buffer)) || \
-	ft_strnstr(buffer, "L", ft_strlen(buffer)))
+	ft_strnstr(buffer, "C", ft_strlen(buffer)))
 		return (1);
 	if (ft_strnstr(buffer, "pl", ft_strlen(buffer)))
 		add_plane(ft_strsplit(buffer, " 	"), m_data);
@@ -181,33 +192,49 @@ int	add_object(char *buffer, t_mixer *m_data)
 		add_sphere(ft_strsplit(buffer, " 	"), m_data);
 	if (ft_strnstr(buffer, "cy", ft_strlen(buffer)))
 		add_cylinder(ft_strsplit(buffer, " 	"), m_data);
+	if (ft_strnstr(buffer, "L", ft_strlen(buffer)))
+		add_light(ft_strsplit(buffer, " 	"), m_data);
 	return (0);
 }
 
 char	**find_line(char **buffer, int size, char *search)
 {
 	int		i;
+	int		amount;
 
 	i = 0;
+	amount = -1;
 	while (i < size)
 	{
-		if (ft_strnstr(buffer[i], search, ft_strlen(buffer[i])))
-			return (ft_strsplit(buffer[i], " 	"));
+		if (ft_strncmp(buffer[i], "#", 1) && ft_strnstr(buffer[i], search, ft_strlen(buffer[i])))
+		{
+			if (amount != -1)
+				return (NULL);
+			amount = i;
+		}
 		i++;
 	}
-	return (NULL);
+	if (amount == -1)
+		return (NULL);
+	return (ft_strsplit(buffer[amount], " 	"));
 }
 
 int	parser(char **buffer, t_mixer *m_data, int size)
 {
-	int i;
+	int 	i;
+	int		err;
 
-	if (add_ambient(find_line(buffer, size, "A"), &(m_data->ambient)))
-		return (1);
-	if (add_camera(find_line(buffer, size, "C"), &(m_data->cam)))
-		return (1);
-	if (add_light(find_line(buffer, size, "L"), m_data))
-		return (1);
+	m_data->light_count = 0;
+	err = add_ambient(find_line(buffer, size, "A"), &(m_data->ambient));
+	if (err)
+		return (err);
+	err = add_camera(find_line(buffer, size, "C"), &(m_data->cam));
+	if (err)
+		return (err);
+	m_data->obj_list = ft_calloc(1, sizeof(t_obj_l));
+	if (m_data->obj_list == NULL)
+		return (3);
+	m_data->obj_list->obj_type = START;
 	i = 0;
 	while (buffer[i] != NULL)
 	{
@@ -215,5 +242,7 @@ int	parser(char **buffer, t_mixer *m_data, int size)
 			add_object(buffer[i], m_data);
 		i++;
 	}
+	if (m_data->light_count == 0)
+		return (5);
 	return (0);
 }

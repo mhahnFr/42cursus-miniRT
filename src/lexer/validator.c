@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:39:55 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/26 18:27:15 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 18:06:48 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	p_chararr(char **arr)
 
 int	check_camera(char **splitline)
 {
-	if (ft_char_arr_len(splitline) != 4)
+	if (ft_char_arr_len(splitline) < 4)
 		return (1);
 	if (check_vector(splitline[1]))
 		return (1);
@@ -39,7 +39,7 @@ int	check_camera(char **splitline)
 
 int	check_ambient(char **splitline)
 {
-	if (ft_char_arr_len(splitline) != 3)
+	if (ft_char_arr_len(splitline) < 3)
 		return (1);
 	if (check_float(splitline[1]))
 		return (1);
@@ -52,7 +52,7 @@ int	check_ambient(char **splitline)
 
 int	check_light(char **splitline)
 {
-	if (ft_char_arr_len(splitline) != 4)
+	if (ft_char_arr_len(splitline) < 4)
 		return (1);
 	if (check_vector(splitline[1]))
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 15:51:19 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 20:40:00 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,23 +80,27 @@ t_vector	vector_rand(t_vector self, float j, float i, t_vector step)
 t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 {
 	//antialiasing
-	int		i;
-	t_rgbof	color;
-	t_rgbof	add;
+	int			i;
+	t_rgbof		color;
+	t_rgbof		add;
 	t_vector	inter;
+	t_col		color_sum;
 
 	i = ANTI_ALIASING;
+	color_sum.sum = ft_calloc(1, (mixer->light_count + 2) * sizeof(t_vector));
+	color_sum.fac = ft_calloc(1, (mixer->light_count + 2) * sizeof(float));
 	inter = *cam_vec;
 	vector_normalize(&inter);
-	color = calc_shader(&(mixer->cam.position), &inter, mixer);
+	color = calc_shader(&(mixer->cam.position), &inter, mixer, &color_sum);
 	color.cal_r = color.r;
 	color.cal_g = color.g;
 	color.cal_b = color.b;
 	while (i > 0)
 	{
+		color_sum.l_count = 0;
 		//vector_rand has to take t_cam and x,y -> calculate with rand48() a random moved vector inbetween pixels for better result
 		inter = vector_rand(*cam_vec, x, y, mixer->cam.step);
-		add = calc_shader(&(mixer->cam.position), &inter, mixer);
+		add = calc_shader(&(mixer->cam.position), &inter, mixer, &color_sum);
 		color = color_add_cal(color, add);
 		i--;
 	}

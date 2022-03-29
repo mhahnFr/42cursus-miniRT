@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 17:22:10 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/29 20:55:42 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *int
 	return (ret);
 }
 
-bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_obj_l *light, t_vector ray, t_rgbof *color)
+bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_obj_l *light, t_vector ray, t_vector *color)
 {
 	t_vector	intersect;
 	t_vector	inter;
@@ -74,34 +74,75 @@ bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_o
 		}
 		list = list->next;
 	}
-	t_vector col = rgbof_cast_vector(nointersec->color);
-	t_vector amb = rgbof_cast_vector(mixer->ambient.color);
-	vector_multiply(&inter, &col, &amb);
-	vector_multiply_digit(&col, &inter, mixer->ambient.a_light);
+	//t_vector col = rgbof_cast_vector(nointersec->color);
+	//t_vector amb = rgbof_cast_vector(mixer->ambient.color);
+	//vector_multiply(&inter, &col, &amb);
+	//vector_multiply_digit(&col, &inter, mixer->ambient.a_light);
 	if (curr == NULL)
 	{
-		intersect = col;
+		//intersect = col;
 		inter = rgbof_light_strenght(&inter, origin, light, nointersec);
-		t_vector v;
-		vector_create(&v, mixer->ambient.a_light, light->brightness, 0);
-		vector_normalize(&v);
-		vector_multiply_digit(&inter, &inter, v.y);
-		vector_multiply_digit(&col, &col, v.x);
-		vector_addition(&inter, &inter, &col);
+		//t_vector v;
+		//vector_create(&v, mixer->ambient.a_light, light->brightness, 0);
+		//vector_normalize(&v);
+		//vector_multiply_digit(&inter, &inter, v.y);
+		//vector_multiply_digit(&col, &col, v.x);
+		//vector_addition(&inter, &inter, &col);
 		//vector_multiply_digit(&inter, &inter, 0.5f);
-		*color = vector_cast_rgbof(inter);
+		*color = inter;
 		return (false);
 	}
-	*color = vector_cast_rgbof(col);
 	return (true);
 }
 
-bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_rgbof *color, t_vector intersect)
+t_rgbof	sumup_light(t_mixer *mixer, t_col *col_sum)
+{
+	t_rgbof		color;
+	t_vector	final_color;
+	t_vector	inter;
+	float		fac_sum;
+	int	i;
+
+	i = 0;
+	fac_sum = 0;
+	vector_create(&final_color, 0, 0, 0);
+	while (i < col_sum->l_count)
+	{
+		fac_sum += col_sum->fac[i];
+		i++;
+	}
+	fac_sum += mixer->ambient.a_light;
+	fac_sum = 1 / fac_sum;
+	i = 0;
+	while (i < col_sum->l_count)
+	{
+		vector_multiply_digit(&(col_sum->sum[i]), &(col_sum->sum[i]), (col_sum->fac[i] * fac_sum));
+		vector_addition(&final_color, &final_color, &(col_sum->sum[i]));
+		i++;
+	}
+	if (!col_sum->sw)
+	{
+		inter = rgbof_cast_vector(mixer->ambient.color);
+		vector_multiply_digit(&inter, &inter, mixer->ambient.a_light * fac_sum);
+	}
+	else
+		vector_multiply_digit(&inter, &col_sum->diff, mixer->ambient.a_light * fac_sum);
+	vector_addition(&final_color, &final_color, &inter);
+	color = vector_cast_rgbof(final_color);
+	return (color);
+}
+
+bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector intersect)
 {
 	t_vector	inter;
 	t_vector	ray;
+	t_vector	added;
+	
+	bool		ret;
+	
 	t_obj_l		*l;
-
+	ret = true;
+	col_sum->l_count = 0;
 	l = mixer->obj_list;
 	while (l != NULL)
 	{
@@ -109,15 +150,19 @@ bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_rgbof *color, t_vector interse
 		{
 			vector_substract(&ray, &l->position, &intersect);
 			vector_normalize(&ray);
-			if (intersect_object(mixer, curr, &intersect, l, ray, color))
-				return (true);
+			if (!intersect_object(mixer, curr, &intersect, l, ray, &added))
+			{
+				col_sum->sum[col_sum->l_count] = added;
+				col_sum->fac[col_sum->l_count++] = l->brightness;
+				ret = false;
+			}
 		}
 		l = l->next;
 	}
-	return (false);
+	return (ret);
 }
 
-bool	trace_hardshadow(t_mixer *mixer, t_rgbof *color, t_vector *origin, t_vector *ray)
+bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector *ray)
 {
 	t_vector	intersect;
 	t_vector	intersect2;
@@ -147,11 +192,11 @@ bool	trace_hardshadow(t_mixer *mixer, t_rgbof *color, t_vector *origin, t_vector
 		list = list->next;
 	}
 	if (curr != NULL)
-		return trace_light(mixer, curr, color, intersect2);
+		return trace_light(mixer, curr, colsum, intersect2);
 	return (curr != NULL);
 }
 
-t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer)
+t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, t_col *col_sum)
 {
 	t_rgbof		color;
 	t_vector	cp;
@@ -159,8 +204,14 @@ t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer)
 	cp.x = ray->x;
 	cp.y = ray->y;
 	cp.z = ray->z;
+	col_sum->sw = false;
 	color = color_cal_rgb(mixer->ambient.color, mixer->ambient.a_light);
-	if (trace_hardshadow(mixer, &color, origin, ray))
-		color = diffuse_main(mixer, NULL, &cp);
+	if (trace_hardshadow(mixer, col_sum, origin, ray) || col_sum->l_count != mixer->light_count)
+	{
+		col_sum->diff = diffuse_main(mixer, NULL, &cp);
+		col_sum->sw = true;	
+	}
+	if (col_sum->l_count > 0 || col_sum->sw)
+		color = sumup_light(mixer, col_sum);
 	return (color);
 }

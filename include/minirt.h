@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 15:54:53 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 20:47:36 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define SPHERE			1
 # define PLANE			2
 # define CYLINDER		3
+# define START			4
 
 # define LEXER_BUFFER	100
 # define ESC_KEY		53
@@ -94,6 +95,16 @@ typedef struct s_cam {
 	t_vector	llc;
 }	t_cam;
 
+//color_calcstruct
+typedef struct s_col_calc
+{
+	t_vector	*sum;
+	float		*fac;
+	t_vector	diff;
+	bool		sw;
+	int			l_count;
+}	t_col;
+
 //mainstruct for MiniRT
 typedef struct s_mixer {
 	void				*p_mlx_init;
@@ -103,6 +114,7 @@ typedef struct s_mixer {
 	t_obj_l				*obj_list;
 	struct s_cam		cam;
 	struct s_ambient	ambient;
+	int					light_count;
 	t_diff				diff_sh;
 }	t_mixer;
 
@@ -180,11 +192,11 @@ bool	intersec_plane(t_vector *cam, t_vector*, t_obj_l *objs, t_vector *ret);
  */
 bool	fast_intersec_plane(t_vector *vec, t_vector *normal);
 
-t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer);
+t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, t_col *colsum);
 
 t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x);
 
-t_rgbof	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
+t_vector	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
 
 t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result);
 

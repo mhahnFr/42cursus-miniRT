@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 16:56:37 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/29 20:35:09 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,9 +162,10 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 		return (rgbof_cast_vector(mixer->ambient.color));
 }
 
-t_rgbof	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
+t_vector	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
 {
-	t_rgbof	color;
+	t_vector ret;
+
 	mixer->diff_sh.ray = intersect;
 	mixer->diff_sh.hit = obj;
 	mixer->diff_sh.ray_count = 0;
@@ -172,11 +173,8 @@ t_rgbof	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
 	//mixer->diff_sh.origin = vector_new(obj->col_normal.x, obj->col_normal.y, obj->col_normal.z);
 	//vector_addition(mixer->diff_sh.origin, &obj->col_normal, &obj->position);
 	t_vector* res = vector_new(0, 0, 0);
-	color = vector_cast_rgbof(diffuse_get(mixer, mixer->diff_sh, res));
-	color.cal_r = color.r;
-	color.cal_g = color.g;
-	color.cal_b = color.b;
+	ret = diffuse_get(mixer, mixer->diff_sh, res);
 	if (mixer->diff_sh.ray_count < 1)
 		mixer->diff_sh.ray_count = 1;
-	return (color);
+	return (ret);
 }

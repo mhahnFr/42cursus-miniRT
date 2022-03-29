@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:09:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 15:50:25 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 18:16:06 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,10 @@ int	lexer(char *path, t_mixer *m_data, int *errnum)
 		*errnum = 22;
 		return (*errnum);
 	}
-	if (parser(buffer, m_data, size))
+	*errnum = parser(buffer, m_data, size);
+	if (*errnum != 0)
 	{
-		*errnum = 23;
+		*errnum += 20;
 		return (1);
 	}
 	printf("file read successfull!\n");
