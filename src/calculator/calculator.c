@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/27 21:30:03 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 11:46:20 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 			color = calc_antialiasing(mixer, &(mixer->cam.vecs[i][j]), i, j);
 			draw_point(j, i, mixer->image, color);
 		}
-		printf("%f %f %f \n", mixer->cam.vecs[i][150].x, mixer->cam.vecs[i][150].y, mixer->cam.vecs[i][150].z);
+//		printf("%f %f %f \n", mixer->cam.vecs[i][150].x, mixer->cam.vecs[i][150].y, mixer->cam.vecs[i][150].z);
 	}
 	printf("finished!\n");
 }

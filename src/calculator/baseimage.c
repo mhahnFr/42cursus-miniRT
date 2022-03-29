@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/25 17:23:31 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 12:06:09 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_rgbof *color, t_vector interse
 	{
 		if (l->obj_type == LIGHT)
 		{
-			vector_addition(&ray, &intersect, &l->position);
+			vector_substract(&ray, &intersect, &l->position);
 			vector_normalize(&ray);
 			if (intersect_object(mixer, curr, &intersect, l, ray, color))
 				return (true);
@@ -114,21 +114,20 @@ bool	trace_hardshadow(t_mixer *mixer, t_rgbof *color, t_vector *origin, t_vector
 	float		distsf;
 	bool		sw;
 	t_obj_l		*list;
-	t_obj_l		*nointersec = NULL;
 
 	sw = false;
 	curr = NULL;
 	list = mixer->obj_list;
 	while (list != NULL)
 	{
-		if (nointersec != list  && sw == false && intersec_next(list, origin, ray, &intersect))
+		if (sw == false && intersec_next(list, origin, ray, &intersect))
 		{
 			distsf = list->disthit;
 			sw = true;
 			curr = list;
 			intersect2 = intersect;
 		}
-		else if (nointersec != list && sw == true && intersec_next(list, origin, ray, &intersect) && distsf > list->disthit)
+		else if (sw == true && intersec_next(list, origin, ray, &intersect) && distsf > list->disthit)
 		{
 			distsf = list->disthit;
 			curr = list;
