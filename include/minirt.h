@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/28 19:18:04 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/29 14:52:19 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include "libft.h"
 
 //Resolution in Pixel
-# define RESOLUTION_X	400
-# define RESOLUTION_Y	300
+# define RESOLUTION_X	1920
+# define RESOLUTION_Y	1080
 //# define CAM_SIZE		10
 # define ANTI_ALIASING	0
 # define MAX_BOUNCES	10
@@ -172,7 +172,7 @@ t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, t_rgbof pcolor);
  * Calculates the intersecting vector for the given object and the camera
  * vector. The given object is expected to be a plane.
  */
-bool	intersec_plane(t_vector *cam, t_obj_l *objs, t_vector *ret);
+bool	intersec_plane(t_vector *cam, t_vector*, t_obj_l *objs, t_vector *ret);
 
 /*
  * Returns wether the given vector intersects an infinite plane with the given

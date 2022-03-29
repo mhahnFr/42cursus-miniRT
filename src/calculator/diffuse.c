@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/25 17:25:21 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 14:53:57 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ bool	diffuse_next(t_obj_l *objs, t_vector *start, t_vector *ray, t_vector *inter
 		ret = hit_sphere(start, objs, ray, inter);
 	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
 	{
-		ret = intersec_plane(ray, objs, inter);
+		ret = intersec_plane(ray, start, objs, inter);
 		//objs->disthit = vector_distance(start, inter);
 	}
 	//else if (objs->obj_type == CYLINDER)

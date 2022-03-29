@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:01:42 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 17:42:54 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 15:22:10 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	add_plane(char **line, t_mixer *m_data)
 		return (1);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
+	curr->next->position.y *= -1;
 	curr->next->normal = get_vector(line[2]);
 	curr->next->color = get_color(line[3]);
 	return (0);
@@ -42,6 +43,7 @@ int	add_sphere(char **line, t_mixer *m_data)
 		return (1);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
+	curr->next->position.y *= -1;
 	curr->next->height = ft_atof(line[2]);
 	curr->next->width = curr->height;
 	curr->next->color = get_color(line[3]);
@@ -60,6 +62,7 @@ int	add_cylinder(char **line, t_mixer *m_data)
 		return (1);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
+	curr->next->position.y *= -1;
 	curr->next->normal = get_vector(line[2]);
 	curr->next->height = ft_atof(line[3]);
 	curr->next->width = ft_atof(line[4]);

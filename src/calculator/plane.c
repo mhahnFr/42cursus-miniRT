@@ -6,37 +6,25 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:40:11 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/25 18:20:09 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 15:19:15 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-
-bool	intersec_plane(t_vector *cam, t_obj_l *objs, t_vector *point)
+bool	intersec_plane(
+		t_vector *cam, t_vector *cam_pos, t_obj_l *obj, t_vector *point)
 {
-	t_vector	vec2;
-	t_vector	vec_inter;
-	float		d;
+	float		t;
+	t_vector	inter;
 
-	vec2.x = cam->x;
-	vec2.y = cam->y;
-	vec2.z = cam->z;
-	vector_normalize(&vec2);
-	vector_multiply_digit(&vec_inter, &vec2, 0.5);
-	vector_multiply(&vec2, &vec_inter, cam);
-	vector_substract(&vec_inter, &(objs->position), &vec2);
-	d = vector_scalar_product(&vec_inter, &(objs->normal)) / vector_scalar_product(cam, &(objs->normal));
-	if (d < 0)
-		return (false);
-	vector_multiply_digit(&vec_inter, cam, d);
-	vector_addition(point, &vec2, &vec_inter);
-	objs->disthit = d;
-	if (vector_scalar_product(cam, &objs->normal) > 0)
-		vector_multiply_digit(&objs->col_normal, &objs->normal, -1);
-	else
-		objs->col_normal = objs->normal;
-	return (true);
+	vector_substract(&inter, &obj->position, cam_pos);
+	t = vector_scalar_product(&inter, &obj->normal)
+		/ vector_scalar_product(cam, &obj->normal);
+	obj->disthit = t;
+	vector_multiply_digit(&inter, cam, t);
+	vector_addition(point, cam_pos, &inter);
+	return (t >= 0.01f);
 }
 
 bool	fast_intersec_plane(t_vector *vec, t_vector *normal)

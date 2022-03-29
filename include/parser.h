@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:59:28 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 17:42:45 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 15:24:10 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSER_H
 
 # include "libft.h"
+# include "minirt.h"
 
 t_rgbof		get_color(char *src);
 t_vector	get_vector(char *src);

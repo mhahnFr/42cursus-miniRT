@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 12:06:09 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/29 15:19:36 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *int
 		ret = hit_sphere(origin, objs, ray, inter);
 	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
 	{
-		ret = intersec_plane(ray, objs, inter);
+		ret = intersec_plane(ray, origin, objs, inter);
 		objs->disthit = vector_distance(origin, inter);
 	}
 	//else if (objs->obj_type == CYLINDER)
@@ -81,7 +81,9 @@ bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_o
 		return (false);
 	}
 	inter = rgbof_light_strenght(&inter, origin, light, nointersec, curr);
-	vector_multiply(&intersect, &intersect, &inter);
+	//vector_multiply(&intersect, &intersect, &inter);
+	vector_addition(&intersect, &intersect, &inter);
+	vector_multiply_digit(&intersect, &intersect, 0.5f);
 	*color = vector_cast_rgbof(intersect);
 	return (true);
 }
@@ -96,7 +98,7 @@ bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_rgbof *color, t_vector interse
 	{
 		if (l->obj_type == LIGHT)
 		{
-			vector_substract(&ray, &intersect, &l->position);
+			vector_substract(&ray, &l->position, &intersect);
 			vector_normalize(&ray);
 			if (intersect_object(mixer, curr, &intersect, l, ray, color))
 				return (true);
@@ -136,7 +138,7 @@ bool	trace_hardshadow(t_mixer *mixer, t_rgbof *color, t_vector *origin, t_vector
 		list = list->next;
 	}
 	if (curr != NULL)
-		trace_light(mixer, curr, color, intersect2);
+		return trace_light(mixer, curr, color, intersect2);
 	return (curr != NULL);
 }
 
@@ -149,8 +151,7 @@ t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer)
 	cp.y = ray->y;
 	cp.z = ray->z;
 	color = color_cal_rgb(mixer->ambient.color, mixer->ambient.a_light);
-	trace_hardshadow(mixer, &color, origin, ray);
-	if (color.r == color.g && color.g == color.b && color.b == 0)
+	if (trace_hardshadow(mixer, &color, origin, ray))
 		color = diffuse_main(mixer, NULL, &cp);
 	return (color);
 }
