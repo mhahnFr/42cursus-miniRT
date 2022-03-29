@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 15:19:36 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/29 17:22:10 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 #include "vector.h"
 #include <math.h>
 
-t_vector	rgbof_light_strenght(t_vector *inter, t_vector *origin, t_obj_l *light, t_obj_l *ori, t_obj_l *curr)
+t_vector	rgbof_light_strenght(t_vector *inter, t_vector *origin, t_obj_l *light, t_obj_l *ori)
 {
-	float	fact;
+	t_vector	a;
+	t_vector	b;
 
+	// TODO Calculate lightloss along distance
 	*inter = rgbof_cast_vector(light->color);
-	fact = 0.0f;
-	vector_multiply_digit(inter, inter, fact);
+	a = rgbof_cast_vector(ori->color);
+	vector_multiply(&b, inter, &a);
+	vector_multiply_digit(inter, &b, light->brightness);
 	return (*inter);
 }
 
@@ -71,25 +74,31 @@ bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_o
 		}
 		list = list->next;
 	}
-	intersect = rgbof_cast_vector(nointersec->color);
-	//inter2 = rgbof_cast_vector(mixer->ambient.color);
-	//vector_multiply(&intersect, &inter2, &intersect);
-	//vector_multiply_digit(&intersect, &intersect, mixer->ambient.a_light);
+	t_vector col = rgbof_cast_vector(nointersec->color);
+	t_vector amb = rgbof_cast_vector(mixer->ambient.color);
+	vector_multiply(&inter, &col, &amb);
+	vector_multiply_digit(&col, &inter, mixer->ambient.a_light);
 	if (curr == NULL)
 	{
-		*color = vector_cast_rgbof(intersect);
+		intersect = col;
+		inter = rgbof_light_strenght(&inter, origin, light, nointersec);
+		t_vector v;
+		vector_create(&v, mixer->ambient.a_light, light->brightness, 0);
+		vector_normalize(&v);
+		vector_multiply_digit(&inter, &inter, v.y);
+		vector_multiply_digit(&col, &col, v.x);
+		vector_addition(&inter, &inter, &col);
+		//vector_multiply_digit(&inter, &inter, 0.5f);
+		*color = vector_cast_rgbof(inter);
 		return (false);
 	}
-	inter = rgbof_light_strenght(&inter, origin, light, nointersec, curr);
-	//vector_multiply(&intersect, &intersect, &inter);
-	vector_addition(&intersect, &intersect, &inter);
-	vector_multiply_digit(&intersect, &intersect, 0.5f);
-	*color = vector_cast_rgbof(intersect);
+	*color = vector_cast_rgbof(col);
 	return (true);
 }
 
 bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_rgbof *color, t_vector intersect)
 {
+	t_vector	inter;
 	t_vector	ray;
 	t_obj_l		*l;
 
