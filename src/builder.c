@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:49:44 by mhahn             #+#    #+#             */
-/*   Updated: 2022/03/28 18:46:40 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 15:39:39 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	rt_cam_init(t_mixer *mixer)
 			mixer->cam.vecs[i][ii].x = s.x + (mixer->cam.step.x * ii);
 			mixer->cam.vecs[i][ii].y = s.y + (mixer->cam.step.y * i);
 			mixer->cam.vecs[i][ii].z = s.z;
-			vector_normalize(&mixer->cam.vecs[i][ii]);
+			//vector_normalize(&mixer->cam.vecs[i][ii]);
 			ii++;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/26 18:27:17 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/29 15:32:30 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	add_ambient(char **line, t_ambient *ambient)
 int	add_camera(char **line, t_cam *camera)
 {
 	camera->position = get_vector(line[1]);
+	camera->position.y *= -1;
 	camera->normal = get_vector(line[2]);
 	vector_normalize(&(camera->normal));
 	camera->fov = ft_atoi(line[3]);
@@ -95,6 +96,7 @@ int	add_light(char **line, t_mixer *data)
 	}
 	data->obj_list->emitter = true;
 	data->obj_list->position = get_vector(line[1]);
+	data->obj_list->position.y *= -1;
 	data->obj_list->brightness = ft_atof(line[2]);
 	data->obj_list->color = get_color(line[3]);
 	data->obj_list->obj_type = LIGHT;
@@ -115,6 +117,7 @@ int	add_plane(char **line, t_mixer *m_data)
 	curr->next->emitter = false;
 	curr->next->obj_type = PLANE;
 	curr->next->position = get_vector(line[1]);
+	curr->next->position.y *= -1;
 	curr->next->normal = get_vector(line[2]);
 	vector_normalize(&(curr->next->normal));
 	curr->next->color = get_color(line[3]);
@@ -134,6 +137,7 @@ int	add_sphere(char **line, t_mixer *m_data)
 		return (1);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
+	curr->next->position.y *= -1;
 	curr->next->height = ft_atof(line[2]);
 	curr->next->obj_type = SPHERE;
 	curr->next->width = curr->height;
@@ -154,6 +158,7 @@ int	add_cylinder(char **line, t_mixer *m_data)
 		return (1);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
+	curr->next->position.y *= -1;
 	curr->next->normal = get_vector(line[2]);
 	vector_normalize(&(curr->next->normal));
 	curr->next->height = ft_atof(line[3]);

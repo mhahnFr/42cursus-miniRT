@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 14:52:19 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/29 15:54:53 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 # include "libft.h"
 
 //Resolution in Pixel
-# define RESOLUTION_X	1920
-# define RESOLUTION_Y	1080
+# define RESOLUTION_X	1080
+# define RESOLUTION_Y	720
 //# define CAM_SIZE		10
-# define ANTI_ALIASING	0
+# define ANTI_ALIASING	5
 # define MAX_BOUNCES	10
 //objecttypes
 # define CAMERA		   -2

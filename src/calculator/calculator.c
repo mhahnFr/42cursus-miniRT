@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 11:46:20 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/03/29 15:51:19 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,31 +44,18 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 	}
 	printf("finished!\n");
 }
-/*
-t_vector	*vector_rand(t_vector *self, float j, float i)
-{
-	t_vector	inter;
-	t_vector	u;
-	t_vector	v;
-	float		angle_x;
-	float		angle_y;
 
-	i += (float) (rand() % 10) / 10;
-	j += (float) (rand() % 10) / 10;
-	angle_x = (float) j / RESOLUTION_X;
-	angle_y = (float) i / RESOLUTION_Y;
-	vector_create(&inter, RESOLUTION_X, 0, 0);
-	vector_multiply_digit(&u, &inter, angle_x);
-	vector_create(&inter, 0, RESOLUTION_Y, 0);
-	vector_multiply_digit(&v, &inter, angle_y);
-	vector_addition(&inter, &u, &v);
-	vector_create(&u, -(((float )RESOLUTION_X) / 2), -(((float) RESOLUTION_Y) / 2), -(((float) RESOLUTION_Y)/ 2));
-	vector_addition(self, &u, &inter);
-	vector_normalize(self);
+t_vector	vector_rand(t_vector self, float j, float i, t_vector step)
+{
+	//printf("%f %f %f\n", self.x, self.y, self.z);
+	self.x += (float) ((float)(arc4random() % 10) / 10) * step.x;
+	self.y += (float) ((float)(arc4random() % 10) / 10) * step.y;
+	//printf("%f %f %f\n", self.x, self.y, self.z);
+	vector_normalize(&self);
 	return (self);
 }
-*/
-t_vector	*get_cam_ray(t_vector *self, float j, float i, t_cam cam)
+
+/* t_vector	*get_cam_ray(t_vector *self, float j, float i, t_cam cam)
 {
 	t_vector	inter;
 	t_vector	inter2;
@@ -88,7 +75,7 @@ t_vector	*get_cam_ray(t_vector *self, float j, float i, t_cam cam)
 	vector_normalize(self);
 	
 	return (self);
-}
+} */
 
 t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 {
@@ -96,16 +83,20 @@ t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 	int		i;
 	t_rgbof	color;
 	t_rgbof	add;
+	t_vector	inter;
 
 	i = ANTI_ALIASING;
-	color = calc_shader(&(mixer->cam.position), cam_vec, mixer);
+	inter = *cam_vec;
+	vector_normalize(&inter);
+	color = calc_shader(&(mixer->cam.position), &inter, mixer);
 	color.cal_r = color.r;
 	color.cal_g = color.g;
 	color.cal_b = color.b;
 	while (i > 0)
 	{
 		//vector_rand has to take t_cam and x,y -> calculate with rand48() a random moved vector inbetween pixels for better result
-		add = calc_shader(&(mixer->cam.position), get_cam_ray(cam_vec, x, y, mixer->cam), mixer);
+		inter = vector_rand(*cam_vec, x, y, mixer->cam.step);
+		add = calc_shader(&(mixer->cam.position), &inter, mixer);
 		color = color_add_cal(color, add);
 		i--;
 	}
