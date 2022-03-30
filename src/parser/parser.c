@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/30 11:14:38 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/30 16:02:46 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,10 @@ int	add_light(char **line, t_mixer *data)
 	curr->next->position.y *= -1;
 	curr->next->brightness = ft_atof(line[2]);
 	curr->next->color = get_color(line[3]);
+	if (line[4] != NULL)
+		curr->next->intensity = ft_atof(line[4]);
+	else
+		curr->next->intensity = 20;
 	curr->next->obj_type = LIGHT;
 	ft_free_char_arr(line);
 	return (0);

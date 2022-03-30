@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 20:35:09 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/30 16:20:14 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,13 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 		return (inter);
 	}
 	else
-		return (rgbof_cast_vector(mixer->ambient.color));
+	{
+		t_vector	ret;
+	
+		ret = rgbof_cast_vector(mixer->ambient.color);
+		//vector_multiply_digit(&ret, &ret, mixer->ambient.a_light);
+		return (ret);
+	}
 }
 
 t_vector	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:39:55 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 18:06:48 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/30 11:24:43 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int	check_light(char **splitline)
 	if (ft_atof(splitline[2]) < 0 || ft_atof(splitline[2]) > 1)
 		return (1);
 	if (check_rgb(splitline[3]))
+		return (1);
+	if (splitline[4] != NULL && check_float(splitline[4]))
 		return (1);
 	return (0);
 }
