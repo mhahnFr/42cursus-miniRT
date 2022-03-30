@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/30 16:22:42 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/30 17:21:10 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,14 +123,25 @@ t_rgbof	sumup_light(t_mixer *mixer, t_col *col_sum)
 
 float	light_distance_factor(float length, float brightness, float intensity)
 {
-	if (length < intensity)
-		return (brightness);
-	length = intensity / length;
-	brightness *= length;
-	if (brightness > 0)
-		return (brightness);
-	else
-		return (0);
+	int		inter;
+	float	inter2;
+	int	i;
+
+	i = 0;
+	//return(brightness);
+	inter2 = length / intensity;
+	if (inter2 < intensity)
+		return (brightness * inter2 * 2);
+	inter = length / intensity;
+	//printf("%f %f\n",inter);
+	inter2 = brightness * 0.5;
+	while (++i < inter)
+		inter2 /= 2.0f;
+	inter = length - inter;
+	inter2 = inter2 * (2.0f * ((float) inter / intensity));
+	if (inter2 < 0.1)
+		return (0.1);
+	return (inter2);
 }
 
 bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector intersect)
@@ -160,11 +171,14 @@ bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector interse
 				length = light_distance_factor(length, l->brightness, l->intensity);
 				//col_sum->sum[col_sum->l_count] = rgbof_cast_vector(l->color);
 				//length = l->brightness;
-				col_sum->fac[col_sum->l_count++] = length;
-				if (col_sum->l_count == 1)
-					ret = false;
-				if (length < l->brightness)
-					ret = true;
+				if (length != 0)
+				{
+					col_sum->fac[col_sum->l_count++] = length;
+					if (col_sum->l_count == 1)
+						ret = false;
+					//if (length < l->brightness)
+					//	ret = true;
+				}
 			}
 		}
 		l = l->next;
