@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 20:47:36 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/30 11:11:51 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ typedef struct s_mixer {
 	t_obj_l				*obj_list;
 	struct s_cam		cam;
 	struct s_ambient	ambient;
+	struct s_col_calc	col_sum;
 	int					light_count;
 	t_diff				diff_sh;
 }	t_mixer;

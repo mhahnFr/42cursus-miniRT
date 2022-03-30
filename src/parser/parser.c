@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 19:37:48 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/30 11:14:38 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include "vector.h"
 #include "libft.h"
 #include "minirt.h"
 
@@ -244,5 +245,7 @@ int	parser(char **buffer, t_mixer *m_data, int size)
 	}
 	if (m_data->light_count == 0)
 		return (5);
+	m_data->col_sum.sum = ft_calloc(1, (m_data->light_count + 2) * sizeof(t_vector));
+	m_data->col_sum.fac = ft_calloc(1, (m_data->light_count + 2) * sizeof(float));
 	return (0);
 }
