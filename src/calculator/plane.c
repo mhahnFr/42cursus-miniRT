@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:40:11 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/31 19:03:10 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/31 19:06:53 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	intersec_plane(
 	t = vector_scalar_product(&inter, &obj->normal)
 		/ vector_scalar_product(cam, &obj->normal);
 	obj->disthit = t;
-	if (vector_scalar_product(cam, &obj->normal) < 0)
+	if (vector_scalar_product(cam, &obj->normal) > 0)
 		vector_multiply_digit(&obj->col_normal, &obj->normal, -1);
 	else
 		obj->col_normal = obj->normal;
