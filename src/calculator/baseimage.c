@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/31 17:50:33 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/31 17:52:06 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,8 +182,6 @@ bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector interse
 	return (ret);
 }
 
-<<<<<<< HEAD
-=======
 t_vector	trace_next(t_mixer *mixer, t_vector intersect, t_vector ray, t_obj_l *curr)
 {
 	t_vector	color;
@@ -198,7 +196,6 @@ t_vector	trace_next(t_mixer *mixer, t_vector intersect, t_vector ray, t_obj_l *c
 	return (color);
 }
 
->>>>>>> 23f0e633b7d4dd0c7e289bf7b1de9ddf3133c56a
 bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector *ray)
 {
 	t_vector	intersect;
@@ -233,10 +230,6 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 		//printf("%f %f\n", curr->diffusion, curr->reflec_fac);
 		colsum->diff = rgbof_cast_vector(mixer->ambient.color);
 		intersect = rgbof_cast_vector(curr->color);
-<<<<<<< HEAD
-		vector_multiply(&colsum->diff, &colsum->diff, &intersect);
-		return trace_light(mixer, curr, colsum, intersect2);
-=======
 		//vector_multiply(&colsum->diff, &colsum->diff, &intersect);
 		t_vector s_col, l_col;
 		vector_create(&s_col, 1, 1, 1);
@@ -251,7 +244,6 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 		if (curr->reflec_fac < 1)
 			vector_multiply(&intersect, &intersect, &intersect2);
 		vector_multiply(&colsum->diff, &colsum->diff, &intersect);
->>>>>>> 23f0e633b7d4dd0c7e289bf7b1de9ddf3133c56a
 	}
 	return (curr != NULL);
 }
