@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/31 15:54:00 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/31 17:03:59 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,11 @@ bool	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector interse
 	return (ret);
 }
 
+t_vector	trace_next(t_mixer *mixer, t_vector intersect, t_vector ray, t_obj_l *curr)
+{
+	;
+}
+
 bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector *ray)
 {
 	t_vector	intersect;
@@ -216,7 +221,11 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 		colsum->diff = rgbof_cast_vector(mixer->ambient.color);
 		intersect = rgbof_cast_vector(curr->color);
 		vector_multiply(&colsum->diff, &colsum->diff, &intersect);
-		return trace_light(mixer, curr, colsum, intersect2);
+		if (curr->reflec_fac > 0)
+			t_vector s_col = trace_next(mixer, intersect, ray, curr);
+		if (curr->reflec_fac < 1)
+			t_vector l_col = trace_light(mixer, curr, colsum, intersect2);
+		// s_col mit l_col verrechnen!!!
 	}
 	return (curr != NULL);
 }
