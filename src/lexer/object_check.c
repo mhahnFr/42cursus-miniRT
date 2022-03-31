@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:42:30 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 17:40:16 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/31 16:05:27 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_sphere(char **splitline)
 {
-	if (ft_char_arr_len(splitline) < 4)
+	if (ft_char_arr_len(splitline) < 6)
 		return (1);
 	if (check_vector(splitline[1]))
 		return (1);
@@ -22,27 +22,35 @@ int	check_sphere(char **splitline)
 		return (1);
 	if (ft_atof(splitline[2]) < 0)
 		return (1);
-	if (check_rgb(splitline[3]))
+	if (check_float(splitline[3]) < 0 || check_float(splitline[3]) > 1)
+		return (1);
+	if (check_float(splitline[4]) < 0 || check_float(splitline[4]) > 1)
+		return (1);
+	if (check_rgb(splitline[5]))
 		return (1);
 	return (0);
 }
 
 int	check_plane(char **splitline)
 {
-	if (ft_char_arr_len(splitline) < 4)
+	if (ft_char_arr_len(splitline) < 6)
 		return (1);
 	if (check_vector(splitline[1]))
 		return (1);
 	if (check_orientation(splitline[2]))
 		return (1);
-	if (check_rgb(splitline[3]))
+	if (check_float(splitline[3]) < 0 || check_float(splitline[3]) > 1)
+		return (1);
+	if (check_float(splitline[4]) < 0 || check_float(splitline[4]) > 1)
+		return (1);
+	if (check_rgb(splitline[5]))
 		return (1);
 	return (0);
 }
 
 int	check_cylinder(char **splitline)
 {
-	if (ft_char_arr_len(splitline) < 6)
+	if (ft_char_arr_len(splitline) < 8)
 		return (1);
 	if (check_vector(splitline[1]))
 		return (1);

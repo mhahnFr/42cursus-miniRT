@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/30 16:02:46 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/31 16:02:57 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,9 @@ int	add_plane(char **line, t_mixer *m_data)
 	curr->next->position.y *= -1;
 	curr->next->normal = get_vector(line[2]);
 	vector_normalize(&(curr->next->normal));
-	curr->next->color = get_color(line[3]);
+	curr->next->diffusion = ft_atof(line[3]);
+	curr->next->reflec_fac = ft_atof(line[4]);
+	curr->next->color = get_color(line[5]);
 	curr->next->next = NULL;
 	return (0);
 }
@@ -154,9 +156,11 @@ int	add_sphere(char **line, t_mixer *m_data)
 	curr->next->position = get_vector(line[1]);
 	curr->next->position.y *= -1;
 	curr->next->height = ft_atof(line[2]);
+	curr->next->diffusion = ft_atof(line[3]);
+	curr->next->reflec_fac = ft_atof(line[4]);
+	curr->next->color = get_color(line[5]);
 	curr->next->obj_type = SPHERE;
 	curr->next->width = curr->height;
-	curr->next->color = get_color(line[3]);
 	curr->next->next = NULL;
 	return (0);
 }
