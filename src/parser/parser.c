@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/31 16:02:57 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/31 16:07:43 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,9 @@ int	add_cylinder(char **line, t_mixer *m_data)
 	vector_normalize(&(curr->next->normal));
 	curr->next->height = ft_atof(line[3]);
 	curr->next->width = ft_atof(line[4]);
-	curr->next->color = get_color(line[5]);
+	curr->next->diffusion = ft_atof(line[5]);
+	curr->next->reflec_fac = ft_atof(line[6]);
+	curr->next->color = get_color(line[7]);
 	curr->next->obj_type = CYLINDER;
 	curr->next->next = NULL;
 	return (0);	
