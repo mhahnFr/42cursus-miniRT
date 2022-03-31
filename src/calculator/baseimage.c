@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/31 15:54:00 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/31 16:17:14 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,7 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 	}
 	if (curr != NULL)
 	{
+		//printf("%f %f\n", curr->diffusion, curr->reflec_fac);
 		colsum->diff = rgbof_cast_vector(mixer->ambient.color);
 		intersect = rgbof_cast_vector(curr->color);
 		vector_multiply(&colsum->diff, &colsum->diff, &intersect);
