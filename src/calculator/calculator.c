@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/30 11:16:15 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/31 17:46:33 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ void	draw_point(int x, int y, t_renderer_image *buf, t_rgbof color)
 {
 	char	*dst;
 
-	dst = buf->raw + (long)x * (buf->depth / 8) + (long)y
-		* buf->line_size;
+	dst = buf->raw + (long)x * (buf->depth / 8) + (long)y * buf->line_size;
 	*(unsigned int *) dst = (0 << 24) + (color.r << 16) + (color.g << 8)
 	+ (color.b << 0);
 }
