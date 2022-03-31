@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/30 17:21:10 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/31 13:05:21 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_rgbof	sumup_light(t_mixer *mixer, t_col *col_sum)
 	int	i;
 	i = 0;
 	vector_create(&final_color, 0, 0, 0);;
-	fac_sum = 1.0f / (col_sum->l_count + 1);
+	fac_sum = 1.0f / (mixer->light_count + 1);
 	i = 0;
 	while (i < col_sum->l_count)
 	{
@@ -128,19 +128,15 @@ float	light_distance_factor(float length, float brightness, float intensity)
 	int	i;
 
 	i = 0;
-	//return(brightness);
 	inter2 = length / intensity;
-	if (inter2 < intensity)
-		return (brightness * inter2 * 2);
+	if (length < intensity)
+		return (brightness - (brightness * 0.5f * inter2));
 	inter = length / intensity;
-	//printf("%f %f\n",inter);
-	inter2 = brightness * 0.5;
-	while (++i < inter)
-		inter2 /= 2.0f;
-	inter = length - inter;
-	inter2 = inter2 * (2.0f * ((float) inter / intensity));
-	if (inter2 < 0.1)
-		return (0.1);
+	inter2 /= powf(inter, 2.0f);
+	length = length - inter;
+	inter2 = inter2 - ((float) length / intensity) * 0.5f;
+	if (inter2 < 0.1f)
+		return (0.1f);
 	return (inter2);
 }
 
