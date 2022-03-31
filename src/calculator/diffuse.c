@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/30 16:20:14 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/03/31 17:29:45 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,32 +92,40 @@ bool	diffuse_nearest(t_mixer *mixer, t_diff *diff, t_vector *start, t_vector *re
 	return (sw);
 }
 
-t_vector	diffuse_rand()
+t_vector	diffuse_rand(t_diff diff, t_vector intersect)
 {
 	t_vector	tmp;
+	t_vector	reflection;
+	float		inter;
 	float x, y, z;
 	
-	x = (float) (arc4random() % 100) / 100;
-	y = (float) (arc4random() % 100) / 100;
-	z = (float) (arc4random() % 100) / 100;
-	tmp.x = x - 0.5;
-	tmp.y = y - 0.5;
-	tmp.z = z - 0.5;
+	inter = vector_scalar_product(diff.ray, &diff.hit->col_normal);
+	if (inter < 0)
+		inter *= -1;
+	vector_multiply_digit(&reflection, &diff.hit->col_normal, inter * 2);
+	vector_addition(&reflection, &reflection, diff.ray);
+	x = (float) drand48();
+	y = (float) drand48();
+	z = (float) drand48();
+	tmp.x = (x - 0.5) * (diff.hit->diffusion * 0.5);
+	tmp.y = (y - 0.5) * (diff.hit->diffusion * 0.5);
+	tmp.z = (z - 0.5) * (diff.hit->diffusion * 0.5);
 	vector_normalize(&tmp);
+	vector_addition(&tmp, &tmp, &reflection);
 	return (tmp);
 }
 
-t_vector	diffuse_randi1() {
-	t_vector ret;
-	t_vector inter;
-
-	do {
-		vector_create(&inter, drand48(), drand48(), drand48());
-		vector_multiply_digit(&inter, &inter, 2);
-		vector_create(&ret, inter.x - 1, inter.y - 1, inter.z - 1);
-	} while ((ret.x * ret.x + ret.y * ret.y + ret.z * ret.z) >= 1);
-	return (ret);
-}
+//t_vector	diffuse_randi1() {
+//	t_vector ret;
+//	t_vector inter;
+//
+//	do {
+//		vector_create(&inter, drand48(), drand48(), drand48());
+//		vector_multiply_digit(&inter, &inter, 2);
+//		vector_create(&ret, inter.x - 1, inter.y - 1, inter.z - 1);
+//	} while ((ret.x * ret.x + ret.y * ret.y + ret.z * ret.z) >= 1);
+//	return (ret);
+//}
 
 t_rgbof	vector_cast_rgbof(t_vector vec)
 {
@@ -146,10 +154,7 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 
 	if (diff.ray_count < MAX_BOUNCES && diffuse_nearest(mixer, &diff, diff.origin, result))
 	{
-		vector_addition(&inter, result, &diff.hit->col_normal);
-		inter2 = diffuse_rand();
-		vector_addition(&inter3, &inter, &inter2); // = target
-		vector_substract(diff.ray, &inter3, result);
+		*diff.ray = diffuse_rand(diff, *result);
 		diff.origin = vector_new(result->x, result->y, result->z);
 		diff.ray_count += 1;
 		inter2 = diffuse_get(mixer, diff, result);
