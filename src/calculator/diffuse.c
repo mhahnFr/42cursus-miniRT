@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/01 13:39:54 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/01 19:14:03 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,9 @@ t_vector	diffuse_rand(t_diff diff, t_vector intersect)
 		inter *= -1;
 	vector_multiply_digit(&reflection, &diff.hit->col_normal, inter * 2);
 	vector_addition(&reflection, &reflection, diff.ray);
-	x = (float) drand48();
-	y = (float) drand48();
-	z = (float) drand48();
+	x = (float) drand48() + reflection.x;
+	y = (float) drand48() + reflection.y;
+	z = (float) drand48() + reflection.z;
 	tmp.x = (x - 0.5) * (diff.hit->diffusion * 0.5);
 	tmp.y = (y - 0.5) * (diff.hit->diffusion * 0.5);
 	tmp.z = (z - 0.5) * (diff.hit->diffusion * 0.5);

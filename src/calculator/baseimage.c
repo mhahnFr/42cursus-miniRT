@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/01 17:11:52 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/01 19:13:44 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 #include "vector.h"
 #include <math.h>
 
-t_vector	rgbof_light_strenght(t_vector *inter, t_vector *origin, t_obj_l *light, t_obj_l *ori)
-{
-	t_vector	a;
-
-	// TODO Calculate lightloss along distance
-	if (light == NULL)
-		return (rgbof_cast_vector(ori->color));
-	*inter = rgbof_cast_vector(light->color);
-	a = rgbof_cast_vector(ori->color);
-	vector_multiply(inter, inter, &a);
-	//vector_multiply_digit(inter, &b, light->brightness);
-	return (*inter);
-}
+//t_vector	rgbof_light_strenght(t_vector *inter, t_vector *origin, t_obj_l *light, t_obj_l *ori)
+//{
+//	t_vector	a;
+//
+//	// TODO Calculate lightloss along distance
+//	if (light == NULL)
+//		return (rgbof_cast_vector(ori->color));
+//	*inter = rgbof_cast_vector(light->color);
+//	a = rgbof_cast_vector(ori->color);
+//	vector_multiply(inter, inter, &a);
+//	//vector_multiply_digit(inter, &b, light->brightness);
+//	return (*inter);
+//}
 
 bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *inter)
 {
@@ -183,14 +183,37 @@ t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector int
 	//return (rgbof_cast_vector(curr->color));
 }
 
+t_vector	trace_rand(t_vector ray, t_vector normal, float diffusion)
+{
+	t_vector	tmp;
+	t_vector	reflection;
+	float		inter;
+	float x, y, z;
+	
+	inter = vector_scalar_product(&ray, &normal);
+	if (inter < 0)
+		inter *= -1;
+	vector_multiply_digit(&reflection, &normal, inter * 2);
+	vector_addition(&reflection, &reflection, &ray);
+	if (diffusion == 0)
+		return (reflection);
+	x = (float) drand48();
+	y = (float) drand48();
+	z = (float) drand48();
+	tmp.x = ((x - 0.5) * diffusion) + reflection.x;
+	tmp.y = ((y - 0.5) * diffusion) + reflection.y;
+	tmp.z = ((z - 0.5) * diffusion) + reflection.z;
+	vector_normalize(&tmp);
+	vector_addition(&tmp, &tmp, &reflection);
+	return (tmp);
+}
+
 t_vector	trace_next(t_mixer *mixer, t_vector intersect, t_vector ray, t_obj_l *curr)
 {
 	t_vector	inter;
 	t_vector	inter2;
 
-	vector_multiply_digit(&inter, &curr->col_normal, 2);
-	vector_multiply_digit(&inter2, &inter, fabsf(vector_scalar_product(&ray, &curr->col_normal)));
-	vector_addition(&ray, &ray, &inter2);
+	ray = trace_rand(ray, curr->col_normal, curr->diffusion);
 	return (rgbof_cast_vector(calc_shader(&intersect, &ray, mixer, &mixer->col_sum)));
 }
 
@@ -262,7 +285,10 @@ t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, t_col *col_
 	if (bounces == MAX_BOUNCES + 1)
 		return (mixer->ambient.color);
 	col_sum->sw = false;
-	color = color_rgb(mixer->ambient.color.r , mixer->ambient.color.g, mixer->ambient.color.g);
+	//if (bounces == 1)
+		color = color_rgb(mixer->ambient.color.r , mixer->ambient.color.g, mixer->ambient.color.g);
+	//else
+	//	color = color_rgb(mixer->ambient.color.r * mixer->ambient.a_light, mixer->ambient.color.g * mixer->ambient.a_light, mixer->ambient.color.g * mixer->ambient.a_light);
 	col_sum->diff = rgbof_cast_vector(color);
 	//color = color_cal_rgb(mixer->ambient.color, mixer->ambient.a_light);
 	if (trace_hardshadow(mixer, col_sum, origin, ray))
