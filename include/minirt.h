@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/01 13:26:07 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/01 17:07:13 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define RESOLUTION_Y	720
 //# define CAM_SIZE		10
 # define ANTI_ALIASING	10
-# define MAX_BOUNCES	10
+# define MAX_BOUNCES	2
 //objecttypes
 # define CAMERA		   -2
 # define AMBIENT	   -1
