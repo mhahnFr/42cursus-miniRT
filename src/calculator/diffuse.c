@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/31 17:29:45 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/01 13:39:54 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,14 @@ t_rgbof	vector_cast_rgbof(t_vector vec)
 {
 	t_rgbof	c;
 
+	if (vec.x > 1)
+		vec.x = 1;
 	c.r = vec.x * 255;
+	if (vec.y > 1)
+		vec.y = 1;
 	c.g = vec.y * 255;
+	if (vec.z > 1)
+		vec.z = 1;
 	c.b = vec.z * 255;
 	return (c);
 }

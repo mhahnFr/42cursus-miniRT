@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/31 16:07:43 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/01 13:36:54 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int	add_light(char **line, t_mixer *data)
 		curr->next->intensity = 20;
 	curr->next->obj_type = LIGHT;
 	ft_free_char_arr(line);
+	curr->next->next = NULL;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/01 11:59:21 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/01 13:58:40 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,14 @@ t_rgbof	sumup_light(t_mixer *mixer, t_col *col_sum)
 	i = 0;
 	while (i < col_sum->l_count)
 	{
-		vector_multiply_digit(&(col_sum->sum[i]), &(col_sum->sum[i]), (col_sum->fac[i] * fac_sum));
+		vector_multiply_digit(&(col_sum->sum[i]), &(col_sum->sum[i]), (col_sum->fac[i]/* * fac_sum*/));
 		vector_addition(&final_color, &final_color, &(col_sum->sum[i]));
 		i++;
 	}
 	//if (i == 0)
 	//final_color = col_sum->diff;
-	vector_multiply_digit(&inter, &col_sum->diff, mixer->ambient.a_light * fac_sum);
-	vector_addition(&final_color, &final_color, &inter);
+	//vector_multiply_digit(&inter, &col_sum->diff, mixer->ambient.a_light/* * fac_sum*/);
+	//vector_addition(&final_color, &final_color, &inter);
 	//vector_multiply_digit(&final_color, &final_color, fac_sum);
 	color = vector_cast_rgbof(final_color);
 	return (color);
@@ -164,6 +164,7 @@ t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector int
 			if (!intersect_object(mixer, curr, &intersect, l, ray, &added))
 			{
 				vector_multiply_digit(&added, &added, l->brightness);
+				// TODO Add lights up
 				return (added);
 				col_sum->sum[col_sum->l_count] = added;
 				length = light_distance_factor(length, l->brightness, l->intensity);
@@ -251,21 +252,28 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 
 t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, t_col *col_sum)
 {
+	static int	bounces = 0;
 	t_rgbof		color;
 	t_vector	cp;
 
 	cp.x = ray->x;
 	cp.y = ray->y;
 	cp.z = ray->z;
+	bounces++;
+	if (bounces == MAX_BOUNCES + 1)
+		return (mixer->ambient.color);
 	col_sum->sw = false;
 	color = color_rgb(mixer->ambient.color.r * mixer->ambient.a_light, mixer->ambient.color.g * mixer->ambient.a_light, mixer->ambient.color.g * mixer->ambient.a_light);
 	//color = color_cal_rgb(mixer->ambient.color, mixer->ambient.a_light);
 	if (trace_hardshadow(mixer, col_sum, origin, ray) || col_sum->l_count != mixer->light_count)
 	{
-		col_sum->diff = diffuse_main(mixer, NULL, &cp);
+		//col_sum->diff = diffuse_main(mixer, NULL, &cp);
+		//col_sum->diff = rgbof_cast_vector(mixer->ambient.color);
+		//vector_create(&col_sum->diff, 127, 127, 127);
 		col_sum->sw = true;	
 	}
 	if (col_sum->l_count > 0 || col_sum->sw)
 		color = sumup_light(mixer, col_sum);
+	bounces = 0;
 	return (color);
 }
