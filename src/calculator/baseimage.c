@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/31 18:15:24 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/01 11:59:21 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 t_vector	rgbof_light_strenght(t_vector *inter, t_vector *origin, t_obj_l *light, t_obj_l *ori)
 {
 	t_vector	a;
-	t_vector	b;
 
 	// TODO Calculate lightloss along distance
 	if (light == NULL)
@@ -148,10 +147,9 @@ t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector int
 	t_vector	ray;
 	t_vector	added;
 	float		length;
-	
+	t_obj_l		*l;
 	bool		ret;
 	
-	t_obj_l		*l;
 	ret = true;
 	col_sum->l_count = 0;
 	l = mixer->obj_list;
@@ -188,15 +186,12 @@ t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector int
 
 t_vector	trace_next(t_mixer *mixer, t_vector intersect, t_vector ray, t_obj_l *curr)
 {
-	t_vector	color;
 	t_vector	inter;
 	t_vector	inter2;
 
 	vector_multiply_digit(&inter, &curr->col_normal, 2);
 	vector_multiply_digit(&inter2, &inter, fabsf(vector_scalar_product(&ray, &curr->col_normal)));
 	vector_addition(&ray, &ray, &inter2);
-	//if (!intersect_object(mixer, curr, &intersect, NULL, ray, &color))
-	//	color = rgbof_cast_vector(mixer->ambient.color);
 	return (rgbof_cast_vector(calc_shader(&intersect, &ray, mixer, &mixer->col_sum)));
 }
 
