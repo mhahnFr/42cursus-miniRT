@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/01 19:14:03 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/03 17:55:32 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <float.h>
-
-/* bool	calc_intersection_plane(t_vector *cam, t_obj_l *objs, t_vector *point)
-{
-	t_vector	vec2;
-	t_vector	vec_inter;
-	float		d;
-
-	vec2.x = cam->x;
-	vec2.y = cam->y;
-	vec2.z = cam->z;
-	vector_normalize(&vec2);
-	vector_multiply_digit(&vec_inter, &vec2, 0.5);
-	vector_multiply(&vec2, &vec_inter, cam);
-	vector_substract(&vec_inter, &(objs->position), &vec2);
-	d = vector_scalar_product(&vec_inter, &(objs->normal)) / vector_scalar_product(cam, &(objs->normal));
-	if (d < 0)
-		return (false);
-	vector_multiply_digit(&vec_inter, cam, d);
-	vector_addition(point, &vec2, &vec_inter);
-	objs->disthit = d;
-	objs->col_normal = objs->normal;
-	return (true);
-} */
 
 bool	diffuse_next(t_obj_l *objs, t_vector *start, t_vector *ray, t_vector *inter)
 {
@@ -51,6 +28,8 @@ bool	diffuse_next(t_obj_l *objs, t_vector *start, t_vector *ray, t_vector *inter
 		ret = intersec_plane(ray, start, objs, inter);
 		//objs->disthit = vector_distance(start, inter);
 	}
+	//else if (objs->obj_type == LIGHT)
+	//	ret = specular_highlight(start, objs, ray, inter);
 	//else if (objs->obj_type == CYLINDER)
 	//	return (calc_intersection_cylinder(mixer->cam, objs, ray))
 	return (ret);

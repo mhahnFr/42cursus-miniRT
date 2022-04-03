@@ -6,27 +6,13 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/01 19:13:44 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/03 19:04:09 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "vector.h"
 #include <math.h>
-
-//t_vector	rgbof_light_strenght(t_vector *inter, t_vector *origin, t_obj_l *light, t_obj_l *ori)
-//{
-//	t_vector	a;
-//
-//	// TODO Calculate lightloss along distance
-//	if (light == NULL)
-//		return (rgbof_cast_vector(ori->color));
-//	*inter = rgbof_cast_vector(light->color);
-//	a = rgbof_cast_vector(ori->color);
-//	vector_multiply(inter, inter, &a);
-//	//vector_multiply_digit(inter, &b, light->brightness);
-//	return (*inter);
-//}
 
 bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *inter)
 {
@@ -40,6 +26,8 @@ bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *int
 		ret = intersec_plane(ray, origin, objs, inter);
 		objs->disthit = vector_distance(origin, inter);
 	}
+	else if (objs->obj_type == LIGHT)
+		ret = specular_highlight(origin, objs, ray, inter);
 	//else if (objs->obj_type == CYLINDER)
 	//	return (calc_intersection_cylinder(origin, objs, ray, inter))
 	return (ret);
@@ -60,14 +48,14 @@ bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_o
 	list = mixer->obj_list;
 	while (list != NULL)
 	{
-		if (sw == false && intersec_next(list, origin, &ray, &intersect))
+		if (sw == false && list->obj_type != LIGHT && intersec_next(list, origin, &ray, &intersect))
 		{
 			inter = intersect;
 			distsf = list->disthit;
 			sw = true;
 			curr = list;
 		}
-		else if (sw == true && intersec_next(list, origin, &ray, &intersect) && distsf > list->disthit)
+		else if (sw == true && list->obj_type != LIGHT && intersec_next(list, origin, &ray, &intersect) && distsf > list->disthit)
 		{
 			inter = intersect;
 			distsf = list->disthit;
@@ -75,20 +63,14 @@ bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_o
 		}
 		list = list->next;
 	}
-	//t_vector col = rgbof_cast_vector(nointersec->color);
-	//t_vector amb = rgbof_cast_vector(mixer->ambient.color);
-	//vector_multiply(&inter, &col, &amb);
-	//vector_multiply_digit(&col, &inter, mixer->ambient.a_light);
 	*color = rgbof_cast_vector(light->color);
 	t_vector a = rgbof_cast_vector(nointersec->color);
 	vector_multiply(color, color, &a);
 	if (curr == NULL)
-	{
 		vector_multiply_digit(color, color, light->brightness);
-		return (false);
-	}
-	vector_multiply_digit(color, color, 0.1);
-	return (false);
+	else
+		vector_multiply_digit(color, color, 0.1);
+	return (true);
 }
 
 t_rgbof	sumup_light(t_mixer *mixer, t_col *col_sum)
@@ -115,7 +97,6 @@ t_rgbof	sumup_light(t_mixer *mixer, t_col *col_sum)
 		vector_multiply_digit(&inter, &col_sum->diff, mixer->ambient.a_light/* * fac_sum*/);
 		vector_addition(&final_color, &final_color, &inter);
 	}
-	//vector_multiply_digit(&final_color, &final_color, fac_sum);
 	color = vector_cast_rgbof(final_color);
 	return (color);
 }
@@ -161,26 +142,12 @@ t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector int
 			vector_substract(&ray, &l->position, &intersect);
 			length = vector_length(&ray);
 			vector_normalize(&ray);
-			if (!intersect_object(mixer, curr, &intersect, l, ray, &added))
-			{
-				//length = light_distance_factor(length, l->brightness, l->intensity);
-				vector_addition(&sum, &sum, &added);
-				////col_sum->sum[col_sum->l_count] = rgbof_cast_vector(l->color);
-				////length = l->brightness;
-				//if (length != 0)
-				//{
-				//	col_sum->fac[col_sum->l_count++] = length;
-				//	if (col_sum->l_count == 1)
-				//		ret = false;
-				//	//if (length < l->brightness)
-				//	//	ret = true;
-				//}
-			}
+			intersect_object(mixer, curr, &intersect, l, ray, &added);
+			vector_addition(&sum, &sum, &added);
 		}
 		l = l->next;
 	}
 	return (sum);
-	//return (rgbof_cast_vector(curr->color));
 }
 
 t_vector	trace_rand(t_vector ray, t_vector normal, float diffusion)
@@ -246,13 +213,18 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 		}
 		list = list->next;
 	}
-	colsum->sw = false;
-	if (curr != NULL)
+	if (curr != NULL && !(mixer->bounces == 1 && curr->obj_type == LIGHT))
 	{
-		//printf("%f %f\n", curr->diffusion, curr->reflec_fac);
+		if (curr->obj_type == LIGHT)
+		{
+			colsum->diff = rgbof_cast_vector(curr->color);
+			colsum->sum[0] = colsum->diff;
+			colsum->fac[0] = 1;
+			colsum->l_count = 1;
+			return (false);
+		}
 		colsum->diff = rgbof_cast_vector(mixer->ambient.color);
 		intersect = rgbof_cast_vector(curr->color);
-		//vector_multiply(&colsum->diff, &colsum->diff, &intersect);
 		t_vector s_col, l_col;
 		vector_create(&s_col, 1, 1, 1);
 		vector_create(&l_col, 1, 1, 1);
@@ -274,32 +246,19 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 
 t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, t_col *col_sum)
 {
-	static int	bounces = 0;
 	t_rgbof		color;
 	t_vector	cp;
 
 	cp.x = ray->x;
 	cp.y = ray->y;
 	cp.z = ray->z;
-	bounces++;
-	if (bounces == MAX_BOUNCES + 1)
+	mixer->bounces++;
+	if (mixer->bounces == MAX_BOUNCES + 1)
 		return (mixer->ambient.color);
-	col_sum->sw = false;
-	//if (bounces == 1)
-		color = color_rgb(mixer->ambient.color.r , mixer->ambient.color.g, mixer->ambient.color.g);
-	//else
-	//	color = color_rgb(mixer->ambient.color.r * mixer->ambient.a_light, mixer->ambient.color.g * mixer->ambient.a_light, mixer->ambient.color.g * mixer->ambient.a_light);
+	color = color_rgb(mixer->ambient.color.r , mixer->ambient.color.g, mixer->ambient.color.g);
 	col_sum->diff = rgbof_cast_vector(color);
-	//color = color_cal_rgb(mixer->ambient.color, mixer->ambient.a_light);
 	if (trace_hardshadow(mixer, col_sum, origin, ray))
-	{
 		col_sum->diff = diffuse_main(mixer, NULL, &cp);
-		//col_sum->diff = rgbof_cast_vector(mixer->ambient.color);
-		//vector_create(&col_sum->diff, 127, 127, 127);
-		col_sum->sw = true;	
-	}
-	//if (col_sum->sw)
-		color = sumup_light(mixer, col_sum);
-	bounces = 0;
+	color = sumup_light(mixer, col_sum);
 	return (color);
 }

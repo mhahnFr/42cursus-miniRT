@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/01 19:07:41 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/03 18:57:48 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define RESOLUTION_X	1080
 # define RESOLUTION_Y	720
 //# define CAM_SIZE		10
-# define ANTI_ALIASING	0
+# define ANTI_ALIASING	10
 # define MAX_BOUNCES	10
 //objecttypes
 # define CAMERA		   -2
@@ -121,6 +121,7 @@ typedef struct s_mixer {
 	struct s_col_calc	col_sum;
 	int					light_count;
 	t_diff				diff_sh;
+	int					bounces;
 }	t_mixer;
 
 //functions
@@ -215,6 +216,8 @@ t_rgbof	color_add_cal_cal(t_rgbof first, t_rgbof second);
 t_rgbof	color_cal_rgb(t_rgbof color, float factor);
 void	color_rgb_cal_result_mul(t_rgbof *res, t_rgbof color, float factor);
 void	color_print(t_rgbof color);
+
+bool	specular_highlight(t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *result);
 
 //MLX window handler
 int		key_redcross(t_mixer *p_null);

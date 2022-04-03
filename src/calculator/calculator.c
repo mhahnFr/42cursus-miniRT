@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/31 17:46:33 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/03 18:58:03 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 	color.cal_b = color.b;
 	while (i > 0)
 	{
+		mixer->bounces = 0;
 		color_sum.l_count = 0;
 		inter = vector_rand(*cam_vec, x, y, mixer->cam.step);
 		add = calc_shader(&(mixer->cam.position), &inter, mixer, &color_sum);

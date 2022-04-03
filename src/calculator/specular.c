@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder.c                                         :+:      :+:    :+:   */
+/*   specular.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/03 13:54:54 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/03 15:25:01 by jkasper          ###   ########.fr       */
+/*   Created: 2022/04/03 15:39:00 by jkasper           #+#    #+#             */
+/*   Updated: 2022/04/03 17:04:52 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdbool.h>
+#include <math.h>
 #include "minirt.h"
 #include "libft.h"
-#include <math.h>
-#include <stdbool.h>
-#include <float.h>
 
-//precalculation:
-//length / 2 + radius as RADIUS for precalc-sphere
-
-//preleminaries:
-//calc sphere, calc intersection 
+bool	specular_highlight(t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *result)
+{
+	if (hit_sphere(origin, obj, ray, result))
+		return (true);
+	return (false);
+}

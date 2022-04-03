@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/01 13:36:54 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/03 18:51:14 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ int	add_light(char **line, t_mixer *data)
 	curr->next->position.y *= -1;
 	curr->next->brightness = ft_atof(line[2]);
 	curr->next->color = get_color(line[3]);
+	curr->next->height = 0.5;
+	curr->next->width = curr->next->height;
 	if (line[4] != NULL)
 		curr->next->intensity = ft_atof(line[4]);
 	else
@@ -161,7 +163,7 @@ int	add_sphere(char **line, t_mixer *m_data)
 	curr->next->reflec_fac = ft_atof(line[4]);
 	curr->next->color = get_color(line[5]);
 	curr->next->obj_type = SPHERE;
-	curr->next->width = curr->height;
+	curr->next->width = curr->next->height;
 	curr->next->next = NULL;
 	return (0);
 }
