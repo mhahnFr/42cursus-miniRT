@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/03 19:04:09 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/04 10:40:32 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 		}
 		list = list->next;
 	}
-	if (curr != NULL && !(mixer->bounces == 1 && curr->obj_type == LIGHT))
+	if (curr != NULL && !(mixer->bounces < 2 && curr->obj_type == LIGHT))
 	{
 		if (curr->obj_type == LIGHT)
 		{
