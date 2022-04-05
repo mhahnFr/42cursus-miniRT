@@ -24,7 +24,7 @@ UTILS_SRC   = $(addprefix utils/,$(UTILS_FILES)) $(addprefix utils/math/,$(MATH_
 
 SRC_FOLDER	= src/
 
-M_SRC    	= builder.c main.c mixer.c
+M_SRC    	= builder.c main.c mixer.c mt.c
 CALC_SRC	= calculator.c color.c diffuse.c sphere.c plane.c baseimage.c specular.c
 LEXER_SRC	= lexer.c validator.c basic_check.c type_check.c object_check.c
 PARSER_SRC	= parser.c #object_pars.c basic_pars.c

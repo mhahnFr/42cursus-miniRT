@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 12:47:48 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/05 15:10:59 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct s_col_calc
 	int			l_count;
 }	t_col;
 
+typedef struct s_thread t_thread;
 //mainstruct for MiniRT
 typedef struct s_mixer {
 	void				*p_mlx_init;
@@ -122,7 +123,15 @@ typedef struct s_mixer {
 	int					light_count;
 	t_diff				diff_sh;
 	int					bounces;
+	t_thread			*threads;
 }	t_mixer;
+
+typedef struct s_thread {
+	size_t	index;
+	size_t	block_size_x;
+	size_t	block_size_y;
+	t_mixer	*mixer;
+}	t_thread;
 
 //functions
 
@@ -217,6 +226,7 @@ t_rgbof	color_cal_rgb(t_rgbof color, float factor);
 void	color_rgb_cal_result_mul(t_rgbof *res, t_rgbof color, float factor);
 void	color_print(t_rgbof color);
 
+void	rt_start(t_mixer*);
 bool	specular_highlight(t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *result);
 
 //MLX window handler
