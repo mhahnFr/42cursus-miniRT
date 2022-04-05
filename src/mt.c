@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:32:21 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/05 17:16:48 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 19:37:16 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ void	rt_runner(t_thread *self)
 	limit_x = i + self->block_size_x;
 	self->col_sum.sum = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(t_vector));
 	self->col_sum.fac = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(float));
-	while (i < limit_x)
+	while (i < RESOLUTION_Y)
 	{
 		j = 0;
-		while (j < RESOLUTION_Y)
+		while (j < limit_x)
 		{
-			render_ray(self->mixer, &self->mixer->cam.vecs[j][i], i, j);
+			render_ray(self->mixer, &self->mixer->cam.vecs[i][j], j, i);
 			j++;
 		}
 		i++;
