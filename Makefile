@@ -48,9 +48,9 @@ OBJ         =  $(PAINTER_OBJ:.c=.o) $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OB
 ##		COMPILER		##
 NAME        = miniRT
 
-CFLAGS      = -Wall -Wextra -g -pedantic #-Werror
+CFLAGS      = -Wall -Wextra -g -pedantic -fsanitize=thread#-Werror
 INC         = -Iinclude -Imlx -Ilibft
-LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit
+LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit -fsanitize=thread
 
 MLX         = ./mlx/libmlx.a
 LIBFT       = ./libft/libft.a

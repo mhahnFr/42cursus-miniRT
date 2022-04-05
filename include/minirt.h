@@ -6,13 +6,14 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 15:10:59 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/05 16:16:51 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
+# include <pthread.h>
 # include <stdbool.h>
 # include "vector.h"
 # include "renderer_image.h"
@@ -87,15 +88,15 @@ typedef struct s_diffuse
 //camera struct 
 //FOV between 0-180
 typedef struct s_cam {
-	t_vector	position;
-	t_vector	normal;
-	int			fov;
-	float		aspect_ratio;
+	t_vector		position;
+	t_vector		normal;
+	int				fov;
+	float			aspect_ratio;
 	t_vector	vecs[RESOLUTION_Y][RESOLUTION_X];
-	t_vector	step;
-	t_vector	hori;
-	t_vector	vert;
-	t_vector	llc;
+	t_vector		step;
+	t_vector		hori;
+	t_vector		vert;
+	t_vector		llc;
 }	t_cam;
 
 //color_calcstruct
@@ -124,13 +125,15 @@ typedef struct s_mixer {
 	t_diff				diff_sh;
 	int					bounces;
 	t_thread			*threads;
+	size_t				cores;
 }	t_mixer;
 
 typedef struct s_thread {
-	size_t	index;
-	size_t	block_size_x;
-	size_t	block_size_y;
-	t_mixer	*mixer;
+	size_t		index;
+	size_t		block_size_x;
+	size_t		block_size_y;
+	pthread_t	thread;
+	t_mixer		*mixer;
 }	t_thread;
 
 //functions
@@ -227,6 +230,7 @@ void	color_rgb_cal_result_mul(t_rgbof *res, t_rgbof color, float factor);
 void	color_print(t_rgbof color);
 
 void	rt_start(t_mixer*);
+void	draw_point(int, int, t_renderer_image*, t_rgbof);
 bool	specular_highlight(t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *result);
 
 //MLX window handler

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 14:32:07 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/05 15:35:55 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	main(int argc, char **argv)
 			calculator(all_struct, &ret);*/
 		if (all_struct != NULL && ret == 0)
 		{
+			rt_cam_init(all_struct);
 			rt_start(all_struct);
 		}
 		if (ret != 0)
