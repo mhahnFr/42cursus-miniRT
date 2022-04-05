@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 18:18:24 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 16:42:22 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	main(int argc, char **argv)
 		if (all_struct != NULL)
 			lexer(argv[1], all_struct, &ret);
 		if (all_struct != NULL && ret == 0)
-			rt_cam_init(all_struct);
+			rt_cam(all_struct);
 		if (all_struct != NULL && ret == 0)
 			calculator(all_struct, &ret);
 		if (ret != 0)

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/04 10:40:32 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 16:49:59 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,28 +73,28 @@ bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_o
 	return (true);
 }
 
-t_rgbof	sumup_light(t_mixer *mixer, t_col *col_sum)
+t_rgbof	sumup_light(t_mixer *mixer, t_col *c_s)
 {
 	t_rgbof		color;
 	t_vector	final_color;
 	t_vector	inter;
 	float		fac_sum;
 	int	i;
-	i = 0;
+
 	vector_create(&final_color, 0, 0, 0);;
 	fac_sum = 1.0f / (mixer->light_count);
 	i = 0;
-	while (i < col_sum->l_count)
+	while (i < c_s->l_count)
 	{
-		vector_multiply_digit(&(col_sum->sum[i]), &(col_sum->sum[i]), (col_sum->fac[i]/* * fac_sum*/));
-		vector_addition(&final_color, &final_color, &(col_sum->sum[i]));
+		vector_multiply_digit(&c_s->sum[i], &c_s->sum[i], c_s->fac[i]);
+		vector_addition(&final_color, &final_color, &(c_s->sum[i]));
 		i++;
 	}
 	if (i == 0)
-		final_color = col_sum->diff;
+		final_color = c_s->diff;
 	else
 	{
-		vector_multiply_digit(&inter, &col_sum->diff, mixer->ambient.a_light/* * fac_sum*/);
+		vector_multiply_digit(&inter, &c_s->diff, mixer->ambient.a_light);
 		vector_addition(&final_color, &final_color, &inter);
 	}
 	color = vector_cast_rgbof(final_color);
