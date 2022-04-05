@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 16:29:57 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/09 18:01:52 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 13:00:33 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	ft_gc_clear(void)
 	*ft_gc_list() = NULL;
 }
 
+#define DEBUG
 #ifdef DEBUG
 #include <stdio.h>
 #endif
