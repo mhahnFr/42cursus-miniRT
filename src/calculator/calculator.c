@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/04 10:39:11 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 13:18:42 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	draw_point(int x, int y, t_renderer_image *buf, t_rgbof color)
 
 	dst = buf->raw + (long)x * (buf->depth / 8) + (long)y * buf->line_size;
 	*(unsigned int *) dst = (0 << 24) + (color.r << 16) + (color.g << 8)
-	+ (color.b << 0);
+		+ (color.b << 0);
 }
 
 void	calculator(t_mixer *mixer, int *ret)
@@ -40,7 +40,7 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 			draw_point(j, i, mixer->image, color);
 		}
 	}
-	printf("finished!\n");
+	printf("Finished!\n");
 }
 
 t_vector	vector_rand(t_vector self, float j, float i, t_vector step)

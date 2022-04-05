@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:51:25 by mhahn             #+#    #+#             */
-/*   Updated: 2022/03/11 16:39:09 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 13:15:05 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,5 @@ t_mixer	*init_mainstruct(int *err)
 	}
 	ret->p_mlx_init = mlx_init();
 	ret->image = renderer_image_new(ret->p_mlx_init, RESOLUTION_X, RESOLUTION_Y);
-	//ret->image = mlx_new_image(ret->p_mlx_init, RESOLUTION_X, RESOLUTION_Y);
 	return (ret);
 }
