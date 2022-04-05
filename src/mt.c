@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mt.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhahn <mhahn@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:32:21 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/05 16:41:40 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/05 17:16:48 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	rt_runner(t_thread *self)
 
 	i = self->block_size_x * self->index;
 	limit_x = i + self->block_size_x;
+	self->col_sum.sum = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(t_vector));
+	self->col_sum.fac = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(float));
 	while (i < limit_x)
 	{
 		j = 0;
@@ -57,7 +59,6 @@ void	rt_forker(t_mixer *mixer)
 		// TODO Error handling!!!
 		mixer->threads[i].index = i;
 		mixer->threads[i].block_size_x = RESOLUTION_X / mixer->cores;
-		mixer->threads[i].block_size_y = RESOLUTION_Y / mixer->cores;
 		mixer->threads[i].mixer = mixer;
 		pthread_create(&mixer->threads[i].thread, NULL, rt_runner, (void *) &mixer->threads[i]);
 		i++;

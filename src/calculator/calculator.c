@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 17:07:02 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/05 17:22:49 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 	printf("Finished!\n");
 }
 
-t_vector	vector_rand(t_vector self, float j, float i, t_vector step)
+t_vector	vector_rand(t_vector self, t_vector step)
 {
 	self.x += (float) ((float)(arc4random() % 10) / 10) * step.x;
 	self.y += (float) ((float)(arc4random() % 10) / 10) * step.y;
@@ -51,7 +51,7 @@ t_vector	vector_rand(t_vector self, float j, float i, t_vector step)
 	return (self);
 }
 
-t_rgbof	calc_antialiasing(t_thread *mixer, t_vector *cam_vec, int y, int x)
+t_rgbof	calc_antialiasing(t_thread *self, t_vector *cam_vec, int y, int x)
 {
 	//antialiasing
 	int			i;
@@ -61,8 +61,8 @@ t_rgbof	calc_antialiasing(t_thread *mixer, t_vector *cam_vec, int y, int x)
 	t_col		color_sum;
 
 	i = ANTI_ALIASING;
-	if (mixer->col_sum.fac != NULL)
-		color_sum = mixer->col_sum;
+	if (self->col_sum.fac != NULL)
+		color_sum = self->col_sum;
 	else
 	{
 		ft_gc_clear();
@@ -70,18 +70,18 @@ t_rgbof	calc_antialiasing(t_thread *mixer, t_vector *cam_vec, int y, int x)
 	}
 	inter = *cam_vec;
 	vector_normalize(&inter);
-	thread->bounces = 0;
+	self->bounces = 0;
 	color_sum.l_count = 0;
-	color = calc_shader(&(mixer->cam.position), &inter, mixer, &color_sum);
+	color = calc_shader(&(self->mixer->cam.position), &inter, self, &color_sum);
 	color.cal_r = color.r;
 	color.cal_g = color.g;
 	color.cal_b = color.b;
 	while (i > 0)
 	{
-		thread->bounces = 0;
+		self->bounces = 0;
 		color_sum.l_count = 0;
-		inter = vector_rand(*cam_vec, x, y, mixer->cam.step);
-		add = calc_shader(&(mixer->cam.position), &inter, mixer, &color_sum);
+		inter = vector_rand(*cam_vec, self->mixer->cam.step);
+		add = calc_shader(&(self->mixer->cam.position), &inter, self, &color_sum);
 		color = color_add_cal(color, add);
 		i--;
 	}

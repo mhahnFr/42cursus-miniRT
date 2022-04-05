@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/04 10:36:05 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 17:16:17 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,5 @@ int	parser(char **buffer, t_mixer *m_data, int size)
 	}
 	if (m_data->light_count == 0)
 		return (5);
-	m_data->col_sum.sum = ft_calloc(1, (m_data->light_count + 2) * sizeof(t_vector));
-	m_data->col_sum.fac = ft_calloc(1, (m_data->light_count + 2) * sizeof(float));
 	return (0);
 }

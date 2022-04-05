@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 16:49:59 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 17:28:56 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ t_vector	trace_next(t_mixer *mixer, t_vector intersect, t_vector ray, t_obj_l *c
 	return (rgbof_cast_vector(calc_shader(&intersect, &ray, mixer, &mixer->col_sum)));
 }
 
-bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector *ray)
+bool	trace_hardshadow(t_thread *self, t_col *colsum, t_vector *origin, t_vector *ray)
 {
 	t_vector	intersect;
 	t_vector	intersect2;
@@ -195,24 +195,25 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 
 	sw = false;
 	curr = NULL;
-	list = mixer->obj_list;
+	list = self->mixer->obj_list;
 	while (list != NULL)
 	{
 		if (sw == false && intersec_next(list, origin, ray, &intersect))
 		{
-			distsf = list->disthit;
+			distsf = self->disthit;
 			sw = true;
 			curr = list;
 			intersect2 = intersect;
 		}
-		else if (sw == true && intersec_next(list, origin, ray, &intersect) && distsf > list->disthit)
+		else if (sw == true && intersec_next(list, origin, ray, &intersect) && distsf > self->disthit)
 		{
-			distsf = list->disthit;
+			distsf = self->disthit;
 			curr = list;
 			intersect2 = intersect;
 		}
 		list = list->next;
 	}
+	self->disthit = distsf;
 	if (curr != NULL && !(mixer->bounces < 2 && curr->obj_type == LIGHT))
 	{
 		if (curr->obj_type == LIGHT)
@@ -223,7 +224,7 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 			colsum->l_count = 1;
 			return (false);
 		}
-		colsum->diff = rgbof_cast_vector(mixer->ambient.color);
+		colsum->diff = rgbof_cast_vector(self->mixer->ambient.color);
 		intersect = rgbof_cast_vector(curr->color);
 		t_vector s_col, l_col;
 		vector_create(&s_col, 1, 1, 1);
@@ -244,21 +245,23 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, t_vector 
 	return (false);
 }
 
-t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, t_col *col_sum)
+t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_thread *self, t_col *col_sum)
 {
 	t_rgbof		color;
 	t_vector	cp;
+	t_mixer		*mixer;
 
 	cp.x = ray->x;
 	cp.y = ray->y;
 	cp.z = ray->z;
-	mixer->bounces++;
-	if (mixer->bounces == MAX_BOUNCES + 1)
+	mixer = self->mixer;
+	self->bounces++;
+	if (self->bounces == MAX_BOUNCES + 1)
 		return (mixer->ambient.color);
 	color = color_rgb(mixer->ambient.color.r , mixer->ambient.color.g, mixer->ambient.color.g);
 	col_sum->diff = rgbof_cast_vector(color);
-	if (trace_hardshadow(mixer, col_sum, origin, ray))
-		col_sum->diff = diffuse_main(mixer, NULL, &cp);
-	color = sumup_light(mixer, col_sum);
+	if (trace_hardshadow(self, col_sum, origin, ray))
+		col_sum->diff = diffuse_main(self, NULL, &cp);
+	color = sumup_light(self->mixer, col_sum);
 	return (color);
 }
