@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 17:00:13 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/05 17:11:03 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include "libft.h"
 
 //Resolution in Pixel
-# define RESOLUTION_X	1080
-# define RESOLUTION_Y	720
+# define RESOLUTION_X	150
+# define RESOLUTION_Y	100
 //# define CAM_SIZE		10
 # define ANTI_ALIASING	10
 # define MAX_BOUNCES	10
@@ -64,8 +64,8 @@ typedef struct s_object_l {
 	float				reflec_fac;
 	bool				emitter;
 	float				brightness;
-	t_vector			col_normal;
-	float				disthit;
+//	t_vector			col_normal;
+//	float				disthit;
 	float				intensity;
 
 	struct s_object_l	*next;
@@ -120,20 +120,21 @@ typedef struct s_mixer {
 	t_obj_l				*obj_list;
 	struct s_cam		cam;
 	struct s_ambient	ambient;
-	struct s_col_calc	col_sum;
 	int					light_count;
-	t_diff				diff_sh;
-	int					bounces;
 	t_thread			*threads;
 	size_t				cores;
 }	t_mixer;
 
 typedef struct s_thread {
-	size_t		index;
-	size_t		block_size_x;
-	size_t		block_size_y;
-	pthread_t	thread;
-	t_mixer		*mixer;
+	size_t				index;
+	size_t				block_size_x;
+	int					bounces;
+	t_diff				diff_sh;
+	struct s_col_calc	col_sum;
+	t_vector			obj_int_normal;
+	float				disthit;
+	pthread_t			thread;
+	t_mixer				*mixer;
 }	t_thread;
 
 //functions

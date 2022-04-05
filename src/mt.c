@@ -6,7 +6,7 @@
 /*   By: mhahn <mhahn@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:32:21 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/05 16:05:50 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/05 16:41:40 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,13 @@ void	rt_runner(t_thread *self)
 	size_t	i;
 	size_t	j;
 	size_t	limit_x;
-	size_t	limit_y;
-	size_t	start_y;
 
 	i = self->block_size_x * self->index;
-	j = self->block_size_y * self->index;
 	limit_x = i + self->block_size_x;
-	limit_y = j + self->block_size_y;
-	start_y = j;
 	while (i < limit_x)
 	{
-		j = start_y;
-		while (j < limit_y)
+		j = 0;
+		while (j < RESOLUTION_Y)
 		{
 			render_ray(self->mixer, &self->mixer->cam.vecs[j][i], i, j);
 			j++;
@@ -54,8 +49,7 @@ void	rt_forker(t_mixer *mixer)
 	size_t		i;
 	pthread_t	*threads;
 
-	//mixer->cores = sysconf(_SC_NPROCESSORS_CONF);
-	mixer->cores = 2;
+	mixer->cores = sysconf(_SC_NPROCESSORS_CONF);
 	mixer->threads = malloc(sizeof(t_thread) * mixer->cores);
 	i = 0;
 	while (i < mixer->cores)

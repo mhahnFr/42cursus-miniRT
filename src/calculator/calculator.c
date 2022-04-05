@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 13:18:42 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/05 17:07:02 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_vector	vector_rand(t_vector self, float j, float i, t_vector step)
 	return (self);
 }
 
-t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x)
+t_rgbof	calc_antialiasing(t_thread *mixer, t_vector *cam_vec, int y, int x)
 {
 	//antialiasing
 	int			i;
@@ -70,7 +70,7 @@ t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 	}
 	inter = *cam_vec;
 	vector_normalize(&inter);
-	mixer->bounces = 0;
+	thread->bounces = 0;
 	color_sum.l_count = 0;
 	color = calc_shader(&(mixer->cam.position), &inter, mixer, &color_sum);
 	color.cal_r = color.r;
@@ -78,7 +78,7 @@ t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 	color.cal_b = color.b;
 	while (i > 0)
 	{
-		mixer->bounces = 0;
+		thread->bounces = 0;
 		color_sum.l_count = 0;
 		inter = vector_rand(*cam_vec, x, y, mixer->cam.step);
 		add = calc_shader(&(mixer->cam.position), &inter, mixer, &color_sum);
