@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/03 17:55:32 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 13:55:14 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,8 +168,10 @@ t_vector	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
 	mixer->diff_sh.origin = vector_new(mixer->cam.position.x, mixer->cam.position.y, mixer->cam.position.z);
 	//mixer->diff_sh.origin = vector_new(obj->col_normal.x, obj->col_normal.y, obj->col_normal.z);
 	//vector_addition(mixer->diff_sh.origin, &obj->col_normal, &obj->position);
-	t_vector* res = vector_new(0, 0, 0);
-	ret = diffuse_get(mixer, mixer->diff_sh, res);
+	//t_vector* res = vector_new(0, 0, 0);
+	t_vector res;
+	vector_create(&res, 0, 0, 0);
+	ret = diffuse_get(mixer, mixer->diff_sh, &res);
 	if (mixer->diff_sh.ray_count < 1)
 		mixer->diff_sh.ray_count = 1;
 	return (ret);
