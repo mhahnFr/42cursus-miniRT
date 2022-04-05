@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 17:28:56 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 18:32:02 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,29 @@
 #include "vector.h"
 #include <math.h>
 
-bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *inter)
+bool	intersec_next(t_thread *self, t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *inter)
 {
 	bool	ret;
 
 	ret = false;
 	if (objs->obj_type == SPHERE)
-		ret = hit_sphere(origin, objs, ray, inter);
+		ret = hit_sphere(self, origin, objs, ray, inter);
 	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
 	{
-		ret = intersec_plane(ray, origin, objs, inter);
-		objs->disthit = vector_distance(origin, inter);
+		ret = intersec_plane(self, ray, origin, objs, inter);
+		self->disthit = vector_distance(origin, inter);
 	}
 	else if (objs->obj_type == LIGHT)
-		ret = specular_highlight(origin, objs, ray, inter);
+		ret = specular_highlight(self, origin, objs, ray, inter);
 	//else if (objs->obj_type == CYLINDER)
 	//	return (calc_intersection_cylinder(origin, objs, ray, inter))
 	return (ret);
 }
 
-bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_obj_l *light, t_vector ray, t_vector *color)
+bool	intersect_object(t_thread *self, t_obj_l *nointersec, t_vector *origin, t_obj_l *light, t_vector ray, t_vector *color)
 {
 	t_vector	intersect;
 	t_vector	inter;
-	t_vector	inter2;
 	t_obj_l		*curr;
 	t_obj_l		*list;
 	float		distsf;
@@ -45,20 +44,20 @@ bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_o
 
 	sw = false;
 	curr = NULL;
-	list = mixer->obj_list;
+	list = self->mixer->obj_list;
 	while (list != NULL)
 	{
-		if (sw == false && list->obj_type != LIGHT && intersec_next(list, origin, &ray, &intersect))
+		if (sw == false && list->obj_type != LIGHT && intersec_next(self, list, origin, &ray, &intersect))
 		{
 			inter = intersect;
-			distsf = list->disthit;
+			distsf = self->disthit;
 			sw = true;
 			curr = list;
 		}
-		else if (sw == true && list->obj_type != LIGHT && intersec_next(list, origin, &ray, &intersect) && distsf > list->disthit)
+		else if (sw == true && list->obj_type != LIGHT && intersec_next(self, list, origin, &ray, &intersect) && distsf > self->disthit)
 		{
 			inter = intersect;
-			distsf = list->disthit;
+			distsf = self->disthit;
 			curr = list;
 		}
 		list = list->next;
@@ -120,9 +119,8 @@ float	light_distance_factor(float length, float brightness, float intensity)
 	return (inter2);
 }
 
-t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector intersect)
+t_vector	trace_light(t_thread *self, t_obj_l *curr, t_col *col_sum, t_vector intersect)
 {
-	t_vector	inter;
 	t_vector	ray;
 	t_vector	added;
 	t_vector	sum;
@@ -133,7 +131,7 @@ t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector int
 	ret = true;
 	vector_create(&sum, 0,0,0);
 	col_sum->l_count = 0;
-	l = mixer->obj_list;
+	l = self->mixer->obj_list;
 	col_sum->basecolor = rgbof_cast_vector(curr->color);
 	while (l != NULL)
 	{
@@ -142,7 +140,7 @@ t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector int
 			vector_substract(&ray, &l->position, &intersect);
 			length = vector_length(&ray);
 			vector_normalize(&ray);
-			intersect_object(mixer, curr, &intersect, l, ray, &added);
+			intersect_object(self, curr, &intersect, l, ray, &added);
 			vector_addition(&sum, &sum, &added);
 		}
 		l = l->next;
@@ -175,13 +173,10 @@ t_vector	trace_rand(t_vector ray, t_vector normal, float diffusion)
 	return (tmp);
 }
 
-t_vector	trace_next(t_mixer *mixer, t_vector intersect, t_vector ray, t_obj_l *curr)
+t_vector	trace_next(t_thread *self, t_vector intersect, t_vector ray, t_obj_l *curr)
 {
-	t_vector	inter;
-	t_vector	inter2;
-
-	ray = trace_rand(ray, curr->col_normal, curr->diffusion);
-	return (rgbof_cast_vector(calc_shader(&intersect, &ray, mixer, &mixer->col_sum)));
+	ray = trace_rand(ray, self->obj_int_normal, curr->diffusion);
+	return (rgbof_cast_vector(calc_shader(&intersect, &ray, self, &self->col_sum)));
 }
 
 bool	trace_hardshadow(t_thread *self, t_col *colsum, t_vector *origin, t_vector *ray)
@@ -198,14 +193,14 @@ bool	trace_hardshadow(t_thread *self, t_col *colsum, t_vector *origin, t_vector 
 	list = self->mixer->obj_list;
 	while (list != NULL)
 	{
-		if (sw == false && intersec_next(list, origin, ray, &intersect))
+		if (sw == false && intersec_next(self, list, origin, ray, &intersect))
 		{
 			distsf = self->disthit;
 			sw = true;
 			curr = list;
 			intersect2 = intersect;
 		}
-		else if (sw == true && intersec_next(list, origin, ray, &intersect) && distsf > self->disthit)
+		else if (sw == true && intersec_next(self, list, origin, ray, &intersect) && distsf > self->disthit)
 		{
 			distsf = self->disthit;
 			curr = list;
@@ -214,7 +209,7 @@ bool	trace_hardshadow(t_thread *self, t_col *colsum, t_vector *origin, t_vector 
 		list = list->next;
 	}
 	self->disthit = distsf;
-	if (curr != NULL && !(mixer->bounces < 2 && curr->obj_type == LIGHT))
+	if (curr != NULL && !(self->bounces < 2 && curr->obj_type == LIGHT))
 	{
 		if (curr->obj_type == LIGHT)
 		{
@@ -230,9 +225,9 @@ bool	trace_hardshadow(t_thread *self, t_col *colsum, t_vector *origin, t_vector 
 		vector_create(&s_col, 1, 1, 1);
 		vector_create(&l_col, 1, 1, 1);
 		if (curr->reflec_fac > 0)
-			s_col = trace_next(mixer, intersect2, *ray, curr);
+			s_col = trace_next(self, intersect2, *ray, curr);
 		if (curr->reflec_fac < 1)
-			l_col = trace_light(mixer, curr, colsum, intersect2);
+			l_col = trace_light(self, curr, colsum, intersect2);
 		vector_multiply_digit(&s_col, &s_col, curr->reflec_fac);
 		vector_multiply_digit(&l_col, &l_col, 1 - curr->reflec_fac);
 		vector_addition(&intersect2, &s_col, &l_col);

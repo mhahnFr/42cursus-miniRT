@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 17:22:32 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 18:50:52 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include "libft.h"
 
 //Resolution in Pixel
-# define RESOLUTION_X	150
-# define RESOLUTION_Y	100
+# define RESOLUTION_X	1920
+# define RESOLUTION_Y	1080
 //# define CAM_SIZE		10
 # define ANTI_ALIASING	10
 # define MAX_BOUNCES	10
@@ -152,72 +152,35 @@ t_mixer	*init_mainstruct(int *err);
 void	rt_cam(t_mixer *mixer);
 
 //				Painter
-/*
- * Paints the whole scene. Takes the delegate with all objects and
- * precalculated values as well as a pointer to an integer, in which the error
- * code is saved.
- */
 void	paint(t_mixer *delegate, int *ret);
 
 //				Calculator
 void	calculator(t_mixer *mixer, int *ret);
 
-/*
- * Iterates over all vectors of the camera stored in the given mixer object and
- * calculates their intersecting vectors, if there are any.
- */
 void	calc_object_ray(t_mixer *mixer, int *ret);
-/*
- * Skips the objects of the given type at the beginning of the given list.
- */
 void	skip_obj(t_obj_l **objs, int toskip);
 
-/*
- * Calculates the intersecting vector of the given object, which is treated as
- * a sphere. Takes the camera object, the sphere object and the ray for which
- * to calculate the intersecting vector.
- */
-bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret);
+bool	hit_sphere(t_thread *self, t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret);
 
-/*
- * Calculates the intersecting vector for the given ray vector for the next
- * object in the given list.
- */
 bool	calc_intersec_next(t_obj_l *objs, t_vector *mixer, t_vector *ray, t_vector *ret);
 
-/*
- * Returns wether the first intersecting vector is closer to the given camera
- * vector or the second one.
- */
 bool	calc_intersec_dist(t_vector intersect, t_vector new_intersect, t_vector *cam);
 
 t_rgbof	calc_random_rays(t_mixer *mixer, t_vector *ray, int y, int x);
 
-/*
- * Calculates the first intersecting vector for the given ray vector and the
- * given object list.
- */
 t_rgbof	calc_intersec_first(t_mixer *mixer, t_vector *ray, t_rgbof pcolor);
 
-/*
- * Calculates the intersecting vector for the given object and the camera
- * vector. The given object is expected to be a plane.
- */
-bool	intersec_plane(t_vector *cam, t_vector*, t_obj_l *objs, t_vector *ret);
+bool	intersec_plane(t_thread *self, t_vector *cam, t_vector*, t_obj_l *objs, t_vector *ret);
 
-/*
- * Returns wether the given vector intersects an infinite plane with the given
- * normal.
- */
 bool	fast_intersec_plane(t_vector *vec, t_vector *normal);
 
 t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_thread *self, t_col *colsum);
 
-t_rgbof	calc_antialiasing(t_thread *mixer, t_vector *cam_vec, int y, int x);
+t_rgbof	calc_antialiasing(t_thread *self, t_vector *cam_vec);
 
-t_vector	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
+t_vector	diffuse_main(t_thread *self, t_obj_l *obj, t_vector *intersect);
 
-t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result);
+t_vector	diffuse_get(t_thread *self, t_diff diff, t_vector *result);
 
 t_vector	rgbof_cast_vector(t_rgbof self);
 t_rgbof		vector_cast_rgbof(t_vector self);
@@ -232,7 +195,7 @@ void	color_print(t_rgbof color);
 
 void	rt_start(t_mixer*);
 void	draw_point(int, int, t_renderer_image*, t_rgbof);
-bool	specular_highlight(t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *result);
+bool	specular_highlight(t_thread *self, t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *result);
 
 //MLX window handler
 int		key_redcross(t_mixer *p_null);

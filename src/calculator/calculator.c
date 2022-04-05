@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 17:22:49 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/05 18:03:44 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	draw_point(int x, int y, t_renderer_image *buf, t_rgbof color)
 	*(unsigned int *) dst = (0 << 24) + (color.r << 16) + (color.g << 8)
 		+ (color.b << 0);
 }
-
+/*
 void	calculator(t_mixer *mixer, int *ret)
 {
 	calc_object_ray(mixer, ret);
@@ -42,7 +42,7 @@ void	calc_object_ray(t_mixer *mixer, int *ret)
 	}
 	printf("Finished!\n");
 }
-
+*/
 t_vector	vector_rand(t_vector self, t_vector step)
 {
 	self.x += (float) ((float)(arc4random() % 10) / 10) * step.x;
@@ -51,7 +51,7 @@ t_vector	vector_rand(t_vector self, t_vector step)
 	return (self);
 }
 
-t_rgbof	calc_antialiasing(t_thread *self, t_vector *cam_vec, int y, int x)
+t_rgbof	calc_antialiasing(t_thread *self, t_vector *cam_vec)
 {
 	//antialiasing
 	int			i;
