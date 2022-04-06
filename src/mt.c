@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:32:21 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/05 20:21:36 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/06 12:30:49 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 #include <math.h>
 #include <pthread.h>
+#include <stdio.h>
 #include <unistd.h>
 
 void	render_ray(t_thread *self, t_vector *ray, size_t x, size_t y)
@@ -31,6 +32,8 @@ void	rt_runner(t_thread *self)
 	size_t	limit_x;
 
 	limit_x = self->block_size_x * self->index + self->block_size_x;
+	if (self->index == self->mixer->cores - 1)
+		limit_x = RESOLUTION_X;
 	self->col_sum.sum = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(t_vector));
 	self->col_sum.fac = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(float));
 	i = 0;
@@ -56,12 +59,11 @@ void	rt_forker(t_mixer *mixer)
 	i = 0;
 	while (i < mixer->cores)
 	{
-		// TODO Error handling!!!
 		mixer->threads[i].index = i;
 		mixer->threads[i].block_size_x = RESOLUTION_X / mixer->cores;
 		mixer->threads[i].mixer = mixer;
 		if (pthread_create(&mixer->threads[i].thread, NULL, rt_runner, (void *) &mixer->threads[i]) != 0)
-			printf("Error occured!\n");
+			rt_runner(&mixer->threads[i]);
 		i++;
 	}
 	i = 0;
@@ -71,7 +73,6 @@ void	rt_forker(t_mixer *mixer)
 		i++;
 	}
 	printf("Done.\n");
-	exit(0);
 }
 
 void	rt_start(t_mixer *mixer)
