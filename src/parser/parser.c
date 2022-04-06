@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 17:16:17 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/06 17:24:59 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_rgbof	get_color(char *src)
 	{
 		if (src[i] == '\n' || src[i] == '\0')
 			return (color);
-		i++; 
+		i++;
 	}
 	color.f = ft_atoi(src + ++i);
 	return (color);
@@ -86,7 +86,7 @@ int	add_camera(char **line, t_cam *camera)
 	camera->normal = get_vector(line[2]);
 	vector_normalize(&(camera->normal));
 	camera->fov = ft_atoi(line[3]);
-	camera->aspect_ratio = RESOLUTION_X / RESOLUTION_Y;
+	camera->aspect_ratio = (float) RESOLUTION_X / RESOLUTION_Y;
 	ft_free_char_arr(line);
 	return (0);
 }
@@ -96,7 +96,7 @@ int	add_light(char **line, t_mixer *data)
 	t_obj_l	*curr;
 
 	curr = data->obj_list;
-	while(curr->next != NULL)
+	while (curr->next != NULL)
 		curr = curr->next;
 	curr->next = ft_calloc(1, sizeof(t_obj_l));
 	if (curr->next == NULL)
@@ -127,7 +127,7 @@ int	add_plane(char **line, t_mixer *m_data)
 	t_obj_l	*curr;
 
 	curr = m_data->obj_list;
-	while(curr->next != NULL)
+	while (curr->next != NULL)
 		curr = curr->next;
 	curr->next = ft_calloc(1, sizeof(t_obj_l));
 	if (curr->next == NULL)
@@ -150,7 +150,7 @@ int	add_sphere(char **line, t_mixer *m_data)
 	t_obj_l	*curr;
 
 	curr = m_data->obj_list;
-	while(curr->next != NULL)
+	while (curr->next != NULL)
 		curr = curr->next;
 	curr->next = ft_calloc(1, sizeof(t_obj_l));
 	if (curr->next == NULL)
@@ -173,7 +173,7 @@ int	add_cylinder(char **line, t_mixer *m_data)
 	t_obj_l	*curr;
 
 	curr = m_data->obj_list;
-	while(curr->next != NULL)
+	while (curr->next != NULL)
 		curr = curr->next;
 	curr->next = ft_calloc(1, sizeof(t_obj_l));
 	if (curr->next == NULL)
@@ -190,15 +190,15 @@ int	add_cylinder(char **line, t_mixer *m_data)
 	curr->next->color = get_color(line[7]);
 	curr->next->obj_type = CYLINDER;
 	curr->next->next = NULL;
-	return (0);	
+	return (0);
 }
 
 int	add_object(char *buffer, t_mixer *m_data)
 {
 	if (buffer == NULL)
 		return (5);
-	if (ft_strnstr(buffer, "A", ft_strlen(buffer)) || \
-	ft_strnstr(buffer, "C", ft_strlen(buffer)))
+	if (ft_strnstr(buffer, "A", ft_strlen(buffer))
+		|| ft_strnstr(buffer, "C", ft_strlen(buffer)))
 		return (1);
 	if (ft_strnstr(buffer, "pl", ft_strlen(buffer)))
 		add_plane(ft_strsplit(buffer, " 	"), m_data);
@@ -220,7 +220,8 @@ char	**find_line(char **buffer, int size, char *search)
 	amount = -1;
 	while (i < size)
 	{
-		if (ft_strncmp(buffer[i], "#", 1) && ft_strnstr(buffer[i], search, ft_strlen(buffer[i])))
+		if (ft_strncmp(buffer[i], "#", 1)
+			&& ft_strnstr(buffer[i], search, ft_strlen(buffer[i])))
 		{
 			if (amount != -1)
 				return (NULL);
@@ -235,8 +236,8 @@ char	**find_line(char **buffer, int size, char *search)
 
 int	parser(char **buffer, t_mixer *m_data, int size)
 {
-	int 	i;
-	int		err;
+	int	i;
+	int	err;
 
 	m_data->light_count = 0;
 	err = add_ambient(find_line(buffer, size, "A"), &(m_data->ambient));

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:09:50 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/06 12:57:51 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/06 17:15:08 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,5 @@ void	ft_gc_free(void *ptr);
 void	ft_gc_clear(void);
 void	ft_gc_exit(int code);
 void	ft_free_char_arr(char **arr);
+
 #endif

@@ -6,14 +6,15 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 16:29:57 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/06 16:12:23 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/06 17:18:24 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/arraylist.h"
 
-#include <stdlib.h>
 #include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 static pthread_mutex_t	*ft_gc_get_mutex(void)
 {
@@ -63,26 +64,15 @@ void	ft_gc_free(void *ptr)
 	pthread_mutex_unlock(ft_gc_get_mutex());
 }
 
-void	ft_gc_clear(void)
-{
-	pthread_mutex_lock(ft_gc_get_mutex());
-	arraylist_clear(ft_gc_list(), free);
-	*ft_gc_list() = NULL;
-	pthread_mutex_unlock(ft_gc_get_mutex());
-}
-
-#define DEBUG
-#ifdef DEBUG
-#include <stdio.h>
-#endif
 void	ft_gc_exit(int code)
 {
+	size_t	leak_count;
+
 	pthread_mutex_lock(ft_gc_get_mutex());
-#ifdef DEBUG
-	size_t leak_count = arraylist_size_unsafe(*ft_gc_list());
+	leak_count = arraylist_size_unsafe(*ft_gc_list());
 	printf("%zu leaks\n", leak_count);
-#endif
 	arraylist_clear(ft_gc_list(), free);
+	*ft_gc_list() = NULL;
 	pthread_mutex_unlock(ft_gc_get_mutex());
 	pthread_mutex_destroy(ft_gc_get_mutex());
 	exit(code);
