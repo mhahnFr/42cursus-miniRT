@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:32:21 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/06 16:28:57 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/06 21:12:58 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	render_ray(t_thread *self, t_vector *ray, size_t x, size_t y)
 {
 	t_rgbof	color;
 
-	color = calc_antialiasing(self, ray);
+	color = calc_antialiasing(self, ray); 
 	draw_point(x, y, self->mixer->image, color);
 }
 
-void	rt_runner(t_thread *self)
+/* void	rt_runner(t_thread *self)
 {
 	size_t	i;
 	size_t	j;
@@ -46,6 +46,59 @@ void	rt_runner(t_thread *self)
 			j++;
 		}
 		i++;
+	}
+} */
+
+
+
+bool	rt_block_fetcher(t_tile **tile_array, t_tile *render)
+{
+	int	i;
+	int	ii;
+	int	tiles_per_axis;
+
+	i = 0;
+	tiles_per_axis = ceil((double) RESOLUTION_Y / BLOCK_SIZE);
+	while (i < tiles_per_axis)
+	{
+		ii = 0;
+		while (ii < tiles_per_axis)
+		{
+			if (!pthread_mutex_trylock(&tile_array[i][ii].m_rendered))
+			{
+				tile_array[i][ii].rendered = true;
+				pthread_mutex_unlock(&tile_array[i][ii].m_rendered);
+				*render = tile_array[i][ii];
+				return (true);
+			}
+			ii++;
+		}
+		i++;
+	}
+	return (false);
+}
+
+void	rt_runner(t_thread *self)
+{
+	t_tile	to_render;
+	int		i;
+	int		ii;
+
+	self->col_sum.sum = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(t_vector));
+	self->col_sum.fac = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(float));
+	while (rt_block_fetcher(self->mixer->tile_array, &to_render))
+	{
+		i = to_render.x;
+		while (i < to_render.x + BLOCK_SIZE && i < RESOLUTION_X)
+		{
+			ii = to_render.y;
+			while (ii < to_render.y + BLOCK_SIZE && ii < RESOLUTION_Y)
+			{
+				render_ray(self, &self->mixer->cam.vecs[ii][i], i, ii);
+				ii++;
+			}
+			i++;
+		}
 	}
 }
 
@@ -75,7 +128,38 @@ void	rt_forker(t_mixer *mixer)
 	printf("Done.\n");
 }
 
+t_tile	**rt_divide(float aspect)
+{
+	t_tile	**ret;
+	int		tiles_per_axis;
+	int		i;
+	int		ii;
+
+	tiles_per_axis = ceil((double) RESOLUTION_Y / BLOCK_SIZE);
+	//ret = malloc((long) pow(tiles_per_axis, 2) * sizeof(t_tile));
+	ret = malloc(tiles_per_axis * sizeof(void *));
+	i = 0;
+	while (i < tiles_per_axis)
+	{
+		ii = 0;
+		ret[i] = malloc(tiles_per_axis * sizeof(t_tile));
+		while (ii < tiles_per_axis)
+		{
+			//printf("%i %i\n", i, ii);
+			//ret[i] = (void *) ret + tiles_per_axis * i + ii * sizeof(t_tile) + tiles_per_axis * sizeof(void *);
+			ret[i][ii].y = i * BLOCK_SIZE;
+			ret[i][ii].x = ii * ceil((double) BLOCK_SIZE * aspect);
+			pthread_mutex_init(&ret[i][ii].m_rendered, NULL);
+			ret[i][ii].rendered = false;
+			ii++;
+		}
+		i++;
+	}
+	return (ret);
+}
+
 void	rt_start(t_mixer *mixer)
 {
+	mixer->tile_array = rt_divide(mixer->cam.aspect_ratio);
 	rt_forker(mixer);
 }

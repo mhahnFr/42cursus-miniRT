@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/06 17:08:36 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/06 21:02:29 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@
 # include "vector.h"
 
 /* Resolution in pixels */
-# define RESOLUTION_X	1080
-# define RESOLUTION_Y	720
+# define RESOLUTION_X	480
+# define RESOLUTION_Y	320
 
 # define ANTI_ALIASING	10
 # define MAX_BOUNCES	20
+# define BLOCK_SIZE		40
 
 /* Object types */
 # define CAMERA		   -2
@@ -126,6 +127,16 @@ typedef struct s_col_calc
 typedef struct s_thread	t_thread;
 
 /*
+ * Tile list for multicore rendering pipeline with better performance
+ */
+typedef struct s_tile {
+	int				x;
+	int				y;
+	pthread_mutex_t	m_rendered;
+	bool			rendered;
+}	t_tile;
+
+/*
  * Mainstruct for MiniRT
  */
 typedef struct s_mixer {
@@ -137,6 +148,7 @@ typedef struct s_mixer {
 	size_t				cores;
 	struct s_ambient	ambient;
 	struct s_cam		cam;
+	t_tile				**tile_array;
 	t_obj_l				*obj_list;
 	t_thread			*threads;
 }	t_mixer;
@@ -150,6 +162,8 @@ typedef struct s_thread {
 	pthread_t			thread;
 	size_t				block_size_x;
 	size_t				index;
+	int					x;
+	int					y;
 	struct s_col_calc	col_sum;
 	t_diff				diff_sh;
 	t_mixer				*mixer;

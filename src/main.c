@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/06 16:22:27 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/06 17:29:57 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,3 +82,15 @@ int	main(int argc, char **argv)
 	ft_gc_clear();
 	return (ret);
 }
+
+
+/*
+
+lexer			main
+camera			main
+
+threadbuiltup ||
+calculus      ||
+print			main
+
+*/
