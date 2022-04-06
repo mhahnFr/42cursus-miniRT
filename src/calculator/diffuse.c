@@ -6,15 +6,15 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/06 16:48:23 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/06 16:52:32 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <float.h>
 
 bool	diffuse_next(t_thread *self, t_obj_l *objs, t_vector *start, t_vector *ray, t_vector *inter)
 {
@@ -24,10 +24,7 @@ bool	diffuse_next(t_thread *self, t_obj_l *objs, t_vector *start, t_vector *ray,
 	if (objs->obj_type == SPHERE)
 		ret = hit_sphere(self, start, objs, ray, inter);
 	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
-	{
 		ret = intersec_plane(self, ray, start, objs, inter);
-		//objs->disthit = vector_distance(start, inter);
-	}
 	//else if (objs->obj_type == LIGHT)
 	//	ret = specular_highlight(start, objs, ray, inter);
 	//else if (objs->obj_type == CYLINDER)
@@ -92,18 +89,6 @@ t_vector	diffuse_rand(t_thread *self, t_diff diff)
 	vector_addition(&tmp, &tmp, &reflection);
 	return (tmp);
 }
-
-//t_vector	diffuse_randi1() {
-//	t_vector ret;
-//	t_vector inter;
-//
-//	do {
-//		vector_create(&inter, drand48(), drand48(), drand48());
-//		vector_multiply_digit(&inter, &inter, 2);
-//		vector_create(&ret, inter.x - 1, inter.y - 1, inter.z - 1);
-//	} while ((ret.x * ret.x + ret.y * ret.y + ret.z * ret.z) >= 1);
-//	return (ret);
-//}
 
 t_rgbof	vector_cast_rgbof(t_vector vec)
 {
