@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 18:24:39 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/06 16:48:23 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ t_vector	diffuse_get(t_thread *self, t_diff diff, t_vector *result)
 	if (diff.ray_count < MAX_BOUNCES && diffuse_nearest(self, &diff, diff.origin, result))
 	{
 		*diff.ray = diffuse_rand(self, diff);
-		diff.origin = vector_new(result->x, result->y, result->z);
+		vector_create(diff.origin, result->x, result->y, result->z);
 		diff.ray_count += 1;
 		inter2 = diffuse_get(self, diff, result);
 		inter3 = rgbof_cast_vector(diff.hit->color);
@@ -151,7 +151,6 @@ t_vector	diffuse_get(t_thread *self, t_diff diff, t_vector *result)
 	else
 	{
 		ret = rgbof_cast_vector(self->mixer->ambient.color);
-		//vector_multiply_digit(&ret, &ret, mixer->ambient.a_light);
 		return (ret);
 	}
 }
@@ -160,13 +159,13 @@ t_vector	diffuse_main(t_thread *self, t_obj_l *obj, t_vector *intersect)
 {
 	t_vector	ret;
 	t_vector	res;
+	t_vector	a;
 
 	self->diff_sh.ray = intersect;
 	self->diff_sh.hit = obj;
 	self->diff_sh.ray_count = 0;
-	self->diff_sh.origin = vector_new(self->mixer->cam.position.x, self->mixer->cam.position.y, self->mixer->cam.position.z);
-	//mixer->diff_sh.origin = vector_new(obj->col_normal.x, obj->col_normal.y, obj->col_normal.z);
-	//vector_addition(mixer->diff_sh.origin, &obj->col_normal, &obj->position);
+	self->diff_sh.origin = &a;
+	vector_create(&a, self->mixer->cam.position.x, self->mixer->cam.position.y, self->mixer->cam.position.z);
 	vector_create(&res, 0, 0, 0);
 	ret = diffuse_get(self, self->diff_sh, &res);
 	if (self->diff_sh.ray_count < 1)

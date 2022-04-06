@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 16:29:57 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/06 12:59:51 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/06 16:12:23 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	ft_gc_clear(void)
 	pthread_mutex_unlock(ft_gc_get_mutex());
 }
 
+#define DEBUG
 #ifdef DEBUG
 #include <stdio.h>
 #endif
