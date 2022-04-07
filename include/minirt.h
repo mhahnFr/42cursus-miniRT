@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/07 12:24:37 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/07 13:19:49 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,8 @@ typedef struct s_thread	t_thread;
  * Tile list for multicore rendering pipeline with better performance
  */
 typedef struct s_tile {
-	int				x;
-	int				y;
+	size_t			x;
+	size_t			y;
 	pthread_mutex_t	m_rendered;
 	bool			rendered;
 }	t_tile;

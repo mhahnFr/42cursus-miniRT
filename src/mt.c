@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:32:21 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/07 12:26:00 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/07 13:28:43 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,15 @@ void	rt_runner(t_thread *self)
 	t_tile	to_render;
 	size_t	i;
 	size_t	ii;
+	size_t	limit_x;
 
 	self->col_sum.sum = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(t_vector));
 	self->col_sum.fac = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(float));
 	while (rt_block_fetcher(self->mixer->tile_array, &to_render))
 	{
 		i = to_render.x;
-		while (i < to_render.x + (ceil((double) BLOCK_SIZE * self->mixer->cam.aspect_ratio)) && i < RESOLUTION_X)
+		limit_x = to_render.x + (ceil((double) BLOCK_SIZE * self->mixer->cam.aspect_ratio));
+		while (i < limit_x && i < RESOLUTION_X)
 		{
 			ii = to_render.y;
 			while (ii < to_render.y + BLOCK_SIZE && ii < RESOLUTION_Y)
@@ -109,6 +111,7 @@ void	rt_forker(t_mixer *mixer)
 	else
 		rt_runner(&mixer->threads[0]);
 	printf("Done.\n");
+	exit(0);
 }
 
 t_tile	**rt_divide(float aspect)
