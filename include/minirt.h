@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/07 12:07:20 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/07 12:24:37 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,9 +160,8 @@ typedef struct s_thread {
 	float				disthit;
 	int					bounces;
 	pthread_t			thread;
-	size_t				index;
-	int					x;
-	int					y;
+	size_t				x;
+	size_t				y;
 	struct s_col_calc	col_sum;
 	t_diff				diff_sh;
 	t_mixer				*mixer;
