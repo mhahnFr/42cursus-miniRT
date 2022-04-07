@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:32:21 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/06 21:12:58 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/07 12:06:07 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	render_ray(t_thread *self, t_vector *ray, size_t x, size_t y)
 	}
 } */
 
-
-
 bool	rt_block_fetcher(t_tile **tile_array, t_tile *render)
 {
 	int	i;
@@ -64,13 +62,15 @@ bool	rt_block_fetcher(t_tile **tile_array, t_tile *render)
 		ii = 0;
 		while (ii < tiles_per_axis)
 		{
-			if (!pthread_mutex_trylock(&tile_array[i][ii].m_rendered))
+			pthread_mutex_lock(&tile_array[i][ii].m_rendered);
+			if (!tile_array[i][ii].rendered)
 			{
 				tile_array[i][ii].rendered = true;
 				pthread_mutex_unlock(&tile_array[i][ii].m_rendered);
 				*render = tile_array[i][ii];
 				return (true);
 			}
+			pthread_mutex_unlock(&tile_array[i][ii].m_rendered);
 			ii++;
 		}
 		i++;
@@ -89,7 +89,7 @@ void	rt_runner(t_thread *self)
 	while (rt_block_fetcher(self->mixer->tile_array, &to_render))
 	{
 		i = to_render.x;
-		while (i < to_render.x + BLOCK_SIZE && i < RESOLUTION_X)
+		while (i < to_render.x + (ceil((double) BLOCK_SIZE * self->mixer->cam.aspect_ratio)) && i < RESOLUTION_X)
 		{
 			ii = to_render.y;
 			while (ii < to_render.y + BLOCK_SIZE && ii < RESOLUTION_Y)
@@ -113,10 +113,9 @@ void	rt_forker(t_mixer *mixer)
 	while (i < mixer->cores)
 	{
 		mixer->threads[i].index = i;
-		mixer->threads[i].block_size_x = RESOLUTION_X / mixer->cores;
 		mixer->threads[i].mixer = mixer;
 		if (pthread_create(&mixer->threads[i].thread, NULL, rt_runner, (void *) &mixer->threads[i]) != 0)
-			rt_runner(&mixer->threads[i]);
+			;//rt_runner(&mixer->threads[i]);
 		i++;
 	}
 	i = 0;
@@ -145,7 +144,6 @@ t_tile	**rt_divide(float aspect)
 		ret[i] = malloc(tiles_per_axis * sizeof(t_tile));
 		while (ii < tiles_per_axis)
 		{
-			//printf("%i %i\n", i, ii);
 			//ret[i] = (void *) ret + tiles_per_axis * i + ii * sizeof(t_tile) + tiles_per_axis * sizeof(void *);
 			ret[i][ii].y = i * BLOCK_SIZE;
 			ret[i][ii].x = ii * ceil((double) BLOCK_SIZE * aspect);

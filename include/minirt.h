@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/06 21:02:29 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/07 11:58:23 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ typedef struct s_thread {
 	float				disthit;
 	int					bounces;
 	pthread_t			thread;
-	size_t				block_size_x;
+//	size_t				block_size_x;
 	size_t				index;
 	int					x;
 	int					y;
