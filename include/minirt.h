@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/07 13:19:49 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/07 15:45:51 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ typedef struct s_col_calc
 }	t_col;
 
 typedef struct s_thread	t_thread;
+typedef void	*(*t_run)(void *);
 
 /*
  * Tile list for multicore rendering pipeline with better performance

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:32:21 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/07 13:28:43 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/07 15:46:07 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	rt_forker(t_mixer *mixer)
 	while (i < mixer->cores)
 	{
 		mixer->threads[i].mixer = mixer;
-		if (pthread_create(&mixer->threads[i].thread, NULL, rt_runner, (void *) &mixer->threads[i]) == 0)
+		if (pthread_create(&mixer->threads[i].thread, NULL, (t_run) rt_runner, (void *) &mixer->threads[i]) == 0)
 			ii++;
 		i++;
 	}
