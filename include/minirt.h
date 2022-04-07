@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/07 11:58:23 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/07 12:07:20 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include "vector.h"
 
 /* Resolution in pixels */
-# define RESOLUTION_X	480
-# define RESOLUTION_Y	320
+# define RESOLUTION_X	1920
+# define RESOLUTION_Y	1080
 
 # define ANTI_ALIASING	10
 # define MAX_BOUNCES	20
@@ -160,7 +160,6 @@ typedef struct s_thread {
 	float				disthit;
 	int					bounces;
 	pthread_t			thread;
-//	size_t				block_size_x;
 	size_t				index;
 	int					x;
 	int					y;

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 14:32:21 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/07 12:06:07 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/07 12:20:26 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,17 @@ bool	rt_block_fetcher(t_tile **tile_array, t_tile *render)
 		ii = 0;
 		while (ii < tiles_per_axis)
 		{
-			pthread_mutex_lock(&tile_array[i][ii].m_rendered);
-			if (!tile_array[i][ii].rendered)
+			if (pthread_mutex_trylock(&tile_array[i][ii].m_rendered) == 0)
 			{
-				tile_array[i][ii].rendered = true;
+				if (!tile_array[i][ii].rendered)
+				{
+					tile_array[i][ii].rendered = true;
+					pthread_mutex_unlock(&tile_array[i][ii].m_rendered);
+					*render = tile_array[i][ii];
+					return (true);
+				}
 				pthread_mutex_unlock(&tile_array[i][ii].m_rendered);
-				*render = tile_array[i][ii];
-				return (true);
 			}
-			pthread_mutex_unlock(&tile_array[i][ii].m_rendered);
 			ii++;
 		}
 		i++;
