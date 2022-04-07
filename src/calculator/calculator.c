@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 18:03:44 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/07 11:45:50 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ t_rgbof	calc_antialiasing(t_thread *self, t_vector *cam_vec)
 		color_sum = self->col_sum;
 	else
 	{
-		ft_gc_clear();
 		exit(1);	
 	}
 	inter = *cam_vec;

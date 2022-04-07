@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/06 17:29:57 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/07 11:45:22 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	main(int argc, char **argv)
 		if (ret != 0)
 		{
 			printerror(ret);
-			ft_gc_clear();
 			exit(1);
 		}
 		all_struct->p_mlx_window = mlx_new_window(all_struct->p_mlx_init, RESOLUTION_X, RESOLUTION_Y, "TRASH!");
@@ -79,7 +78,7 @@ int	main(int argc, char **argv)
 		mlx_loop(all_struct->p_mlx_init);
 	}
 	printerror(ret);
-	ft_gc_clear();
+	exit(ret);
 	return (ret);
 }
 
