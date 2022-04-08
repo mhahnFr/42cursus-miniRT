@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:09:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 18:16:06 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 13:14:40 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	lexer(char *path, t_mixer *m_data, int *errnum)
 		*errnum += 20;
 		return (1);
 	}
+	correct_normals(m_data);
 	printf("file read successfull!\n");
 	return (0);
 }

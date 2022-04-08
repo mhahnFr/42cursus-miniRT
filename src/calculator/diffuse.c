@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 13:55:14 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 13:08:43 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,10 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 	if (diff.ray_count < MAX_BOUNCES && diffuse_nearest(mixer, &diff, diff.origin, result))
 	{
 		*diff.ray = diffuse_rand(diff, *result);
-		diff.origin = vector_new(result->x, result->y, result->z);
+		//diff.origin = vector_new(result->x, result->y, result->z);
+		t_vector	s;
+		vector_create(&s, result->x, result->y, result->z);
+		diff.origin = &s;
 		diff.ray_count += 1;
 		inter2 = diffuse_get(mixer, diff, result);
 		inter3 = rgbof_cast_vector(diff.hit->color);
@@ -165,7 +168,10 @@ t_vector	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
 	mixer->diff_sh.ray = intersect;
 	mixer->diff_sh.hit = obj;
 	mixer->diff_sh.ray_count = 0;
-	mixer->diff_sh.origin = vector_new(mixer->cam.position.x, mixer->cam.position.y, mixer->cam.position.z);
+	//mixer->diff_sh.origin = vector_new(mixer->cam.position.x, mixer->cam.position.y, mixer->cam.position.z);
+	t_vector	s;
+	vector_create(&s, mixer->cam.position.x, mixer->cam.position.y, mixer->cam.position.z);
+	mixer->diff_sh.origin = &s;
 	//mixer->diff_sh.origin = vector_new(obj->col_normal.x, obj->col_normal.y, obj->col_normal.z);
 	//vector_addition(mixer->diff_sh.origin, &obj->col_normal, &obj->position);
 	//t_vector* res = vector_new(0, 0, 0);

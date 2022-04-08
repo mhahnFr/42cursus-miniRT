@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 16:42:12 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 13:19:23 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,20 @@ typedef struct s_rgbof {
 //
 //WIDTH: in case of a sphere wifth and height are both the same
 typedef struct s_object_l {
-	int					obj_type;
-	t_vector			position;
-	double				width;
-	double				height;
-	t_vector			normal;
-	t_rgbof				color;
-	float				diffusion;
-	float				reflec_fac;
 	bool				emitter;
+	bool				inv_normal;
+	double				height;
+	double				width;
 	float				brightness;
-	t_vector			col_normal;
+	float				diffusion;
 	float				disthit;
 	float				intensity;
+	float				reflec_fac;
+	int					obj_type;
+	t_rgbof				color;
+	t_vector			col_normal;
+	t_vector			normal;
+	t_vector			position;
 
 	struct s_object_l	*next;
 	struct s_object_l	*prev;
@@ -227,4 +228,5 @@ int		key_handler(int key, t_mixer *p_null);
 int		validation_check(char **buffer, int size);
 int		lexer(char *path, t_mixer *m_data, int *retval);
 int		parser(char **buffer, t_mixer *m_data, int size);
+void	correct_normals(t_mixer *aaaaaaaaaa);
 #endif /*MINIRT_H*/
