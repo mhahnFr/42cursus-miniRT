@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 13:18:42 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:46:31 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x)
 	if (mixer->col_sum.fac != NULL)
 		color_sum = mixer->col_sum;
 	else
-	{
-		ft_gc_clear();
-		exit(1);	
-	}
+		ft_gc_exit(1);
 	inter = *cam_vec;
 	vector_normalize(&inter);
 	mixer->bounces = 0;

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:16:29 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:45:47 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	print_lexer_error(int error)
 		ft_putendl_fd("At least one required object missing", 1);
 	else
 		ft_putendl_fd("Error while parsing", 1);
-	exit(ret);
+	ft_gc_exit(ret);
 }
 
 static void	printerror(int error)
@@ -46,7 +46,7 @@ static void	printerror(int error)
 		ft_putendl_fd("Memory allocation failed", 1);
 	else
 		ft_putendl_fd("Unknown error occured", 1);
-	exit(ret);
+	ft_gc_exit(ret);
 }
 
 static void	open_mlx(t_mixer *self)
