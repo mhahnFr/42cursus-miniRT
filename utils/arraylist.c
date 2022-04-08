@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:37:05 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 16:37:06 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:31:46 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_arraylist	*arraylist_new(void *content)
 {
 	t_arraylist	*ret;
 
-	ret = malloc(sizeof(struct s_arraylist));
+	ret = ft_gc_malloc(sizeof(struct s_arraylist));
 	if (ret != NULL)
 	{
 		ret->content = content;

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/14 22:37:18 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 17:24:11 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:33:08 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	get_filled(char **str, int fd)
 	i = 0;
 	if (*str == NULL)
 	{
-		*str = malloc(GNL_BUFFER + 2);
+		*str = ft_gc_malloc(GNL_BUFFER + 2);
 		(*str)[GNL_BUFFER + 1] = '1';
 	}
 	if (*str == NULL)
@@ -59,17 +59,17 @@ int	get_memory(char **old)
 	i = 0;
 	while ((*old)[i] != '\0')
 		i++;
-	new = malloc(i + 1 + GNL_BUFFER);
+	new = ft_gc_malloc(i + 1 + GNL_BUFFER);
 	if (new == NULL)
 	{
-		free(*old);
+		ft_gc_free(*old);
 		return (0);
 	}
 	i++;
 	while (i-- > 0)
 		new[i] = (*old)[i];
 	if (*old != NULL)
-		free(*old);
+		ft_gc_free(*old);
 	*old = new;
 	return (1);
 }
@@ -77,9 +77,9 @@ int	get_memory(char **old)
 char	*e_exit(char **str, char **ret)
 {
 	if (*str != NULL)
-		free(*str);
+		ft_gc_free(*str);
 	if (*ret != NULL)
-		free(*ret);
+		ft_gc_free(*ret);
 	*str = NULL;
 	*ret = NULL;
 	return (NULL);
@@ -90,12 +90,12 @@ char	*s_exit(char **str, char **ret, size_t i, size_t ii)
 	if ((*ret)[ii] != '\n')
 	{
 		if (*str != NULL)
-			free(*str);
+			ft_gc_free(*str);
 		(*ret)[ii] = '\0';
 		*str = NULL;
 		if ((*ret)[0] == '\0')
 		{
-			free(*ret);
+			ft_gc_free(*ret);
 			return (NULL);
 		}
 		return (*ret);
