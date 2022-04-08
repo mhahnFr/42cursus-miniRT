@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:40:43 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 13:26:27 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 14:38:32 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret)
 		vector_addition(ret, origin, &OC);
 		vector_substract(&OC, ret, &(obj->position));
 		vector_division(&(obj->col_normal), &OC, obj->height);
+		if (obj->inv_normal)
+			vector_multiply_digit(&obj->col_normal, &obj->col_normal, -1);
 		return (true);
 	}
 	temp = (-b + sqrtf(d)) / a;
@@ -47,6 +49,8 @@ bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret)
 		vector_addition(ret, origin, &OC);
 		vector_substract(&OC, ret, &(obj->position));
 		vector_division(&(obj->col_normal), &OC, obj->height);
+		if (obj->inv_normal)
+			vector_multiply_digit(&obj->col_normal, &obj->col_normal, -1);
 		return (true);
 	}
 	return (false);

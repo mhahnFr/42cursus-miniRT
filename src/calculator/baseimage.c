@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 16:49:59 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 16:53:29 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *int
 	if (objs->obj_type == SPHERE)
 		ret = hit_sphere(origin, objs, ray, inter);
 	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
-	{
 		ret = intersec_plane(ray, origin, objs, inter);
-		objs->disthit = vector_distance(origin, inter);
-	}
 	else if (objs->obj_type == LIGHT)
 		ret = specular_highlight(origin, objs, ray, inter);
 	//else if (objs->obj_type == CYLINDER)
@@ -37,7 +34,6 @@ bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, t_o
 {
 	t_vector	intersect;
 	t_vector	inter;
-	t_vector	inter2;
 	t_obj_l		*curr;
 	t_obj_l		*list;
 	float		distsf;
@@ -122,7 +118,6 @@ float	light_distance_factor(float length, float brightness, float intensity)
 
 t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_col *col_sum, t_vector intersect)
 {
-	t_vector	inter;
 	t_vector	ray;
 	t_vector	added;
 	t_vector	sum;
@@ -155,7 +150,7 @@ t_vector	trace_rand(t_vector ray, t_vector normal, float diffusion)
 	t_vector	tmp;
 	t_vector	reflection;
 	float		inter;
-	float x, y, z;
+	float		rand_val;
 	
 	inter = vector_scalar_product(&ray, &normal);
 	if (inter < 0)
@@ -164,12 +159,12 @@ t_vector	trace_rand(t_vector ray, t_vector normal, float diffusion)
 	vector_addition(&reflection, &reflection, &ray);
 	if (diffusion == 0)
 		return (reflection);
-	x = (float) drand48();
-	y = (float) drand48();
-	z = (float) drand48();
-	tmp.x = ((x - 0.5) * diffusion) + reflection.x;
-	tmp.y = ((y - 0.5) * diffusion) + reflection.y;
-	tmp.z = ((z - 0.5) * diffusion) + reflection.z;
+	rand_val = (float) drand48();
+	tmp.x = ((rand_val - 0.5) * diffusion) + reflection.x;
+	rand_val = (float) drand48();
+	tmp.y = ((rand_val - 0.5) * diffusion) + reflection.y;
+	rand_val = (float) drand48();
+	tmp.z = ((rand_val - 0.5) * diffusion) + reflection.z;
 	vector_normalize(&tmp);
 	vector_addition(&tmp, &tmp, &reflection);
 	return (tmp);
@@ -177,9 +172,6 @@ t_vector	trace_rand(t_vector ray, t_vector normal, float diffusion)
 
 t_vector	trace_next(t_mixer *mixer, t_vector intersect, t_vector ray, t_obj_l *curr)
 {
-	t_vector	inter;
-	t_vector	inter2;
-
 	ray = trace_rand(ray, curr->col_normal, curr->diffusion);
 	return (rgbof_cast_vector(calc_shader(&intersect, &ray, mixer, &mixer->col_sum)));
 }
