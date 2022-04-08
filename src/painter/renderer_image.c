@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 13:20:52 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/08 17:49:41 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 18:12:25 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,5 @@ void	renderer_image_delete(t_renderer_image *this)
 	if (this == NULL)
 		return ;
 	renderer_image_destroy(this);
-	free(this);
+	ft_gc_free(this);
 }

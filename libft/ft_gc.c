@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 16:29:57 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:24:45 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 18:13:30 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_gc_exit(int code)
 
 	leak_count = arraylist_size_unsafe(*ft_gc_list());
 	if (leak_count > 0)
-		printf("%zu leaks\n", leak_count);
+		printf("%zu non-freed mallocs\n", leak_count);
 	arraylist_clear(ft_gc_list(), free);
 	exit(code);
 }
