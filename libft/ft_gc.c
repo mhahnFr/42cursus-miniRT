@@ -6,17 +6,19 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 16:29:57 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/05 13:15:48 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:24:45 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/arraylist.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 static t_arraylist	**ft_gc_list(void)
 {
 	static t_arraylist	*list = NULL;
+
 	return (&list);
 }
 
@@ -49,19 +51,13 @@ void	ft_gc_clear(void)
 	*ft_gc_list() = NULL;
 }
 
-#ifdef DEBUG
-#include <stdio.h>
-#endif
 void	ft_gc_exit(int code)
 {
-#ifdef DEBUG
-	size_t leak_count = arraylist_size_unsafe(*ft_gc_list());
-	if (leak_count > 0) {
+	size_t	leak_count;
+
+	leak_count = arraylist_size_unsafe(*ft_gc_list());
+	if (leak_count > 0)
 		printf("%zu leaks\n", leak_count);
-	} else {
-		printf("All heap blocks were freed - NO LEAKS ARE POSSIBLE\n");
-	}
-#endif
 	arraylist_clear(ft_gc_list(), free);
 	exit(code);
 }

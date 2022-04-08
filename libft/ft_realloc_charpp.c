@@ -6,11 +6,12 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:39:06 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 17:11:20 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:21:54 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
 #include <stdlib.h>
 
 void	*freetili(char **arr)
@@ -24,7 +25,7 @@ void	*freetili(char **arr)
 		i++;
 	}
 	if (arr != NULL)
-		free (arr);
+		free(arr);
 	return (NULL);
 }
 

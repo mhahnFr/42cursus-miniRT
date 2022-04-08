@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:38:03 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 16:43:17 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:32:56 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ t_matrix	*matrix_new(
 	t_matrix		*ret;
 	unsigned int	i;
 
-	ret = malloc(sizeof(struct s_matrix));
+	ret = ft_gc_malloc(sizeof(struct s_matrix));
 	if (ret == NULL)
 		return (NULL);
 	if (matrix == NULL)
 	{
-		matrix = malloc(rows * sizeof(float *));
+		matrix = ft_gc_malloc(rows * sizeof(float *));
 		i = 0;
 		while (i < rows)
-			matrix[i++] = malloc(columns * sizeof(float));
+			matrix[i++] = ft_gc_malloc(columns * sizeof(float));
 		if (matrix == NULL)
 			return (NULL);
 	}

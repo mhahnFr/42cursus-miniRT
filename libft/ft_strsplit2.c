@@ -6,11 +6,12 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 17:00:39 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/09 17:47:50 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:23:19 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+
 #include "libft.h"
 
 void	ft_skip_c(char *s, char *c, size_t *count)
@@ -32,7 +33,7 @@ void	ft_skip_c(char *s, char *c, size_t *count)
 			break ;
 		i++;
 	}
-	*count = i; 
+	*count = i;
 }
 
 void	ft_skip_s(char *s, char *c, size_t *count)
@@ -54,6 +55,5 @@ void	ft_skip_s(char *s, char *c, size_t *count)
 			break ;
 		i++;
 	}
-	*count = i; 
+	*count = i;
 }
-

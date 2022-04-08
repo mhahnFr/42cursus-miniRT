@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:37:17 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 16:37:18 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:32:18 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_point	*point_new(long x, long y)
 {
 	t_point	*ret;
 
-	ret = malloc(sizeof(struct s_point));
+	ret = ft_gc_malloc(sizeof(struct s_point));
 	if (ret == NULL)
 		return (NULL);
 	point_create(ret, x, y);

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:17:17 by jkasper           #+#    #+#             */
-/*   Updated: 2021/07/24 19:21:29 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:28:35 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	*ft_relong(size_t newsize, size_t size, void *old)
 	size_t	count;
 
 	count = 0;
-	new = malloc(newsize * sizeof(long));
+	new = ft_gc_malloc(newsize * sizeof(long));
 	while (count < size)
 	{
 		new[count] = ((long *)old)[count];
@@ -34,7 +34,7 @@ static void	*ft_rechar(size_t newsize, size_t size, void *old)
 	size_t	count;
 
 	count = 0;
-	new = malloc(newsize * sizeof(char));
+	new = ft_gc_malloc(newsize * sizeof(char));
 	while (count < size)
 	{
 		new[count] = ((char *)old)[count];
@@ -49,7 +49,7 @@ static void	*ft_reint(size_t newsize, size_t size, void *old)
 	size_t	count;
 
 	count = 0;
-	new = malloc(newsize * sizeof(int));
+	new = ft_gc_malloc(newsize * sizeof(int));
 	while (count < size)
 	{
 		new[count] = ((int *)old)[count];

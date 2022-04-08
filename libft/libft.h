@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/17 15:09:50 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 14:57:26 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:24:04 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@ typedef enum e_type
 	e_type_INT = 1,
 	e_type_LONG = 2
 }	t_e_type;
-
-# define malloc(size) ft_gc_malloc(size)
-# define free(ptr) ft_gc_free(ptr)
-# define exit(code) ft_gc_exit(code)
 
 /* BONUS PART */
 int		ft_atoi(const char *str);
@@ -101,4 +97,5 @@ void	ft_gc_free(void *ptr);
 void	ft_gc_clear(void);
 void	ft_gc_exit(int code);
 void	ft_free_char_arr(char **arr);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/18 14:11:34 by jkasper           #+#    #+#             */
-/*   Updated: 2021/06/22 18:34:04 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:29:25 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 		return (NULL);
 	i = 0;
 	len = ft_strlen(s);
-	rc = malloc(sizeof(char) * len + 1);
+	rc = ft_gc_malloc(sizeof(char) * len + 1);
 	if (rc == NULL)
 		return (NULL);
 	while (s[i] != '\0')
