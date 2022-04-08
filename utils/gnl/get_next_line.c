@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/14 22:37:06 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 15:29:53 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:38:07 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_next_line(int fd)
 	size_t		i;
 	size_t		ii;
 
-	ret = malloc(GNL_BUFFER + 1);
+	ret = ft_gc_malloc(GNL_BUFFER + 1);
 	ret[0] = '\0';
 	i = 0;
 	ii = 0;

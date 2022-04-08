@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/18 11:27:24 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/08 16:53:04 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:40:33 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ static char	**ft_freeman(char **restr, size_t count)
 	i = count;
 	while (restr[i] != NULL)
 	{
-		free(restr[i]);
+		ft_gc_free(restr[i]);
 		i++;
 	}
-	free(restr);
+	ft_gc_free(restr);
 	return (NULL);
 }
 

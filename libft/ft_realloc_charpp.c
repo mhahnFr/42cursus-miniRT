@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:39:06 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:21:54 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:42:10 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	*freetili(char **arr)
 	i = 0;
 	while (arr != NULL && arr[i] != NULL)
 	{
-		free(arr[i]);
+		ft_gc_free(arr[i]);
 		i++;
 	}
 	if (arr != NULL)
-		free(arr);
+		ft_gc_free(arr);
 	return (NULL);
 }
 

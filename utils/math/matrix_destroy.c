@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:37:51 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 16:37:52 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:35:35 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void	matrix_delete(t_matrix *this)
 			i = 0;
 			while (i < this->rows)
 			{
-				free(this->values[i]);
+				ft_gc_free(this->values[i]);
 				i++;
 			}
-			free(this->values);
+			ft_gc_free(this->values);
 		}
-		free(this);
+		ft_gc_free(this);
 	}
 }

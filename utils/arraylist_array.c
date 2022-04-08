@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:36:47 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:32:20 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:36:43 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	**arraylist_to_array(t_arraylist *this, t_arraylist_dup dup)
 
 	if (dup == NULL)
 		return (NULL);
-	array = ft_gc_malloc(arraylist_size(this) * sizeof(void *));
+	array = malloc(arraylist_size(this) * sizeof(void *));
 	if (array == NULL)
 		return (NULL);
 	counter = 0;
@@ -51,7 +51,7 @@ void	**arraylist_to_array_transfer_core(t_arraylist *this)
 
 	if (this == NULL)
 		return (NULL);
-	array = ft_gc_malloc(arraylist_size(this) * sizeof(void *));
+	array = malloc(arraylist_size(this) * sizeof(void *));
 	if (array == NULL)
 		return (NULL);
 	counter = 0;

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:37:17 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:32:18 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:35:19 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,5 @@ void	point_delete(t_point *this)
 {
 	if (this == NULL)
 		return ;
-	free(this);
+	ft_gc_free(this);
 }

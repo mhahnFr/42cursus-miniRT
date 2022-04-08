@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vertex.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhahn <mhahn@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:51:57 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/08 17:32:03 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:35:12 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,5 @@ void	vertex3d_delete(t_vertex3d *this)
 {
 	vertex3d_destroy(this);
 	if (this != NULL)
-		free(this);
+		ft_gc_free(this);
 }

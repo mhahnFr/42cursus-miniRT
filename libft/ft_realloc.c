@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/24 17:17:17 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:28:35 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:43:20 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,6 @@ void	*ft_realloc(void *old, size_t newsize, size_t size, int i)
 		new = ft_reint(newsize, size, old);
 	else if (i == e_type_LONG)
 		new = ft_relong(newsize, size, old);
-	free(old);
+	ft_gc_free(old);
 	return (new);
 }
