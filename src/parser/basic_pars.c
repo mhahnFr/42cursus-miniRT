@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:58:50 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/10 17:42:48 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:14:03 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,16 @@ t_rgbof	get_color(char *src)
 	i = 0;
 	while (src[i] != ',')
 		i++;
-	color.g = ft_atoi(src + i);
+	color.g = ft_atoi(src + ++i);
 	while (src[i] != ',')
 		i++;
-	color.b = ft_atoi(src + i);
-	while (src[i] != ',')
-	{
-		if (src[i] == '\n' || src[i++] == '\0')
-			return (color);
-	}
-	color.o = ft_atoi(src + i);
+	color.b = ft_atoi(src + ++i);
 	while (src[i] != ',')
 	{
 		if (src[i] == '\n' || src[i] == '\0')
 			return (color);
 		i++;
 	}
-	color.f = ft_atoi(src + i);
 	return (color);
 }
 
@@ -51,9 +44,9 @@ t_vector	get_vector(char *src)
 	vec.x = ft_atof(src);
 	while (src[i] != ',')
 		i++;
-	vec.y = ft_atof(src + i);
+	vec.y = ft_atof(src + ++i);
 	while (src[i] != ',')
 		i++;
-	vec.z = ft_atof(src + i);
+	vec.z = ft_atof(src + ++i);
 	return (vec);
 }
