@@ -6,14 +6,15 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:53:20 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/09 17:47:38 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:22:30 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include <stdlib.h>
 #include "libft.h"
+
 #include <stdio.h>
+#include <stdlib.h>
+
 static char	**ft_freeman(char **restr, size_t count)
 {
 	size_t	i;
