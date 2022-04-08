@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 13:19:23 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:51:26 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ bool	fast_intersec_plane(t_vector *vec, t_vector *normal);
 
 t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, t_col *colsum);
 
-t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, int y, int x);
+t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec);
 
 t_vector	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
 

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 13:08:43 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:52:07 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ bool	diffuse_nearest(t_mixer *mixer, t_diff *diff, t_vector *start, t_vector *re
 	return (sw);
 }
 
-t_vector	diffuse_rand(t_diff diff, t_vector intersect)
+t_vector	diffuse_rand(t_diff diff)
 {
 	t_vector	tmp;
 	t_vector	reflection;
@@ -139,7 +139,7 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 
 	if (diff.ray_count < MAX_BOUNCES && diffuse_nearest(mixer, &diff, diff.origin, result))
 	{
-		*diff.ray = diffuse_rand(diff, *result);
+		*diff.ray = diffuse_rand(diff);
 		//diff.origin = vector_new(result->x, result->y, result->z);
 		t_vector	s;
 		vector_create(&s, result->x, result->y, result->z);

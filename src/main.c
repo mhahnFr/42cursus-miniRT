@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 18:06:16 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:45:47 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:49:08 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ static void	print_lexer_error(int error)
 		ft_putendl_fd("At least one required object missing", 1);
 	else
 		ft_putendl_fd("Error while parsing", 1);
-	ft_gc_exit(ret);
+	ft_gc_exit(error);
 }
 
-static void	printerror(int error)
+static void	print_error(int error)
 {
 	if (!error)
 		return ;
@@ -46,10 +46,10 @@ static void	printerror(int error)
 		ft_putendl_fd("Memory allocation failed", 1);
 	else
 		ft_putendl_fd("Unknown error occured", 1);
-	ft_gc_exit(ret);
+	ft_gc_exit(error);
 }
 
-static void	open_mlx(t_mixer *self)
+static void	open_mlx(t_mixer *all_struct)
 {
 	all_struct->p_mlx_window = mlx_new_window(
 			all_struct->p_mlx_init, RESOLUTION_X, RESOLUTION_Y, "miniRT");
@@ -81,6 +81,6 @@ int	main(int argc, char **argv)
 		print_error(ret);
 		open_mlx(all_struct);
 	}
-	printerror(ret);
+	print_error(ret);
 	return (ret);
 }

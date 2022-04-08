@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   renderer_image.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhahn <mhahn@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 13:20:52 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/08 17:30:40 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:49:41 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 #include "mlx.h"
 
+#include "libft.h"
 #include "renderer_image.h"
 
 t_renderer_image	*renderer_image_new(
