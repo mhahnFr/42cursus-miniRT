@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:40:43 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 14:38:32 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 18:51:17 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret)
 	float		c;
 	float		d;
 	t_vector	OC;
-	
+
 	vector_substract(&OC, origin, &(obj->position));
 	a = vector_scalar_product(ray, ray);
 	b = vector_scalar_product(&OC, ray);

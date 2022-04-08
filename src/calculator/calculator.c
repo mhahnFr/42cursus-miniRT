@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:51:39 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 18:01:05 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,40 +27,40 @@ void	draw_point(int x, int y, t_renderer_image *buf, t_rgbof color)
 
 void	calculator(t_mixer *mixer, int *ret)
 {
-	calc_object_ray(mixer, ret);
-}
-
-void	calc_object_ray(t_mixer *mixer, int *ret)
-{
 	t_rgbof	color;
+	size_t	i;
+	size_t	ii;
+
 	(void) ret;
-	for (int i = 0; i < RESOLUTION_Y; i++) {
-		for (int j = 0; j < RESOLUTION_X; j++) {
-			color = calc_antialiasing(mixer, &(mixer->cam.vecs[i][j]));
-			draw_point(j, i, mixer->image, color);
+	i = 0;
+	while (i < RESOLUTION_Y)
+	{
+		ii = 0;
+		while (ii < RESOLUTION_X)
+		{
+			color = calc_first_ray_of_the_day(mixer, &(mixer->cam.vecs[i][ii]));
+			draw_point(ii, i, mixer->image, color);
+			ii++;
 		}
+		i++;
 	}
 	printf("Finished!\n");
 }
 
 t_vector	vector_rand(t_vector self, t_vector step)
 {
-	self.x += (float) ((float)(arc4random() % 10) / 10) * step.x;
-	self.y += (float) ((float)(arc4random() % 10) / 10) * step.y;
+	self.x += (float)(((float)(arc4random() % 10) / 10) * step.x);
+	self.y += (float)(((float)(arc4random() % 10) / 10) * step.y);
 	vector_normalize(&self);
 	return (self);
 }
 
-t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec)
+t_rgbof	calc_first_ray_of_the_day(t_mixer *mixer, t_vector *cam_vec)
 {
-	//antialiasing
-	int			i;
-	t_rgbof		color;
-	t_rgbof		add;
-	t_vector	inter;
 	t_col		color_sum;
+	t_vector	inter;
+	t_rgbof		color;
 
-	i = ANTI_ALIASING;
 	if (mixer->col_sum.fac != NULL)
 		color_sum = mixer->col_sum;
 	else
@@ -70,6 +70,19 @@ t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec)
 	mixer->bounces = 0;
 	color_sum.l_count = 0;
 	color = calc_shader(&(mixer->cam.position), &inter, mixer, &color_sum);
+	if (ANTI_ALIASING > 0)
+		return (calc_antialiasing(mixer, cam_vec, color));
+	return (color);
+}
+
+t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, t_rgbof color)
+{
+	int			i;
+	t_rgbof		add;
+	t_vector	inter;
+	t_col		color_sum;
+
+	i = ANTI_ALIASING;
 	color.cal_r = color.r;
 	color.cal_g = color.g;
 	color.cal_b = color.b;

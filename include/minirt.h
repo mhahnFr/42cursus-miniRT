@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:51:26 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 18:45:04 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,8 @@ bool	fast_intersec_plane(t_vector *vec, t_vector *normal);
 
 t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, t_col *colsum);
 
-t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec);
+t_rgbof		calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, t_rgbof color);
+t_rgbof		calc_first_ray_of_the_day(t_mixer *mixer, t_vector *cam_vec);
 
 t_vector	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect);
 
@@ -229,4 +230,6 @@ int		validation_check(char **buffer, int size);
 int		lexer(char *path, t_mixer *m_data, int *retval);
 int		parser(char **buffer, t_mixer *m_data, int size);
 void	correct_normals(t_mixer *aaaaaaaaaa);
+//baseimage
+t_rgbof	sumup_light(t_mixer *mixer, t_col *c_s);
 #endif /*MINIRT_H*/
