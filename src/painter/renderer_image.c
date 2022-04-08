@@ -6,7 +6,7 @@
 /*   By: mhahn <mhahn@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/05 13:20:52 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/05 13:20:56 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:30:40 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_renderer_image	*renderer_image_new(
 
 	if (mlx_ptr == NULL)
 		return (NULL);
-	ret = malloc(sizeof(struct s_renderer_image));
+	ret = ft_gc_malloc(sizeof(struct s_renderer_image));
 	if (ret == NULL)
 		return (NULL);
 	ret->mlx_img = mlx_new_image(mlx_ptr, width, height);

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:51:25 by mhahn             #+#    #+#             */
-/*   Updated: 2022/04/08 17:18:23 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:29:59 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_mixer	*init_mainstruct(int *err)
 {
 	t_mixer	*ret;
 
-	ret = malloc(sizeof(struct s_mixer));
+	ret = ft_gc_malloc(sizeof(struct s_mixer));
 	if (ret == NULL)
 	{
 		*err = 3;

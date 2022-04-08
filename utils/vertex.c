@@ -6,7 +6,7 @@
 /*   By: mhahn <mhahn@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:51:57 by mhahn             #+#    #+#             */
-/*   Updated: 2022/03/09 19:52:02 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:32:03 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_vertex3d	*vertex3d_new(float x, float y, float z)
 {
 	t_vertex3d	*ret;
 
-	ret = malloc(sizeof(struct s_vertex3d));
+	ret = ft_gc_malloc(sizeof(struct s_vertex3d));
 	if (ret != NULL)
 		vertex3d_create(ret, x, y, z);
 	return (ret);
