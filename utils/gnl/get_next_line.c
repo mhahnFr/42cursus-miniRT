@@ -6,11 +6,12 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/14 22:37:06 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:38:07 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/09 18:48:45 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include "libft.h"
 
 char	*get_next_line(int fd)
 {
@@ -19,7 +20,7 @@ char	*get_next_line(int fd)
 	size_t		i;
 	size_t		ii;
 
-	ret = ft_gc_malloc(GNL_BUFFER + 1);
+	ret = ft_calloc(GNL_BUFFER + 12, 1);
 	ret[0] = '\0';
 	i = 0;
 	ii = 0;

@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 18:26:15 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 18:43:53 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/09 20:49:54 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ t_vector	trace_next(t_mixer *mixer, t_vector intersect, t_vector ray, \
 											&mixer->col_sum)));
 }
 
-void	shader_reflection_shadow(t_mixer *mixer, t_obj_l *curr, t_col *colsum \
-	t_vector intersect2)
+void	shader_reflection_shadow(t_mixer *mixer, t_obj_l *curr, t_col *colsum, \
+	t_vector intersect2, t_vector *ray)
 {
 	t_vector	s_col;
 	t_vector	l_col;
@@ -46,7 +46,7 @@ void	shader_reflection_shadow(t_mixer *mixer, t_obj_l *curr, t_col *colsum \
 }
 
 bool	check_hit(t_mixer *mixer, t_obj_l *curr, t_col *colsum, \
-	t_vector intersect2)
+	t_vector intersect2, t_vector *ray)
 {
 	colsum->l_count = 0;
 	if (curr == NULL)
@@ -59,7 +59,7 @@ bool	check_hit(t_mixer *mixer, t_obj_l *curr, t_col *colsum, \
 		colsum->l_count = 1;
 		return (false);
 	}
-	shader_reflection_shadow(mixer, curr, colsum, intersect2);
+	shader_reflection_shadow(mixer, curr, colsum, intersect2, ray);
 	return (true);
 }
 
@@ -86,7 +86,7 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, \
 		}
 		list = list->next;
 	}
-	return (checkhit(mixer, curr, colsum, intersect2));
+	return (check_hit(mixer, curr, colsum, intersect2, ray));
 }
 
 t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, \

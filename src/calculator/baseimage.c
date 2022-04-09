@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 18:28:45 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/09 17:52:42 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, \
 	else if (objs->obj_type == LIGHT)
 		ret = specular_highlight(origin, objs, ray, inter);
 	//else if (objs->obj_type == CYLINDER)
-	//	return (calc_intersection_cylinder(origin, objs, ray, inter))
+	//	return (hit_cylinder(origin, objs, ray, inter))
 	return (ret);
 }
 

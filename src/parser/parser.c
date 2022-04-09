@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:14:30 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/09 18:53:50 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	add_ambient(char **line, t_ambient *ambient)
 	ambient->color.cal_r = ambient->color.r;
 	ambient->color.cal_g = ambient->color.g;
 	ambient->color.cal_b = ambient->color.b;
-	ft_free_char_arr(line);
+	//ft_free_char_arr(line);
 	return (0);
 }
 
@@ -42,7 +42,7 @@ int	add_camera(char **line, t_cam *camera)
 	vector_normalize(&(camera->normal));
 	camera->fov = ft_atoi(line[3]);
 	camera->aspect_ratio = RESOLUTION_X / RESOLUTION_Y;
-	ft_free_char_arr(line);
+	//ft_free_char_arr(line);
 	return (0);
 }
 
@@ -111,7 +111,11 @@ int	parser(char **buffer, t_mixer *m_data, int size)
 		return (5);
 	m_data->col_sum.sum = ft_calloc(1, (m_data->light_count + 2) * \
 	sizeof(t_vector));
+	if (m_data->col_sum.sum == NULL)
+		ft_gc_exit(1);
 	m_data->col_sum.fac = ft_calloc(1, (m_data->light_count + 2) * \
 	sizeof(float));
+	if (m_data->col_sum.fac == NULL)
+		ft_gc_exit(1);
 	return (0);
 }

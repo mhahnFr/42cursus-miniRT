@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:40:43 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 18:51:17 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/09 20:47:17 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret)
 	a = vector_scalar_product(ray, ray);
 	b = vector_scalar_product(&OC, ray);
 	c = vector_scalar_product(&OC, &OC) - powf(obj->height, 2);
-	d = powf(b,2) - a *c;
+	d = powf(b,2) - a * c;
 	if (d < 0)
 		return (false);
 	float	temp = (-b - sqrtf(d) ) / a;

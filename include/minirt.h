@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 18:45:04 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/09 18:29:55 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # define RESOLUTION_X	1080
 # define RESOLUTION_Y	720
 //# define CAM_SIZE		10
-# define ANTI_ALIASING	10
-# define MAX_BOUNCES	10
+# define ANTI_ALIASING	3
+# define MAX_BOUNCES	3
 //objecttypes
 # define CAMERA		   -2
 # define AMBIENT	   -1
@@ -210,6 +210,11 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result);
 
 t_vector	rgbof_cast_vector(t_rgbof self);
 t_rgbof		vector_cast_rgbof(t_vector self);
+
+t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector intersect);
+t_vector	trace_rand(t_vector ray, t_vector normal, float diffusion);
+bool		intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, \
+			t_vector *inter);
 
 t_rgbof	color_rgb(int r, int g, int b);
 t_rgbof	color_add(t_rgbof first, t_rgbof second);
