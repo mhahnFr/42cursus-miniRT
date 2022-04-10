@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 18:26:15 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/09 20:49:54 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/10 17:29:50 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, \
 	list = mixer->obj_list;
 	while (list != NULL)
 	{
-		if (intersec_next(list, origin, ray, &intersect) && (!sw || (sw \
+		if (list->obj_type != LIGHT && intersec_next(list, origin, ray, &intersect) && (!sw || (sw \
 			&& curr->disthit > list->disthit)))
 		{
 			sw = true;

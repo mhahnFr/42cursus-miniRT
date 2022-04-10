@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/09 17:52:42 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/10 18:09:21 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,27 @@ bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, \
 		ret = hit_sphere(origin, objs, ray, inter);
 	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
 		ret = intersec_plane(ray, origin, objs, inter);
-	else if (objs->obj_type == LIGHT)
-		ret = specular_highlight(origin, objs, ray, inter);
+	//else if (objs->obj_type == LIGHT)
+	//	ret = specular_highlight(origin, objs, ray, inter);
 	//else if (objs->obj_type == CYLINDER)
 	//	return (hit_cylinder(origin, objs, ray, inter))
 	return (ret);
 }
 
+float	light_distance_factor(float number)
+{
+	union
+	{
+		float		f;
+		uint32_t	i;
+	}	conv = { .f = number};
+	conv.i  = 0x5f3759df - (conv.i >> 1);
+	conv.f *= 1.5F - (number * 0.5F * conv.f * conv.f);
+	return conv.f;
+}
+
 bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, \
-t_obj_l *light, t_vector ray, t_vector *color)
+t_obj_l *light, t_vector ray, t_vector *color, float length)
 {
 	t_vector	intersect;
 	t_vector	inter;
@@ -65,9 +77,12 @@ t_obj_l *light, t_vector ray, t_vector *color)
 	t_vector a = rgbof_cast_vector(nointersec->color);
 	vector_multiply(color, color, &a);
 	if (curr == NULL)
-		vector_multiply_digit(color, color, light->brightness);
+	{
+		//vector_multiply_digit(color, color, light_distance_factor(length, 1, 1));
+		vector_multiply_digit(color, color, light->brightness * light_distance_factor(length * 0.5));
+	}
 	else
-		vector_multiply_digit(color, color, 0.1);
+		vector_multiply_digit(color, color, light->brightness / 10);
 	return (true);
 }
 
@@ -99,25 +114,6 @@ t_rgbof	sumup_light(t_mixer *mixer, t_col *c_s)
 	return (color);
 }
 
-float	light_distance_factor(float length, float brightness, float intensity)
-{
-	int		inter;
-	float	inter2;
-	int		i;
-
-	i = 0;
-	inter2 = length / intensity;
-	if (length < intensity)
-		return (brightness - (brightness * 0.5f * inter2));
-	inter = length / intensity;
-	inter2 /= powf(inter, 2.0f);
-	length = length - inter;
-	inter2 = inter2 - ((float) length / intensity) * 0.5f;
-	if (inter2 < 0.1f)
-		return (0.1f);
-	return (inter2);
-}
-
 t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector intersect)
 {
 	t_vector	ray;
@@ -135,7 +131,7 @@ t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector intersect)
 			vector_substract(&ray, &l->position, &intersect);
 			length = vector_length(&ray);
 			vector_normalize(&ray);
-			intersect_object(mixer, curr, &intersect, l, ray, &added);
+			intersect_object(mixer, curr, &intersect, l, ray, &added, length);
 			vector_addition(&sum, &sum, &added);
 		}
 		l = l->next;
