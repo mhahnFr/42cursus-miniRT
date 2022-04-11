@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:19:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 18:40:05 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/11 14:35:22 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ t_rgbof	color_cal_rgb(t_rgbof color, float factor)
 		color.r = color.cal_r / factor;
 		color.g = color.cal_g / factor;
 		color.b = color.cal_b / factor;
-	} else
+	}
+	else
 	{
 		color.r = color.cal_r * factor;
 		color.g = color.cal_g * factor;
@@ -92,5 +93,6 @@ t_rgbof	color_cal_rgb(t_rgbof color, float factor)
 
 void	color_print(t_rgbof color)
 {
-	printf("r: %i	cal: %i\ng: %i	cal: %i\nb: %i	cal: %i\n\n", color.r, color.cal_r, color.g, color.cal_g, color.b, color.cal_b);
+	printf("r: %i	cal: %i\ng: %i	cal: %i\nb: %i	cal: %i\n\n",
+		color.r, color.cal_r, color.g, color.cal_g, color.b, color.cal_b);
 }

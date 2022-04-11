@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:52:07 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/11 14:45:32 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,20 @@
 #include <stdio.h>
 #include <float.h>
 
-bool	diffuse_next(t_obj_l *objs, t_vector *start, t_vector *ray, t_vector *inter)
+bool	diffuse_next(
+			t_obj_l *objs,
+			t_vector *start,
+			t_vector *ray,
+			t_vector *inter)
 {
 	bool	ret;
 
 	ret = false;
 	if (objs->obj_type == SPHERE)
 		ret = hit_sphere(start, objs, ray, inter);
-	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
-	{
+	else if (objs->obj_type == PLANE
+		&& fast_intersec_plane(ray, &objs->normal))
 		ret = intersec_plane(ray, start, objs, inter);
-		//objs->disthit = vector_distance(start, inter);
-	}
 	//else if (objs->obj_type == LIGHT)
 	//	ret = specular_highlight(start, objs, ray, inter);
 	//else if (objs->obj_type == CYLINDER)
@@ -35,7 +37,11 @@ bool	diffuse_next(t_obj_l *objs, t_vector *start, t_vector *ray, t_vector *inter
 	return (ret);
 }
 
-bool	diffuse_nearest(t_mixer *mixer, t_diff *diff, t_vector *start, t_vector *result)
+bool	diffuse_nearest(
+			t_mixer *mixer,
+			t_diff *diff,
+			t_vector *start,
+			t_vector *result)
 {
 	t_vector	intersect;
 	t_vector	new_intersect;
@@ -45,19 +51,20 @@ bool	diffuse_nearest(t_mixer *mixer, t_diff *diff, t_vector *start, t_vector *re
 	bool		sw;
 
 	objs = mixer->obj_list;
-
 	sw = false;
 	while (objs != NULL)
 	{
-		if (diff->hit != objs  && sw == false && diffuse_next(objs, start, diff->ray, &intersect))
+		if (diff->hit != objs && !sw
+			&& diffuse_next(objs, start, diff->ray, &intersect))
 		{
 			distsf = objs->disthit;
 			sw = true;
 			curr = objs;
 		}
-		else if (diff->hit != objs && sw == true)
+		else if (diff->hit != objs && sw)
 		{
-			if (diffuse_next(objs, start, diff->ray, &new_intersect) && distsf > objs->disthit)
+			if (diffuse_next(objs, start, diff->ray, &new_intersect)
+				&& distsf > objs->disthit)
 			{
 				intersect = new_intersect;
 				distsf = objs->disthit;
@@ -76,8 +83,10 @@ t_vector	diffuse_rand(t_diff diff)
 	t_vector	tmp;
 	t_vector	reflection;
 	float		inter;
-	float x, y, z;
-	
+	float		x;
+	float		y;
+	float		z;
+
 	inter = vector_scalar_product(diff.ray, &diff.hit->col_normal);
 	if (inter < 0)
 		inter *= -1;
@@ -124,7 +133,8 @@ t_rgbof	vector_cast_rgbof(t_vector vec)
 
 t_vector	rgbof_cast_vector(t_rgbof color)
 {
-	t_vector vec;
+	t_vector	vec;
+
 	vec.x = (float) color.r / 255;
 	vec.y = (float) color.g / 255;
 	vec.z = (float) color.b / 255;
@@ -136,12 +146,13 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 	t_vector	inter;
 	t_vector	inter2;
 	t_vector	inter3;
+	t_vector	s;
+	t_vector	ret;
 
-	if (diff.ray_count < MAX_BOUNCES && diffuse_nearest(mixer, &diff, diff.origin, result))
+	if (diff.ray_count < MAX_BOUNCES
+		&& diffuse_nearest(mixer, &diff, diff.origin, result))
 	{
 		*diff.ray = diffuse_rand(diff);
-		//diff.origin = vector_new(result->x, result->y, result->z);
-		t_vector	s;
 		vector_create(&s, result->x, result->y, result->z);
 		diff.origin = &s;
 		diff.ray_count += 1;
@@ -153,29 +164,23 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 	}
 	else
 	{
-		t_vector	ret;
-	
 		ret = rgbof_cast_vector(mixer->ambient.color);
-		//vector_multiply_digit(&ret, &ret, mixer->ambient.a_light);
 		return (ret);
 	}
 }
 
 t_vector	diffuse_main(t_mixer *mixer, t_obj_l *obj, t_vector *intersect)
 {
-	t_vector ret;
+	t_vector	ret;
+	t_vector	s;
+	t_vector	res;
 
 	mixer->diff_sh.ray = intersect;
 	mixer->diff_sh.hit = obj;
 	mixer->diff_sh.ray_count = 0;
-	//mixer->diff_sh.origin = vector_new(mixer->cam.position.x, mixer->cam.position.y, mixer->cam.position.z);
-	t_vector	s;
-	vector_create(&s, mixer->cam.position.x, mixer->cam.position.y, mixer->cam.position.z);
+	vector_create(&s, mixer->cam.position.x,
+		mixer->cam.position.y, mixer->cam.position.z);
 	mixer->diff_sh.origin = &s;
-	//mixer->diff_sh.origin = vector_new(obj->col_normal.x, obj->col_normal.y, obj->col_normal.z);
-	//vector_addition(mixer->diff_sh.origin, &obj->col_normal, &obj->position);
-	//t_vector* res = vector_new(0, 0, 0);
-	t_vector res;
 	vector_create(&res, 0, 0, 0);
 	ret = diffuse_get(mixer, mixer->diff_sh, &res);
 	if (mixer->diff_sh.ray_count < 1)

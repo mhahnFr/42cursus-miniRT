@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/10 18:09:21 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/11 14:33:08 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "vector.h"
 #include <math.h>
 
-bool	intersec_next(t_obj_l *objs, t_vector *origin, t_vector *ray, \
-		t_vector *inter)
+bool	intersec_next(
+			t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *inter)
 {
 	bool	ret;
 
@@ -35,17 +35,25 @@ float	light_distance_factor(float number)
 {
 	union
 	{
-		float		f;
-		uint32_t	i;
-	}	conv = { .f = number};
-	conv.i  = 0x5f3759df - (conv.i >> 1);
+		float f;
+		uint32_t i;
+	}
+	conv = {.f = number};
+	conv.i = 0x5f3759df - (conv.i >> 1);
 	conv.f *= 1.5F - (number * 0.5F * conv.f * conv.f);
-	return conv.f;
+	return (conv.f);
 }
 
-bool	intersect_object(t_mixer *mixer, t_obj_l *nointersec, t_vector *origin, \
-t_obj_l *light, t_vector ray, t_vector *color, float length)
+bool	intersect_object(
+			t_mixer *mixer,
+			t_obj_l *nointersec,
+			t_vector *origin,
+			t_obj_l *light,
+			t_vector ray,
+			t_vector *color,
+			float length)
 {
+	t_vector	a;
 	t_vector	intersect;
 	t_vector	inter;
 	t_obj_l		*curr;
@@ -58,14 +66,17 @@ t_obj_l *light, t_vector ray, t_vector *color, float length)
 	list = mixer->obj_list;
 	while (list != NULL)
 	{
-		if (sw == false && list->obj_type != LIGHT && intersec_next(list, origin, &ray, &intersect))
+		if (!sw && list->obj_type
+			!= LIGHT && intersec_next(list, origin, &ray, &intersect))
 		{
 			inter = intersect;
 			distsf = list->disthit;
 			sw = true;
 			curr = list;
 		}
-		else if (sw == true && list->obj_type != LIGHT && intersec_next(list, origin, &ray, &intersect) && distsf > list->disthit)
+		else if (sw && list->obj_type != LIGHT
+			&& intersec_next(list, origin, &ray, &intersect)
+			&& distsf > list->disthit)
 		{
 			inter = intersect;
 			distsf = list->disthit;
@@ -74,13 +85,11 @@ t_obj_l *light, t_vector ray, t_vector *color, float length)
 		list = list->next;
 	}
 	*color = rgbof_cast_vector(light->color);
-	t_vector a = rgbof_cast_vector(nointersec->color);
+	a = rgbof_cast_vector(nointersec->color);
 	vector_multiply(color, color, &a);
 	if (curr == NULL)
-	{
-		//vector_multiply_digit(color, color, light_distance_factor(length, 1, 1));
-		vector_multiply_digit(color, color, light->brightness * light_distance_factor(length * 0.5));
-	}
+		vector_multiply_digit(color, color, light->brightness
+			* light_distance_factor(length * 0.5));
 	else
 		vector_multiply_digit(color, color, light->brightness / 10);
 	return (true);

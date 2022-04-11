@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 18:26:15 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/10 17:29:50 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/11 14:38:30 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,23 @@
 #include "vector.h"
 #include <math.h>
 
-t_vector	trace_next(t_mixer *mixer, t_vector intersect, t_vector ray, \
-			t_obj_l *curr)
+t_vector	trace_next(
+				t_mixer *mixer,
+				t_vector intersect,
+				t_vector ray,
+				t_obj_l *curr)
 {
 	ray = trace_rand(ray, curr->col_normal, curr->diffusion);
 	return (rgbof_cast_vector(calc_shader(&intersect, &ray, mixer, \
 											&mixer->col_sum)));
 }
 
-void	shader_reflection_shadow(t_mixer *mixer, t_obj_l *curr, t_col *colsum, \
-	t_vector intersect2, t_vector *ray)
+void	shader_reflection_shadow(
+			t_mixer *mixer,
+			t_obj_l *curr,
+			t_col *colsum,
+			t_vector intersect2,
+			t_vector *ray)
 {
 	t_vector	s_col;
 	t_vector	l_col;
@@ -77,8 +84,9 @@ bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, \
 	list = mixer->obj_list;
 	while (list != NULL)
 	{
-		if (list->obj_type != LIGHT && intersec_next(list, origin, ray, &intersect) && (!sw || (sw \
-			&& curr->disthit > list->disthit)))
+		if (list->obj_type != LIGHT
+			&& intersec_next(list, origin, ray, &intersect)
+			&& (!sw || (sw && curr->disthit > list->disthit)))
 		{
 			sw = true;
 			curr = list;

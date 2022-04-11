@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 13:54:54 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/09 21:11:56 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/11 14:46:25 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ float	cylinder_part_c(t_vector p, t_vector p_c, t_vector d_c, float radius)
 	return (vector_scalar_product(inter2, inter2) - powf(radius, 2));
 }
 
-bool	hit_cylinder(t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *inter)
+bool	hit_cylinder(
+			t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *inter)
 {
 	float	a;
 	float	b;
