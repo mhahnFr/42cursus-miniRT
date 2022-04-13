@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 16:01:42 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:12:48 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/13 14:31:11 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	add_light_p2(t_obj_l *curr, char **line)
 	else
 		curr->next->intensity = 20;
 	curr->next->obj_type = LIGHT;
-	ft_free_char_arr(line);
 	curr->next->next = NULL;
+	ft_free_char_arr(line);
 	return (0);
 }
 
@@ -69,6 +69,7 @@ int	add_plane(char **line, t_mixer *m_data)
 	curr->next->reflec_fac = ft_atof(line[4]);
 	curr->next->color = get_color(line[5]);
 	curr->next->next = NULL;
+	ft_free_char_arr(line);
 	return (0);
 }
 
@@ -92,6 +93,7 @@ int	add_sphere(char **line, t_mixer *m_data)
 	curr->next->obj_type = SPHERE;
 	curr->next->width = curr->next->height;
 	curr->next->next = NULL;
+	ft_free_char_arr(line);
 	return (0);
 }
 
@@ -117,5 +119,6 @@ int	add_cylinder(char **line, t_mixer *m_data)
 	curr->next->color = get_color(line[7]);
 	curr->next->obj_type = CYLINDER;
 	curr->next->next = NULL;
+	ft_free_char_arr(line);
 	return (0);
 }

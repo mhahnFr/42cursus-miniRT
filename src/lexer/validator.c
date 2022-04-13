@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:39:55 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:22:22 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/13 15:03:39 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int	validation_check(char **buffer, int size)
 			ret = 0;
 		else
 			validation_p2(splitline, &ret);
+		ft_free_char_arr(splitline);
 	}
 	return (ret);
 }
