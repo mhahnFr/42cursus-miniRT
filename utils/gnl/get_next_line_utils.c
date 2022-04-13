@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/14 22:37:18 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/09 18:54:42 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/13 15:56:32 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ char	*s_exit(char **str, char **ret, size_t i, size_t ii)
 {
 	if ((*ret)[ii] != '\n')
 	{
-		//if (*str != NULL)
-		//	ft_gc_free(*str);
+		if (*str != NULL)
+			ft_gc_free(*str);
 		(*ret)[ii] = '\0';
 		*str = NULL;
 		if ((*ret)[0] == '\0')
 		{
-			//ft_gc_free(*ret);
+			ft_gc_free(*ret);
 			return (NULL);
 		}
 		return (*ret);
