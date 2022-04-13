@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:36:55 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 17:36:13 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/13 13:48:33 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ bool	arraylist_remove_at_element(
 		{
 			if (tmp->next != NULL)
 				tmp->next->previous = tmp->previous;
-			if (tmp->previous != NULL)
+			if (tmp->previous != NULL && tmp != *this)
 				tmp->previous->next = tmp->next;
 			if (tmp == *this)
 				*this = tmp->next;
 			arraylist_delete(&tmp, remover);
+			arraylist_reset_indices(*this);
 			return (true);
 		}
 		tmp = tmp->next;
@@ -63,6 +64,7 @@ bool	arraylist_remove_at_index(
 			if (tmp == *this)
 				*this = tmp->next;
 			arraylist_delete(&tmp, remover);
+			arraylist_reset_indices(*this);
 			return (true);
 		}
 		tmp = tmp->next;
