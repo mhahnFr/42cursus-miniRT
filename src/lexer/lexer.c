@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:09:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/08 13:14:40 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/13 14:08:48 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int	lexer(char *path, t_mixer *m_data, int *errnum)
 	int		size;
 
 	size = 0;
-	(void) m_data;
 	buffer = loader(path, errnum, &size);
 	if (buffer == NULL || size < 3 || *errnum)
 	{
