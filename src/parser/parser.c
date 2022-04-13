@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 19:32:14 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/09 18:53:50 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/13 12:29:11 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	add_ambient(char **line, t_ambient *ambient)
 	ambient->color.cal_r = ambient->color.r;
 	ambient->color.cal_g = ambient->color.g;
 	ambient->color.cal_b = ambient->color.b;
-	//ft_free_char_arr(line);
 	return (0);
 }
 
@@ -42,7 +41,6 @@ int	add_camera(char **line, t_cam *camera)
 	vector_normalize(&(camera->normal));
 	camera->fov = ft_atoi(line[3]);
 	camera->aspect_ratio = RESOLUTION_X / RESOLUTION_Y;
-	//ft_free_char_arr(line);
 	return (0);
 }
 
