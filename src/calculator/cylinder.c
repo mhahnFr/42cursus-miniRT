@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/03 13:54:54 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/11 14:46:25 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/20 16:05:32 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <float.h>
 #include "vector.h"
 
-float	cylinder_part_a(t_vector *d, t_vector *d_c)
+inline float	cylinder_part_a(t_vector *d, t_vector *d_c)
 {
 	t_vector	*inter;
 
@@ -25,7 +25,7 @@ float	cylinder_part_a(t_vector *d, t_vector *d_c)
 	return (vector_scalar_product(inter, inter));
 }
 
-float	cylinder_part_b(t_vector *d, t_vector *d_c, t_vector *p, t_vector *pc)
+inline float	cylinder_part_b(t_vector *d, t_vector *d_c, t_vector *p, t_vector *pc)
 {
 	t_vector	*inter;
 	t_vector	*inter2;
@@ -36,7 +36,7 @@ float	cylinder_part_b(t_vector *d, t_vector *d_c, t_vector *p, t_vector *pc)
 	return (vector_scalar_product(inter, inter2));
 }
 
-float	cylinder_part_c(t_vector p, t_vector p_c, t_vector d_c, float radius)
+inline float	cylinder_part_c(t_vector p, t_vector p_c, t_vector d_c, float radius)
 {
 	t_vector	*inter;
 	t_vector	*inter2;

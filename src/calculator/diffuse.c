@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:37:04 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/11 14:45:32 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/20 16:03:30 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <float.h>
 
-bool	diffuse_next(
+static inline bool	diffuse_next(
 			t_obj_l *objs,
 			t_vector *start,
 			t_vector *ray,
@@ -37,7 +37,7 @@ bool	diffuse_next(
 	return (ret);
 }
 
-bool	diffuse_nearest(
+static inline bool	diffuse_nearest(
 			t_mixer *mixer,
 			t_diff *diff,
 			t_vector *start,
@@ -78,7 +78,7 @@ bool	diffuse_nearest(
 	return (sw);
 }
 
-t_vector	diffuse_rand(t_diff diff)
+inline t_vector	diffuse_rand(t_diff diff)
 {
 	t_vector	tmp;
 	t_vector	reflection;

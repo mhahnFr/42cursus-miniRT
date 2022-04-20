@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 21:42:53 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/09 20:49:28 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/20 14:22:37 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	calculator(t_mixer *mixer, int *ret)
 		i++;
 	}
 	printf("Finished!\n");
+	exit(0);
 }
 
 t_vector	vector_rand(t_vector self, t_vector step)

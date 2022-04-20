@@ -6,7 +6,7 @@
 #    By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/19 15:11:15 by jkasper           #+#    #+#              #
-#    Updated: 2022/04/09 18:36:01 by jkasper          ###   ########.fr        #
+#    Updated: 2022/04/20 14:26:11 by jkasper          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ OBJ = $(patsubst %.c, %.o, $(SRC))
 
 OBJ_BON = $(patsubst %.c, %.o, $(BONUS))
 
-FLAGS = -Wall -Werror -Wextra -Ofast
+FLAGS = -Wall -Werror -Wextra -Ofast -funroll-loops
 
 all : $(NAME) 
 	

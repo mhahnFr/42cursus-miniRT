@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 20:23:59 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/11 14:33:08 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/20 14:20:34 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ bool	intersec_next(
 	return (ret);
 }
 
-float	light_distance_factor(float number)
-{
-	union
+/*
+	Function does following black-magic, but in normed manner:
+	
+ 	union
 	{
 		float f;
 		uint32_t i;
@@ -41,7 +42,21 @@ float	light_distance_factor(float number)
 	conv = {.f = number};
 	conv.i = 0x5f3759df - (conv.i >> 1);
 	conv.f *= 1.5F - (number * 0.5F * conv.f * conv.f);
-	return (conv.f);
+ */
+
+float	light_distance_factor(float number)
+{
+	uint32_t sec;
+	float	 result;
+	void	 *num_cp;
+
+	num_cp = &number;
+	sec = *(uint32_t *)num_cp;
+	sec = 0x5f3759df - (sec >> 1);
+	num_cp = &sec;
+	result = (float) ((1.5F - (number * 0.5F * \
+	(*(float *) num_cp) * (*(float *) num_cp))) * (*(float *) num_cp));
+	return (result);
 }
 
 bool	intersect_object(

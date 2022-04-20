@@ -48,7 +48,8 @@ OBJ         =  $(PAINTER_OBJ:.c=.o) $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OB
 ##		COMPILER		##
 NAME        = miniRT
 
-CFLAGS      = -Wall -Wextra -g -pedantic#-Werror
+#/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-profdata
+CFLAGS      = -Wall -Wextra -Ofast -march=native -funroll-loops -fno-trapping-math -fno-signed-zeros -fomit-frame-pointer -pedantic#-Werror
 INC         = -Iinclude -Imlx -Ilibft
 LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit
 
@@ -56,7 +57,9 @@ MLX         = ./mlx/libmlx.a
 LIBFT       = ./libft/libft.a
 
 ##		RULES			##
-all: $(NAME)
+all:
+	$(CC) $(INC) $(SRC) $(CFLAGS) $(LDFLAGS) -o $(NAME)
+#all: $(NAME)
 
 $(NAME): $(LIBFT) $(MLX) obj/ $(OBJ)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJ)

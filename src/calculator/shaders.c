@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/08 18:26:15 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/11 14:38:30 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/20 15:49:07 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "vector.h"
 #include <math.h>
 
-t_vector	trace_next(
+inline t_vector	trace_next(
 				t_mixer *mixer,
 				t_vector intersect,
 				t_vector ray,
@@ -52,7 +52,7 @@ void	shader_reflection_shadow(
 	colsum->l_count = 1;
 }
 
-bool	check_hit(t_mixer *mixer, t_obj_l *curr, t_col *colsum, \
+inline bool	check_hit(t_mixer *mixer, t_obj_l *curr, t_col *colsum, \
 	t_vector intersect2, t_vector *ray)
 {
 	colsum->l_count = 0;
@@ -70,7 +70,7 @@ bool	check_hit(t_mixer *mixer, t_obj_l *curr, t_col *colsum, \
 	return (true);
 }
 
-bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, \
+inline bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, \
 		t_vector *ray)
 {
 	t_vector	intersect;
