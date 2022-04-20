@@ -24,10 +24,10 @@ bool	intersec_next(
 		ret = hit_sphere(origin, objs, ray, inter);
 	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
 		ret = intersec_plane(ray, origin, objs, inter);
+	else if (objs->obj_type == CYLINDER)
+		return (hit_cylinder(origin, objs, ray, inter));
 	//else if (objs->obj_type == LIGHT)
-	//	ret = specular_highlight(origin, objs, ray, inter);
-	//else if (objs->obj_type == CYLINDER)
-	//	return (hit_cylinder(origin, objs, ray, inter))
+		//	ret = specular_highlight(origin, objs, ray, inter);
 	return (ret);
 }
 
@@ -45,15 +45,15 @@ bool	intersec_next(
  */
 float	light_distance_factor(float number)
 {
-	uint32_t sec;
-	float	 result;
-	void	 *num_cp;
+	uint32_t	sec;
+	float		result;
+	void		*num_cp;
 
 	num_cp = &number;
 	sec = *(uint32_t *)num_cp;
 	sec = 0x5f3759df - (sec >> 1);
 	num_cp = &sec;
-	result = (float) ((1.5F - (number * 0.5F * \
+	result = (float)((1.5F - (number * 0.5F * \
 	(*(float *) num_cp) * (*(float *) num_cp))) * (*(float *) num_cp));
 	return (result);
 }
@@ -134,9 +134,6 @@ t_rgbof	sumup_light(t_mixer *mixer, t_col *c_s)
 
 t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector intersect)
 {
-	/*t_vector	ray;
-	t_vector	added;
-	t_vector	sum;*/
 	t_vector	stack_vecs[3];
 	t_vector	*vecs[3];
 	float		length;

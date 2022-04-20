@@ -30,10 +30,11 @@ static inline bool	diffuse_next(
 	else if (objs->obj_type == PLANE
 		&& fast_intersec_plane(ray, &objs->normal))
 		ret = intersec_plane(ray, start, objs, inter);
+	else if (objs->obj_type == CYLINDER)
+		return (hit_cylinder(start, objs, ray, inter));
+		//return (calc_intersection_cylinder(mixer->cam, objs, ray));
 	//else if (objs->obj_type == LIGHT)
 	//	ret = specular_highlight(start, objs, ray, inter);
-	//else if (objs->obj_type == CYLINDER)
-	//	return (calc_intersection_cylinder(mixer->cam, objs, ray))
 	return (ret);
 }
 
