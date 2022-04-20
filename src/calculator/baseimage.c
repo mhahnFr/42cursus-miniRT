@@ -43,7 +43,6 @@ bool	intersec_next(
 	conv.i = 0x5f3759df - (conv.i >> 1);
 	conv.f *= 1.5F - (number * 0.5F * conv.f * conv.f);
  */
-
 float	light_distance_factor(float number)
 {
 	uint32_t sec;
@@ -61,16 +60,11 @@ float	light_distance_factor(float number)
 
 bool	intersect_object(
 			t_mixer *mixer,
-			t_obj_l *nointersec,
-			t_vector *origin,
-			t_obj_l *light,
-			t_vector ray,
-			t_vector *color,
+			t_obj_l *objs[2],
+			t_vector *vecs[3],
 			float length)
 {
-	t_vector	a;
-	t_vector	intersect;
-	t_vector	inter;
+	t_vector	stack_vecs[3];
 	t_obj_l		*curr;
 	t_obj_l		*list;
 	float		distsf;
@@ -82,31 +76,31 @@ bool	intersect_object(
 	while (list != NULL)
 	{
 		if (!sw && list->obj_type
-			!= LIGHT && intersec_next(list, origin, &ray, &intersect))
+			!= LIGHT && intersec_next(list, vecs[0], vecs[1], &stack_vecs[1]))
 		{
-			inter = intersect;
+			stack_vecs[2] = stack_vecs[1];
 			distsf = list->disthit;
 			sw = true;
 			curr = list;
 		}
 		else if (sw && list->obj_type != LIGHT
-			&& intersec_next(list, origin, &ray, &intersect)
+			&& intersec_next(list, vecs[0], vecs[1], &stack_vecs[1])
 			&& distsf > list->disthit)
 		{
-			inter = intersect;
+			stack_vecs[2] = stack_vecs[1];
 			distsf = list->disthit;
 			curr = list;
 		}
 		list = list->next;
 	}
-	*color = rgbof_cast_vector(light->color);
-	a = rgbof_cast_vector(nointersec->color);
-	vector_multiply(color, color, &a);
+	*vecs[2] = rgbof_cast_vector(objs[1]->color);
+	stack_vecs[0] = rgbof_cast_vector(objs[0]->color);
+	vector_multiply(vecs[2], vecs[2], &stack_vecs[0]);
 	if (curr == NULL)
-		vector_multiply_digit(color, color, light->brightness
+		vector_multiply_digit(vecs[2], vecs[2], objs[1]->brightness
 			* light_distance_factor(length * 0.5));
 	else
-		vector_multiply_digit(color, color, light->brightness / 10);
+		vector_multiply_digit(vecs[2], vecs[2], objs[1]->brightness / 10);
 	return (true);
 }
 
@@ -140,27 +134,33 @@ t_rgbof	sumup_light(t_mixer *mixer, t_col *c_s)
 
 t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector intersect)
 {
-	t_vector	ray;
+	/*t_vector	ray;
 	t_vector	added;
-	t_vector	sum;
+	t_vector	sum;*/
+	t_vector	stack_vecs[3];
+	t_vector	*vecs[3];
 	float		length;
-	t_obj_l		*l;
+	t_obj_l		*l[2];
 
-	vector_create(&sum, 0, 0, 0);
-	l = mixer->obj_list;
-	while (l != NULL)
+	l[0] = curr;
+	vector_create(&stack_vecs[2], 0, 0, 0);
+	l[1] = mixer->obj_list;
+	while (l[1] != NULL)
 	{
-		if (l->obj_type == LIGHT)
+		if (l[1]->obj_type == LIGHT)
 		{
-			vector_substract(&ray, &l->position, &intersect);
-			length = vector_length(&ray);
-			vector_normalize(&ray);
-			intersect_object(mixer, curr, &intersect, l, ray, &added, length);
-			vector_addition(&sum, &sum, &added);
+			vector_substract(&stack_vecs[0], &l[1]->position, &intersect);
+			length = vector_length(&stack_vecs[0]);
+			vector_normalize(&stack_vecs[0]);
+			vecs[0] = &intersect;
+			vecs[1] = &stack_vecs[0];
+			vecs[2] = &stack_vecs[1];
+			intersect_object(mixer, l, vecs, length);
+			vector_addition(&stack_vecs[2], &stack_vecs[2], &stack_vecs[1]);
 		}
-		l = l->next;
+		l[1] = l[1]->next;
 	}
-	return (sum);
+	return (stack_vecs[2]);
 }
 
 t_vector	trace_rand(t_vector ray, t_vector normal, float diffusion)

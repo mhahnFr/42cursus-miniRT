@@ -29,8 +29,7 @@ void	shader_reflection_shadow(
 			t_mixer *mixer,
 			t_obj_l *curr,
 			t_col *colsum,
-			t_vector intersect2,
-			t_vector *ray)
+			t_vector *vecs[2])
 {
 	t_vector	s_col;
 	t_vector	l_col;
@@ -41,19 +40,19 @@ void	shader_reflection_shadow(
 	vector_create(&s_col, 1, 1, 1);
 	vector_create(&l_col, 1, 1, 1);
 	if (curr->reflec_fac > 0)
-		s_col = trace_next(mixer, intersect2, *ray, curr);
+		s_col = trace_next(mixer, *vecs[0], *vecs[1], curr);
 	if (curr->reflec_fac < 1)
-		l_col = trace_light(mixer, curr, intersect2);
+		l_col = trace_light(mixer, curr, *vecs[0]);
 	vector_multiply_digit(&s_col, &s_col, curr->reflec_fac);
 	vector_multiply_digit(&l_col, &l_col, 1 - curr->reflec_fac);
-	vector_addition(&intersect2, &s_col, &l_col);
-	colsum->sum[0] = intersect2;
+	vector_addition(vecs[0], &s_col, &l_col);
+	colsum->sum[0] = *vecs[0];
 	colsum->fac[0] = 1;
 	colsum->l_count = 1;
 }
 
-inline bool	check_hit(t_mixer *mixer, t_obj_l *curr, t_col *colsum, \
-	t_vector intersect2, t_vector *ray)
+inline bool	check_hit(
+		t_mixer *mixer, t_obj_l *curr, t_col *colsum, t_vector *vecs[2])
 {
 	colsum->l_count = 0;
 	if (curr == NULL)
@@ -66,15 +65,15 @@ inline bool	check_hit(t_mixer *mixer, t_obj_l *curr, t_col *colsum, \
 		colsum->l_count = 1;
 		return (false);
 	}
-	shader_reflection_shadow(mixer, curr, colsum, intersect2, ray);
+	shader_reflection_shadow(mixer, curr, colsum, vecs);
 	return (true);
 }
 
 inline bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, \
 		t_vector *ray)
 {
-	t_vector	intersect;
-	t_vector	intersect2;
+	t_vector	vs[2];
+	t_vector	*vecs[2];
 	t_obj_l		*curr;
 	bool		sw;
 	t_obj_l		*list;
@@ -85,16 +84,18 @@ inline bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, \
 	while (list != NULL)
 	{
 		if (list->obj_type != LIGHT
-			&& intersec_next(list, origin, ray, &intersect)
+			&& intersec_next(list, origin, ray, &vs[0])
 			&& (!sw || (sw && curr->disthit > list->disthit)))
 		{
 			sw = true;
 			curr = list;
-			intersect2 = intersect;
+			vs[1] = vs[0];
 		}
 		list = list->next;
 	}
-	return (check_hit(mixer, curr, colsum, intersect2, ray));
+	vecs[0] = &vs[1];
+	vecs[1] = ray;
+	return (check_hit(mixer, curr, colsum, vecs));
 }
 
 t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, \

@@ -45,7 +45,6 @@ void	calculator(t_mixer *mixer, int *ret)
 		i++;
 	}
 	printf("Finished!\n");
-	exit(0);
 }
 
 t_vector	vector_rand(t_vector self, t_vector step)
