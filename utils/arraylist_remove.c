@@ -32,10 +32,10 @@ bool	arraylist_remove_at_element(
 				tmp->next->previous = tmp->previous;
 			if (tmp->previous != NULL && tmp != *this)
 				tmp->previous->next = tmp->next;
-			if (tmp == *this)
-				*this = tmp->next;
 			if (tmp == (*this)->previous)
 				(*this)->previous = tmp->previous;
+			if (tmp == *this)
+				*this = tmp->next;
 			arraylist_delete(&tmp, remover);
 			arraylist_reset_indices(*this);
 			return (true);
