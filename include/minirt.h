@@ -222,8 +222,8 @@ bool		intersec_plane(
  */
 bool		fast_intersec_plane(t_vector *vec, t_vector *normal);
 
-bool	hit_cylinder(
-			t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *inter);
+bool		hit_cylinder(
+				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *inter);
 
 t_rgbof		calc_shader(
 				t_vector *origin,
