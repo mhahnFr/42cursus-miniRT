@@ -11,10 +11,7 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include <math.h>
 #include <stdbool.h>
-#include <stdio.h>
-#include <float.h>
 
 static inline bool	diffuse_next(
 			t_obj_l *objs,

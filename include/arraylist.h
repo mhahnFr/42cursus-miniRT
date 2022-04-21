@@ -87,7 +87,7 @@ t_arraylist		*arraylist_get_element_unsafe(
  * Inserts the given element at the given index in the given arraylist. The
  * given element will have the given index. If the index does not exist in the
  * given arraylist, the element is appended at the end of the list, and the
- * element will have the coresponding index. Returns true if the element was
+ * element will have the corresponding index. Returns true if the element was
  * inserted as desired, false if the element was appended at the end of the
  * list or if at least one parameter is missing or the given index is outside
  * of the given list.
@@ -160,7 +160,7 @@ bool			arraylist_append(t_arraylist **this, t_arraylist *appendix);
  * pointer to the beginning itself is null, this function does nothing. The
  * index of the appended element is also set, using the index of the previous
  * element, if there is one. Thereby, as this unsafe version is using the
- * changable index of each element, the index of the appended element might be
+ * changeable index of each element, the index of the appended element might be
  * wrong in case the index of the last element has been manipulated. It does
  * not crash because of this. Returns true if the given element was
  * successfully appended to the given list, false if no list is given.
@@ -185,9 +185,9 @@ void			**arraylist_to_array(
  * Converts the given arraylist to a simple array. Please note that any changes
  * made to either object are not tracked by the other one as the array contains
  * duplicates of the contents of the arraylist. If an empty arraylist is given,
- * an empty array is returned. Returns either the newly alloacted array or null
+ * an empty array is returned. Returns either the newly allocated array or null
  * if either the allocation failed or no arraylist or no duplicate function is
- * given. As this unsafe version is using the changable index of each element,
+ * given. As this unsafe version is using the changeable index of each element,
  * this method might crash in case the indices of the elements in the given
  * arraylist are manipulated.
  */
@@ -233,7 +233,7 @@ void			**arraylist_to_array_transfer_unsafe(
  * after the transformation into an array. If an empty arraylist is given, an
  * empty array is returned. Returns either the newly allocated array or null if
  * the allocation failed. As this method is using other unsafe methods and
- * relies itself on the changable index of each element in the given arraylist,
+ * relies itself on the changeable index of each element in the given arraylist,
  * it can crash or produce undefined behaviour and results if the indices of
  * the elements in the arraylist are manipulated.
  */
@@ -257,7 +257,7 @@ size_t			arraylist_size(t_arraylist *this);
 
 /*
  * Returns the count of elements in the given arraylist. If no arraylist is
- * given, zero is returned. As this unsafe version is using the changable index
+ * given, zero is returned. As this unsafe version is using the changeable index
  * of each element, this method might crash in case the indices of the elements
  * in the given arraylist are manipulated.
  */

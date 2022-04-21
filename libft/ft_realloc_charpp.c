@@ -12,8 +12,6 @@
 
 #include "libft.h"
 
-#include <stdlib.h>
-
 void	*freetili(char **arr)
 {
 	int	i;

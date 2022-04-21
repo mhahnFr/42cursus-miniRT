@@ -23,7 +23,7 @@
 # define RESOLUTION_Y	720
 # define ANTI_ALIASING	10
 # define MAX_BOUNCES	15
-/* Objecttypes */
+/* Object-types */
 # define CAMERA		   -2
 # define AMBIENT	   -1
 # define LIGHT			0
@@ -53,9 +53,9 @@ typedef struct s_rgbof {
 }	t_rgbof;
 
 /*
- * Objectlist for all lights, and objects
+ * Object list for all lights, and objects
  *
- * WIDTH: in case of a sphere wifth and height are both the same
+ * WIDTH: in case of a sphere width and height are both the same
  */
 typedef struct s_object_l {
 	bool				emitter;

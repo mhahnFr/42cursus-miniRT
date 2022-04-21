@@ -38,14 +38,14 @@ t_vector	*vector_new(float x, float y, float z);
 void		vector_create(t_vector *this, float x, float y, float z);
 
 /*
- * Allocates a new vector containing the result of the substraction of the
+ * Allocates a new vector containing the result of the subtraction of the
  * second vector from the first one. Return either the newly allocated vector
  * or null if the allocation failed or at least one vector is missing.
  */
 t_vector	*vector_new_substract(t_vector *first, t_vector *second);
 
 /*
- * Substract the two given vectors and stores the result in the given vector.
+ * Subtract the two given vectors and stores the result in the given vector.
  * Does nothing if at least one vector is missing.
  */
 void		vector_substract(
@@ -129,7 +129,7 @@ t_vector	*vector_new_division(t_vector *divident, float divisor);
 t_vector	*vector_new_cross_product(t_vector *first, t_vector *second);
 
 /*
- * Calculates the cross product of the to given vectors and stores the result
+ * Calculates the cross product of the two given vectors and stores the result
  * in the given vector. Does nothing if at least one vector is missing.
  */
 void		vector_cross_product(

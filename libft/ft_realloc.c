@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
 static void	*ft_relong(size_t newsize, size_t size, void *old)
 {

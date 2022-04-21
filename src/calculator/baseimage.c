@@ -12,7 +12,6 @@
 
 #include "minirt.h"
 #include "vector.h"
-#include <math.h>
 
 bool	intersec_next(
 			t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *inter)

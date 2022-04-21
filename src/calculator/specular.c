@@ -11,9 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdbool.h>
-#include <math.h>
 #include "minirt.h"
-#include "libft.h"
 
 bool	specular_highlight(
 			t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *result)

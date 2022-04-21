@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include "libft.h"
 #include <math.h>
 #include <stdbool.h>
 #include <float.h>

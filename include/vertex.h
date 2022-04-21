@@ -23,7 +23,7 @@ typedef struct s_point	t_point;
 typedef struct s_vector	t_vector;
 
 /*
- * Represents a three dimensional vertex.
+ * Represents a three-dimensional vertex.
  */
 typedef struct s_vertex3d
 {

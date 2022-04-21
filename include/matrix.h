@@ -21,7 +21,7 @@
 typedef struct s_vertex3d	t_vertex3d;
 
 /*
- * Represents a mathematical matrix. Contains a two dimensional float array,
+ * Represents a mathematical matrix. Contains a two-dimensional float array,
  * which is the actual matrix, as well as the length of the two dimensions.
  */
 typedef struct s_matrix {

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include <stdio.h>
 #include "libft.h"
 #include "lexer.h"
 

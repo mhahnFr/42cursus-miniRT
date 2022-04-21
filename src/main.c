@@ -45,7 +45,7 @@ static void	print_error(int error)
 	else if (error == 3)
 		ft_putendl_fd("Memory allocation failed", 1);
 	else
-		ft_putendl_fd("Unknown error occured", 1);
+		ft_putendl_fd("Unknown error occurred", 1);
 	ft_gc_exit(error);
 }
 

@@ -15,7 +15,6 @@
 #include "libft.h"
 #include "lexer.h"
 #include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
 
 int	checkfile(char *name)

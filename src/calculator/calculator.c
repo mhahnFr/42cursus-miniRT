@@ -13,8 +13,6 @@
 #include <stdio.h>
 #include "minirt.h"
 #include "renderer_image.h"
-#include <math.h>
-#include <stdbool.h>
 
 void	draw_point(int x, int y, t_renderer_image *buf, t_rgbof color)
 {

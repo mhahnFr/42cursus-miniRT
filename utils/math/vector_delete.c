@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-
 #include "vector.h"
 
 void	vector_destroy(t_vector __attribute__((unused)) *this)

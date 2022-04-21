@@ -16,7 +16,7 @@
 # include <stdbool.h>
 
 /*
- * Returns wether the given char is an hexadecimal digit.
+ * Returns wether the given char is a hexadecimal digit.
  */
 bool			ft_ishexnum(char c);
 
@@ -33,9 +33,9 @@ unsigned int	ft_get_value(char c);
 
 /*
  * Parses a given string and converts it to an unsigned int, assuming given
- * string contains a hexadecimal number. The number must not be preceeded by
- * any character, but can followed by any amount of characters. Returns zero if
- * an error occured.
+ * string contains a hexadecimal number. The number must not be preceded by
+ * any character, but can be followed by any amount of characters. Returns zero
+ * if an error occurred.
  */
 unsigned int	hexstr_to_uint(char *string);
 

@@ -12,9 +12,6 @@
 
 #include "libft.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 static char	**ft_freeman(char **restr, size_t count)
 {
 	size_t	i;

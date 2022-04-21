@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include <unistd.h>
 #include <stdio.h>
 
 t_rgbof	color_rgb(int r, int g, int b)

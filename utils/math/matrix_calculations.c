@@ -12,8 +12,6 @@
 
 #include <stddef.h>
 
-#include "libft.h"
-
 #include "matrix.h"
 #include "vertex.h"
 

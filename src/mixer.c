@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-
 #include "minirt.h"
 #include "mlx.h"
 #include "renderer_image.h"

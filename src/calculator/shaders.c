@@ -12,7 +12,6 @@
 
 #include "minirt.h"
 #include "vector.h"
-#include <math.h>
 
 inline t_vector	trace_next(
 				t_mixer *mixer,
