@@ -13,6 +13,18 @@
 #include "minirt.h"
 #include "vector.h"
 
+typdef struct s_iobj {
+	t_vector	ray;
+	t_vector	origin;
+	t_vector	inter;
+	t_vector	inter_final;
+	t_vector	ret_color;
+	t_obj_l 	*list;
+	t_obj_l 	*curr;
+	t_obj_l 	*light;
+	t_obj_l		*obj_col;
+} t_iobj;
+
 bool	intersec_next(
 			t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *inter)
 {
@@ -59,47 +71,51 @@ float	light_distance_factor(float number)
 
 bool	intersect_object(
 			t_mixer *mixer,
-			t_obj_l *objs[2],
-			t_vector *vecs[3],
+			//t_obj_l *objs[2],
+			t_iobj *i_struc,
+			//t_vector *vecs[3],
 			float length)
 {
-	t_vector	stack_vecs[3];
-	t_obj_l		*curr;
-	t_obj_l		*list;
+	t_vector	intercol;
+	//t_obj_l	*curr;
+	//t_obj_l	*list;
 	float		distsf;
 	bool		sw;
 
 	sw = false;
-	curr = NULL;
-	list = mixer->obj_list;
-	while (list != NULL)
+	i_struc->curr = NULL;
+	i_struc->list = mixer->obj_list;
+	while (i_struc->list != NULL)
 	{
-		if (!sw && list->obj_type
-			!= LIGHT && intersec_next(list, vecs[0], vecs[1], &stack_vecs[1]))
+		if (!sw && i_struc->list->obj_type
+			!= LIGHT && /*intersec_next(i_struc->list, vecs[0], vecs[1], &stack_vecs[1])*/ intersec_next(i_struc->list, &i_struc->origin, &i_struc->ray, &i_struc->inter))
 		{
-			stack_vecs[2] = stack_vecs[1];
-			distsf = list->disthit;
+			//stack_vecs[2] = stack_vecs[1];
+			i_struc->inter_final = i_struc->inter;
+			distsf = i_struc->list->disthit;
 			sw = true;
-			curr = list;
+			i_struc->curr = i_struc->list;
 		}
-		else if (sw && list->obj_type != LIGHT
-			&& intersec_next(list, vecs[0], vecs[1], &stack_vecs[1])
-			&& distsf > list->disthit)
+		else if (sw && i_struc->list->obj_type != LIGHT
+			&& intersec_next(i_struc->list, &i_struc->origin, &i_struc->ray, &i_struc->inter)
+			&& distsf > i_struc->list->disthit)
 		{
-			stack_vecs[2] = stack_vecs[1];
-			distsf = list->disthit;
-			curr = list;
+			//stack_vecs[2] = stack_vecs[1];
+			i_struc->inter_final = i_struc->inter;
+			distsf = i_struc->list->disthit;
+			i_struc->curr = i_struc->list;
 		}
-		list = list->next;
+		i_struc->list = i_struc->list->next;
 	}
-	*vecs[2] = rgbof_cast_vector(objs[1]->color);
-	stack_vecs[0] = rgbof_cast_vector(objs[0]->color);
-	vector_multiply(vecs[2], vecs[2], &stack_vecs[0]);
-	if (curr == NULL)
-		vector_multiply_digit(vecs[2], vecs[2], objs[1]->brightness
+	//*vecs[2] = rgbof_cast_vector(i_struc->light->color);
+	i_struc->ret_color = rgbof_cast_vector(i_struc->light->color);
+	intercol = rgbof_cast_vector(i_struc->obj_col->color);
+	vector_multiply(&i_struc->ret_color, &i_struc->ret_color, &intercol);
+	if (i_struc->curr == NULL)
+		vector_multiply_digit(&i_struc->ret_color, &i_struc->ret_color, i_struc->light->brightness
 			* light_distance_factor(length * 0.5));
 	else
-		vector_multiply_digit(vecs[2], vecs[2], objs[1]->brightness / 10);
+		vector_multiply_digit(&i_struc->ret_color, &i_struc->ret_color, i_struc->light->brightness / 10);
 	return (true);
 }
 
@@ -133,28 +149,35 @@ t_rgbof	sumup_light(t_mixer *mixer, t_col *c_s)
 
 t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector intersect)
 {
+	t_iobj		i_struc;
 	t_vector	stack_vecs[3];
-	t_vector	*vecs[3];
+	//t_vector	*vecs[3];
 	float		length;
-	t_obj_l		*l[2];
+	//t_obj_l		*l[2];
 
-	l[0] = curr;
+	//l[0] = curr;
+	i_struc.obj_col = curr;
 	vector_create(&stack_vecs[2], 0, 0, 0);
-	l[1] = mixer->obj_list;
-	while (l[1] != NULL)
+	//l[1] = mixer->obj_list;
+	i_struc.light = mixer->obj_list;
+	while (i_struc.light != NULL)
 	{
-		if (l[1]->obj_type == LIGHT)
+		if (i_struc.light->obj_type == LIGHT)
 		{
-			vector_substract(&stack_vecs[0], &l[1]->position, &intersect);
-			length = vector_length(&stack_vecs[0]);
-			vector_normalize(&stack_vecs[0]);
-			vecs[0] = &intersect;
-			vecs[1] = &stack_vecs[0];
-			vecs[2] = &stack_vecs[1];
-			intersect_object(mixer, l, vecs, length);
+			//vector_substract(&stack_vecs[0], &i_struc.light->position, &intersect);
+			vector_substract(&i_struc.ray, &i_struc.light->position, &intersect);
+			//length = vector_length(&stack_vecs[0]);
+			length = vector_length(&i_struc.ray);
+			//vector_normalize(&stack_vecs[0]);
+			vector_normalize(&i_struc.ray);
+			//vecs[0] = &intersect;
+			i_struc.origin = intersect;
+			//vecs[1] = &stack_vecs[0];
+			//vecs[2] = &stack_vecs[1];
+			intersect_object(mixer, /*l, vecs*/&i_struc, length);
 			vector_addition(&stack_vecs[2], &stack_vecs[2], &stack_vecs[1]);
 		}
-		l[1] = l[1]->next;
+		i_struc.light = i_struc.light->next;
 	}
 	return (stack_vecs[2]);
 }
