@@ -57,9 +57,7 @@ MLX         = ./mlx/libmlx.a
 LIBFT       = ./libft/libft.a
 
 ##		RULES			##
-all:
-	$(CC) $(INC) $(SRC) $(CFLAGS) $(LDFLAGS) -o $(NAME)
-#all: $(NAME)
+all: $(NAME)
 
 $(NAME): $(LIBFT) $(MLX) obj/ $(OBJ)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJ)
