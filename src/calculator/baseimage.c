@@ -13,7 +13,7 @@
 #include "minirt.h"
 #include "vector.h"
 
-typdef struct s_iobj {
+typedef struct s_iobj {
 	t_vector	ray;
 	t_vector	origin;
 	t_vector	inter;
@@ -175,7 +175,8 @@ t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector intersect)
 			//vecs[1] = &stack_vecs[0];
 			//vecs[2] = &stack_vecs[1];
 			intersect_object(mixer, /*l, vecs*/&i_struc, length);
-			vector_addition(&stack_vecs[2], &stack_vecs[2], &stack_vecs[1]);
+			//vector_addition(&stack_vecs[2], &stack_vecs[2], &stack_vecs[1]);
+			vector_addition(&stack_vecs[2], &stack_vecs[2], &i_struc.ret_color);
 		}
 		i_struc.light = i_struc.light->next;
 	}
