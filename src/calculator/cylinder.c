@@ -12,6 +12,7 @@
 
 #include "minirt.h"
 #include <math.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <float.h>
 #include "vector.h"
@@ -53,13 +54,14 @@ t_vector	cylinder_intersect_normal(t_vector *origin, t_vector *inter, t_vector *
 	t_vector	ret;
 
 	a = powf(width, 2);
-	vector_substract(&ret, inter, origin);
+	vector_substract(&ret, origin, inter);
 	c = powf(vector_length(&ret), 2);
 	b = c - a;
 	b = sqrtf(b);
 	vector_multiply_digit(&ret, normal, b);
 	vector_substract(&ret, &ret, inter);
 	vector_normalize(&ret);
+	vector_multiply_digit(&ret, &ret, -1);
 	return (ret);
 }
 
@@ -76,11 +78,11 @@ bool	hit_cylinder(
 	b = cylinder_part_b(ray, &obj->normal, origin, &obj->position);
 	c = cylinder_part_c(*origin, obj->position, obj->normal, obj->width);
 	root = powf(b, 2);
-	root -= 4 * a * c;
-	if (root <= 0)
+	root -= a * c;
+	if (root < 0)
 		return (false);
 	root = sqrtf(root);
-	a *= 2;
+	//a *= 2;
 	d = ((-b) - root) / a;
 	if (d  < FLT_MAX && d > 0.001)
 	{

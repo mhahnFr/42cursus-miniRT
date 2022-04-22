@@ -22,7 +22,7 @@
 # define RESOLUTION_X	1080
 # define RESOLUTION_Y	720
 # define ANTI_ALIASING	10
-# define MAX_BOUNCES	15
+# define MAX_BOUNCES	10
 /* Object-types */
 # define CAMERA		   -2
 # define AMBIENT	   -1

@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "minirt.h"
 #include "vector.h"
 
@@ -39,7 +40,7 @@ bool	intersec_next(
 		ret = hit_cylinder(origin, objs, ray, inter);
 	//else if (objs->obj_type == LIGHT)
 		//	ret = specular_highlight(origin, objs, ray, inter);
-
+	//printf("%s\n", ret ? "true" : "false");
 	return (ret);
 }
 
