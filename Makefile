@@ -1,6 +1,6 @@
 ##		HEADER			##
 
-HEAD_FILES	= abs.h arraylist.h hex_str_to_unsigned_int.h matrix_new.h matrix.h minirt.h \
+HEAD_FILES	= abs.h arraylist.h hex_str_to_unsigned_int.h matrix.h minirt.h \
 			  point.h vector.h vertex.h renderer_image.h
 
 HDR         = $(addprefix include/,$(HEAD_FILES))
@@ -11,7 +11,7 @@ UTILS_FILES = arraylist.c arraylist_array.c arraylist_array_unsafe.c arraylist_g
 			  arraylist_size.c hex_str_to_unsigned_int.c point.c point_copy.c        \
 			  vertex.c vertex_cast.c vertex_copy.c arraylist_find.c
 MATH_FILES  = abs.c matrix.c matrix_calculations.c matrix_destroy.c matrix_filler.c   \
-			  matrix_new.c vector.c vector_add_sub.c vector_delete.c vector_division.c\
+			  vector.c vector_add_sub.c vector_delete.c vector_division.c\
 			  vector_multiplications.c vector_length.c vector_multiplications_numbers.c
 GNL_FILES	= get_next_line.c get_next_line_utils.c
 
