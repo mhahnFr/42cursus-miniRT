@@ -46,6 +46,24 @@ inline float	cylinder_part_c(t_vector p, t_vector p_c, t_vector d_c, float radiu
 	return (vector_scalar_product(&inter2, &inter2) - powf(radius, 2));
 }
 
+bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
+{
+	float		inter;
+	t_vector	vec;
+
+	vector_multiply_digit(&vec, &self->normal, self->height);
+	inter = vector_scalar_product(&vec, sect);
+	if (inter > self->height)
+		return (false);
+	vec = self->normal;
+	vector_multiply_digit(&vec, &vec, -1);
+	inter = vector_scalar_product(&vec, sect);
+	if (inter > self->height)
+		return (false);
+	//printf("%f\n", );
+	return (true);
+}
+
 t_vector	cylinder_intersect_normal(t_vector *origin, t_vector *inter, t_vector *normal, float width)
 {
 	float		a;
@@ -61,7 +79,7 @@ t_vector	cylinder_intersect_normal(t_vector *origin, t_vector *inter, t_vector *
 	vector_multiply_digit(&ret, normal, b);
 	vector_substract(&ret, &ret, inter);
 	vector_normalize(&ret);
-	vector_multiply_digit(&ret, &ret, -1);
+	vector_multiply_digit(&ret, &ret, 1);
 	return (ret);
 }
 
@@ -88,6 +106,8 @@ bool	hit_cylinder(
 	{
 		obj->disthit = d;
 		vector_multiply_digit(inter, ray, d);
+		if (!cylinder_length_check(obj, inter))
+			return (false);
 		obj->col_normal = cylinder_intersect_normal(origin, inter, &obj->normal, obj->width);
 		//needs eventual normal flip
 		return (true);
@@ -97,6 +117,8 @@ bool	hit_cylinder(
 	{
 		obj->disthit = d;
 		vector_multiply_digit(inter, ray, d);
+		if (!cylinder_length_check(obj, inter))
+			return (false);
 		obj->col_normal = cylinder_intersect_normal(origin, inter, &obj->normal, obj->width);
 		return (true);
 	}
