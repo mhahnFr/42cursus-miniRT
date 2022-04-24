@@ -73,14 +73,10 @@ float	light_distance_factor(float number)
 
 bool	intersect_object(
 			t_mixer *mixer,
-			//t_obj_l *objs[2],
 			t_iobj *i_struc,
-			//t_vector *vecs[3],
 			float length)
 {
 	t_vector	intercol;
-	//t_obj_l	*curr;
-	//t_obj_l	*list;
 	float		distsf;
 	bool		sw;
 
@@ -90,9 +86,8 @@ bool	intersect_object(
 	while (i_struc->list != NULL)
 	{
 		if (!sw && i_struc->list->obj_type
-			!= LIGHT && /*intersec_next(i_struc->list, vecs[0], vecs[1], &stack_vecs[1])*/ intersec_next(i_struc->list, &i_struc->origin, &i_struc->ray, &i_struc->inter))
+			!= LIGHT && intersec_next(i_struc->list, &i_struc->origin, &i_struc->ray, &i_struc->inter))
 		{
-			//stack_vecs[2] = stack_vecs[1];
 			i_struc->inter_final = i_struc->inter;
 			distsf = i_struc->list->disthit;
 			sw = true;
@@ -102,14 +97,12 @@ bool	intersect_object(
 			&& intersec_next(i_struc->list, &i_struc->origin, &i_struc->ray, &i_struc->inter)
 			&& distsf > i_struc->list->disthit)
 		{
-			//stack_vecs[2] = stack_vecs[1];
 			i_struc->inter_final = i_struc->inter;
 			distsf = i_struc->list->disthit;
 			i_struc->curr = i_struc->list;
 		}
 		i_struc->list = i_struc->list->next;
 	}
-	//*vecs[2] = rgbof_cast_vector(i_struc->light->color);
 	i_struc->ret_color = rgbof_cast_vector(i_struc->light->color);
 	intercol = rgbof_cast_vector(i_struc->obj_col->color);
 	vector_multiply(&i_struc->ret_color, &i_struc->ret_color, &intercol);
