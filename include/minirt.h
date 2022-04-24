@@ -132,6 +132,19 @@ typedef struct s_mixer {
 	t_obj_l				*obj_list;
 }	t_mixer;
 
+//needed for calculator, for norm reason
+typedef struct s_iobj {
+	t_vector	ray;
+	t_vector	origin;
+	t_vector	inter;
+	t_vector	inter_final;
+	t_vector	ret_color;
+	t_obj_l		*list;
+	t_obj_l		*curr;
+	t_obj_l		*light;
+	t_obj_l		*obj_col;
+}	t_iobj;
+
 /* Functions */
 
 /*				Main */
@@ -178,6 +191,12 @@ bool		hit_sphere(
 				t_obj_l *obj,
 				t_vector *ray,
 				t_vector *ret);
+
+//calculates the color of a pixel if obj and light present
+bool	intersect_object(
+		t_mixer *mixer,
+		t_iobj *i_struc,
+		float length);
 
 /*
  * Calculates the intersecting vector for the given ray vector for the next
