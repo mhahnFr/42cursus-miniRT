@@ -98,7 +98,7 @@ int	add_sphere(char **line, t_mixer *m_data)
 	return (0);
 }
 
-t_vector	vector_rand()
+static t_vector	vector_rand()
 {
 	t_vector	self;
 
