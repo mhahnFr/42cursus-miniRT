@@ -193,10 +193,10 @@ bool	hit_cylinder(
 			t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect)
 {
 	t_vector	inter;
-	bool		mat;
+	bool		mat = false;
 	bool		cap;
 
-	mat = hit_cylinder_mantel(origin, obj, ray, sect);
+	//mat = hit_cylinder_mantel(origin, obj, ray, sect);
 	if (mat)
 		inter = *sect;
 	cap = hit_cylinder_caps(origin, obj, ray, sect);

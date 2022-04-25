@@ -86,7 +86,6 @@ bool	intersect_object(
 		&i_struc->origin, &i_struc->ray, &i_struc->inter) && \
 		(!sw || distsf > i_struc->list->disthit))
 		{
-			i_struc->inter_final = i_struc->inter;
 			distsf = i_struc->list->disthit;
 			sw = true;
 			i_struc->curr = i_struc->list;
