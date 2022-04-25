@@ -125,9 +125,11 @@ float	cylinder_angle(t_obj_l *self)
 	vector_cross_product(&result, &inter, &ran_p);
 	vector_multiply_digit(&result, &result, self->height);
 	vector_addition(&result, &result, &top_p);
-	return (360 - acosf(vector_scalar_product(&result, &self->position) / (vector_length(&result) * vector_length(&self->position))));
+	vector_substract(&result, &self->position, &result);
+	return (360 - acosf(vector_scalar_product(&result, &top_p) / (vector_length(&result) * vector_length(&top_p))));
 }
 
+#include <stdio.h>
 int	add_cylinder(char **line, t_mixer *m_data)
 {
 	t_obj_l	*curr;
@@ -151,6 +153,7 @@ int	add_cylinder(char **line, t_mixer *m_data)
 	curr->next->obj_type = CYLINDER;
 	curr->next->next = NULL;
 	curr->next->max_angle = cylinder_angle(curr->next);
+	printf("%f\n", curr->next->max_angle);
 	ft_free_char_arr(line);
 	return (0);
 }

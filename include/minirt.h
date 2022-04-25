@@ -60,8 +60,8 @@ typedef struct s_rgbof {
 typedef struct s_object_l {
 	bool				emitter;
 	bool				inv_normal;
-	double				height;
-	double				width;
+	float				height;
+	float				width;
 	float				brightness;
 	float				diffusion;
 	float				disthit;

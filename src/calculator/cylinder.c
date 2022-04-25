@@ -48,20 +48,15 @@ inline float	cylinder_part_c(t_vector p, t_vector p_c, t_vector d_c, float radiu
 
 bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
 {
-	float		inter;
 	t_vector	vec;
+	t_vector	inter1;
 
 	vector_multiply_digit(&vec, &self->normal, self->height);
-	inter = vector_scalar_product(&vec, sect);
-	if (inter > self->height)
-		return (false);
-	vec = self->normal;
-	vector_multiply_digit(&vec, &vec, -1);
-	inter = vector_scalar_product(&vec, sect);
-	if (inter > self->height)
-		return (false);
-	//printf("%f\n", );
-	return (true);
+	vector_substract(&inter1, &self->position, sect);
+	float angle = vector_scalar_product(&inter1, &vec) / (vector_length(&inter1) * vector_length(&vec));
+	angle = acosf(angle);
+	printf("%f\n", angle);
+	return (angle > self->max_angle && angle < 90);
 }
 
 t_vector	cylinder_intersect_normal(t_vector *origin, t_vector *inter, t_vector *normal, float width)
@@ -92,6 +87,7 @@ bool	hit_cylinder_top(
 	float 		d;
 
 	obj_normal = obj->normal;
+	vector_multiply_digit(&obj_normal, &obj->normal, -1);
 	vector_multiply_digit(&obj_position, &obj_normal, obj->height);
 	vector_addition(&obj_position, &obj_position, &obj->position);
 	vector_substract(&inter, &obj_position, origin);
@@ -115,6 +111,7 @@ bool	hit_cylinder_bottom(
 	t_vector	inter;
 	float 		d;
 
+//	obj_normal = obj->normal;
 	vector_multiply_digit(&obj_normal, &obj->normal, -1);
 	vector_substract(&inter, &obj->position, origin);
 	d = vector_scalar_product(&inter, &obj_normal) / vector_scalar_product(ray, &obj_normal);
@@ -193,13 +190,13 @@ bool	hit_cylinder(
 			t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect)
 {
 	t_vector	inter;
-	bool		mat = false;
+	bool		mat;
 	bool		cap;
 
-	//mat = hit_cylinder_mantel(origin, obj, ray, sect);
+	mat = hit_cylinder_mantel(origin, obj, ray, sect);
 	if (mat)
 		inter = *sect;
-	cap = hit_cylinder_caps(origin, obj, ray, sect);
+	cap = false;//hit_cylinder_caps(origin, obj, ray, sect);
 	if (mat && cap && vector_length(&inter) < vector_length(sect))
 		*sect = inter;
 	return (mat || cap);
