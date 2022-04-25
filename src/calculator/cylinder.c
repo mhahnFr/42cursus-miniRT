@@ -46,7 +46,7 @@ inline float	cylinder_part_c(t_vector p, t_vector p_c, t_vector d_c, float radiu
 	return (vector_scalar_product(&inter2, &inter2) - powf(radius, 2));
 }
 
-bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
+/*bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
 {
 	t_vector	vec;
 	t_vector	inter1;
@@ -57,6 +57,27 @@ bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
 	angle = acosf(angle);
 	printf("%f\n", angle);
 	return (angle > self->max_angle && angle < 90);
+}*/
+
+bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
+{
+//	t_vector	inter;
+//
+//	vector_substract(&inter, sect, &self->position);
+//	return (vector_length(&inter) <= self->max_length);
+	t_vector	inter;
+	t_vector	top_p;
+	float		product;
+	float		product2;
+
+	vector_substract(&inter, sect, &self->position);
+	vector_multiply_digit(&top_p, &self->normal, self->height);
+	vector_addition(&top_p, &top_p, &self->position);
+	product = vector_scalar_product(&inter, &top_p);
+	vector_substract(&top_p, &top_p, &self->position);
+	vector_substract(&inter, sect, &top_p);
+	product2 = vector_scalar_product(&inter, &top_p);
+	return (product <= self->height && product2 <= self->height);
 }
 
 t_vector	cylinder_intersect_normal(t_vector *origin, t_vector *inter, t_vector *normal, float width)

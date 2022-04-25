@@ -152,8 +152,10 @@ int	add_cylinder(char **line, t_mixer *m_data)
 	curr->next->color = get_color(line[7]);
 	curr->next->obj_type = CYLINDER;
 	curr->next->next = NULL;
-	curr->next->max_angle = cylinder_angle(curr->next);
-	printf("%f\n", curr->next->max_angle);
+//	curr->next->max_angle = cylinder_angle(curr->next);
+//	printf("%f\n", curr->next->max_angle);
+	curr->next->max_length = sqrtf(powf(curr->next->width, 2) + powf(curr->next->height, 2));
+	printf("%f\n", curr->next->max_length);
 	ft_free_char_arr(line);
 	return (0);
 }
