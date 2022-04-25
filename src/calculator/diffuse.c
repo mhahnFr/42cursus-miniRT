@@ -13,82 +13,18 @@
 #include "minirt.h"
 #include <stdbool.h>
 
-static inline bool	diffuse_next(
-			t_obj_l *objs,
-			t_vector *start,
-			t_vector *ray,
-			t_vector *inter)
-{
-	bool	ret;
-
-	ret = false;
-	if (objs->obj_type == SPHERE)
-		ret = hit_sphere(start, objs, ray, inter);
-	else if (objs->obj_type == PLANE
-		&& fast_intersec_plane(ray, &objs->normal))
-		ret = intersec_plane(ray, start, objs, inter);
-	else if (objs->obj_type == CYLINDER)
-		return (hit_cylinder(start, objs, ray, inter));
-		//return (calc_intersection_cylinder(mixer->cam, objs, ray));
-	//else if (objs->obj_type == LIGHT)
-	//	ret = specular_highlight(start, objs, ray, inter);
-	return (ret);
-}
-
-static inline bool	diffuse_nearest(
-			t_mixer *mixer,
-			t_diff *diff,
-			t_vector *start,
-			t_vector *result)
-{
-	t_vector	intersect;
-	t_vector	new_intersect;
-	t_obj_l		*objs;
-	t_obj_l		*curr;
-	float		distsf;
-	bool		sw;
-
-	objs = mixer->obj_list;
-	sw = false;
-	while (objs != NULL)
-	{
-		if (diff->hit != objs && !sw
-			&& diffuse_next(objs, start, diff->ray, &intersect))
-		{
-			distsf = objs->disthit;
-			sw = true;
-			curr = objs;
-		}
-		else if (diff->hit != objs && sw)
-		{
-			if (diffuse_next(objs, start, diff->ray, &new_intersect)
-				&& distsf > objs->disthit)
-			{
-				intersect = new_intersect;
-				distsf = objs->disthit;
-				curr = objs;
-			}
-		}
-		objs = objs->next;
-	}
-	*result = intersect;
-	diff->hit = curr;
-	return (sw);
-}
-
 inline t_vector	diffuse_rand(t_diff diff)
 {
 	t_vector	tmp;
 	t_vector	reflection;
-	float		inter;
 	float		x;
 	float		y;
 	float		z;
 
-	inter = vector_scalar_product(diff.ray, &diff.hit->col_normal);
-	if (inter < 0)
-		inter *= -1;
-	vector_multiply_digit(&reflection, &diff.hit->col_normal, inter * 2);
+	x = vector_scalar_product(diff.ray, &diff.hit->col_normal);
+	if (x < 0)
+		x *= -1;
+	vector_multiply_digit(&reflection, &diff.hit->col_normal, x * 2);
 	vector_addition(&reflection, &reflection, diff.ray);
 	x = (float) drand48() + reflection.x;
 	y = (float) drand48() + reflection.y;

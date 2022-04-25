@@ -225,6 +225,12 @@ t_rgbof		calc_random_rays(t_mixer *mixer, t_vector *ray, int y, int x);
  */
 t_rgbof		calc_intersec_first(t_mixer *mixer, t_vector *ray, t_rgbof pcolor);
 
+static inline bool	diffuse_nearest(
+		t_mixer *mixer,
+		t_diff *diff,
+		t_vector *start,
+		t_vector *result);
+
 /*
  * Calculates the intersecting vector for the given object and the camera
  * vector. The given object is expected to be a plane.
