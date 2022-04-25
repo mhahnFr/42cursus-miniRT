@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parser.h"
+#include <math.h>
 #include "minirt.h"
 
 int	add_light_p2(t_obj_l *curr, char **line)
@@ -113,6 +114,7 @@ float	cylinder_angle(t_obj_l *self)
 	t_vector	ran_p;
 	t_vector	inter;
 	t_vector	result;
+	float		angle;
 
 	vector_multiply_digit(&top_p, &self->normal, self->height);
 	vector_addition(&top_p, &top_p, &self->position);
@@ -123,8 +125,7 @@ float	cylinder_angle(t_obj_l *self)
 	vector_cross_product(&result, &inter, &ran_p);
 	vector_multiply_digit(&result, &result, self->height);
 	vector_addition(&result, &result, &top_p);
-	return (vector_scalar_product(&result, &self->position) / \
-			(vector_length(&result) * vector_length(&self->position)));
+	return (360 - acosf(vector_scalar_product(&result, &self->position) / (vector_length(&result) * vector_length(&self->position))));
 }
 
 int	add_cylinder(char **line, t_mixer *m_data)
