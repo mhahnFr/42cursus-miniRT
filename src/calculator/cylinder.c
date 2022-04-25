@@ -61,10 +61,6 @@ inline float	cylinder_part_c(t_vector p, t_vector p_c, t_vector d_c, float radiu
 
 bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
 {
-//	t_vector	inter;
-//
-//	vector_substract(&inter, sect, &self->position);
-//	return (vector_length(&inter) <= self->max_length);
 	t_vector	inter;
 	t_vector	top_p;
 	float		product;
@@ -74,7 +70,7 @@ bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
 	vector_multiply_digit(&top_p, &self->normal, self->height);
 	vector_addition(&top_p, &top_p, &self->position);
 	product = vector_scalar_product(&inter, &top_p);
-	vector_substract(&top_p, &top_p, &self->position);
+	vector_substract(&top_p, &self->position, &top_p);
 	vector_substract(&inter, sect, &top_p);
 	product2 = vector_scalar_product(&inter, &top_p);
 	return (product <= self->height && product2 <= self->height);
