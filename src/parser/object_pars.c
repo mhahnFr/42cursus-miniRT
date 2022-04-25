@@ -97,6 +97,36 @@ int	add_sphere(char **line, t_mixer *m_data)
 	return (0);
 }
 
+t_vector	vector_rand()
+{
+	t_vector	self;
+
+	self.x = (float)(((float)(arc4random() % 10) / 10));
+	self.y = (float)(((float)(arc4random() % 10) / 10));
+	self.z = (float)(((float)(arc4random() % 10) / 10));
+	return (self);
+}
+
+float	cylinder_angle(t_obj_l *self)
+{
+	t_vector	top_p;
+	t_vector	ran_p;
+	t_vector	inter;
+	t_vector	result;
+
+	vector_multiply_digit(&top_p, &self->normal, self->height);
+	vector_addition(&top_p, &top_p, &self->position);
+	ran_p = vector_rand();
+	vector_addition(&ran_p, &ran_p, &self->position);
+	vector_substract(&ran_p, &ran_p, &top_p);
+	vector_substract(&inter, &self->position, &top_p);
+	vector_cross_product(&result, &inter, &ran_p);
+	vector_multiply_digit(&result, &result, self->height);
+	vector_addition(&result, &result, &top_p);
+	return (vector_scalar_product(&result, &self->position) / \
+			(vector_length(&result) * vector_length(&self->position)));
+}
+
 int	add_cylinder(char **line, t_mixer *m_data)
 {
 	t_obj_l	*curr;
@@ -119,6 +149,7 @@ int	add_cylinder(char **line, t_mixer *m_data)
 	curr->next->color = get_color(line[7]);
 	curr->next->obj_type = CYLINDER;
 	curr->next->next = NULL;
+	curr->next->max_angle = cylinder_angle(curr->next);
 	ft_free_char_arr(line);
 	return (0);
 }

@@ -67,6 +67,7 @@ typedef struct s_object_l {
 	float				disthit;
 	float				intensity;
 	float				reflec_fac;
+	float				max_angle;
 	int					obj_type;
 	t_rgbof				color;
 	t_vector			col_normal;
