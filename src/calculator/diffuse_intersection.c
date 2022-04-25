@@ -18,7 +18,7 @@ static inline bool	diffuse_next(
 	return (ret);
 }
 
-static inline bool	diffuse_nearest(
+bool	diffuse_nearest(
 		t_mixer *mixer,
 		t_diff *diff,
 		t_vector *start,
@@ -35,24 +35,17 @@ static inline bool	diffuse_nearest(
 	sw = false;
 	while (objs != NULL)
 	{
-		if (diff->hit != objs && diffuse_next(objs, start, diff->ray, &intersect) && (!sw || (sw && distsf > objs->disthit)))
+		if (diff->hit != objs && diffuse_next(objs, start, diff->ray, \
+		&intersect) && (!sw || (sw && distsf > objs->disthit)))
 		{
 			distsf = objs->disthit;
 			new_intersect = intersect;
 			sw = true;
 			curr = objs;
 		}
-		else if (diff->hit != objs && sw)
-		{
-			if ()
-			{
-				distsf = objs->disthit;
-				curr = objs;
-			}
-		}
 		objs = objs->next;
 	}
-	*result = intersect;
+	*result = new_intersect;
 	diff->hit = curr;
 	return (sw);
 }

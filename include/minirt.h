@@ -225,7 +225,7 @@ t_rgbof		calc_random_rays(t_mixer *mixer, t_vector *ray, int y, int x);
  */
 t_rgbof		calc_intersec_first(t_mixer *mixer, t_vector *ray, t_rgbof pcolor);
 
-static inline bool	diffuse_nearest(
+bool	diffuse_nearest(
 		t_mixer *mixer,
 		t_diff *diff,
 		t_vector *start,
