@@ -159,6 +159,18 @@ typedef struct s_anti_norm {
 	t_obj_l		*obj;
 }	t_anti_norm;
 
+typedef struct s_test {
+	float		a;
+	float		b;
+	float		c;
+	float		d;
+	float		root;
+	t_vector	*origin;
+	t_vector	*ray;
+	t_vector	*inter;
+	t_obj_l		*obj;
+}	t_test;
+
 /* Functions */
 
 /*				Main */
@@ -264,6 +276,20 @@ bool		fast_intersec_plane(t_vector *vec, t_vector *normal);
 bool		hit_cylinder(
 				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *inter);
 
+bool		cylinder_length_check(t_obj_l *self, t_vector *sect);
+
+t_vector	cylinder_intersect_normal(
+				t_vector *origin, t_vector *inter, t_vector *normal, float width);
+
+bool		hit_cylinder_top(
+				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect);
+
+bool		hit_cylinder_bottom(
+				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect);
+
+bool		hit_cylinder_caps(
+				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect);
+
 t_rgbof		calc_shader(
 				t_vector *origin,
 				t_vector *ray,
@@ -274,6 +300,14 @@ t_rgbof		calc_antialiasing(
 				t_mixer *mixer,
 				t_vector *cam_vec,
 				t_rgbof color);
+
+float		cylinder_part_c(
+				t_vector p, t_vector p_c, t_vector d_c, float radius);
+
+float		cylinder_part_b(
+				t_vector *d, t_vector *d_c, t_vector *p, t_vector *pc);
+
+float		cylinder_part_a(t_vector *d, t_vector *d_c);
 
 t_rgbof		calc_first_ray_of_the_day(t_mixer *mixer, t_vector *cam_vec);
 

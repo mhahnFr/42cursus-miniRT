@@ -12,172 +12,58 @@
 
 #include "minirt.h"
 #include <math.h>
-#include <stdio.h>
 #include <stdbool.h>
 #include <float.h>
 #include "vector.h"
 
-inline float	cylinder_part_a(t_vector *d, t_vector *d_c)
+static inline bool	hit_cylinder1(struct s_test *s, bool *second)
 {
-	t_vector	inter;
-
-	vector_cross_product(&inter, d, d_c);
-	return (vector_scalar_product(&inter, &inter));
+	s->a = cylinder_part_a(s->ray, &s->obj->normal);
+	s->b = cylinder_part_b(s->ray, &s->obj->normal,
+			s->origin, &s->obj->position);
+	s->c = cylinder_part_c(*(s->origin), s->obj->position,
+			s->obj->normal, s->obj->width);
+	s->root = powf(s->b, 2);
+	s->root -= s->a * s->c * 4;
+	*second = false;
+	if (s->root < 0)
+		return (false);
+	s->root = sqrtf(s->root);
+	s->a = s->a * 2;
+	s->d = ((-s->b) - s->root) / s->a;
+	*second = true;
+	return (s->d < FLT_MAX && s->d > 0.001f);
 }
 
-inline float	cylinder_part_b(
-		t_vector *d, t_vector *d_c, t_vector *p, t_vector *pc)
+static inline bool	hit_cylinder2(struct s_test *s)
 {
-	t_vector	inter;
-	t_vector	inter2;
-
-	vector_substract(&inter2, p, pc);
-	vector_cross_product(&inter, &inter2, d_c);
-	vector_cross_product(&inter2, d, d_c);
-	return (2 * vector_scalar_product(&inter, &inter2));
-}
-
-inline float	cylinder_part_c(
-		t_vector p, t_vector p_c, t_vector d_c, float radius)
-{
-	t_vector	inter;
-	t_vector	inter2;
-
-	vector_substract(&inter, &p, &p_c);
-	vector_cross_product(&inter2, &inter, &d_c);
-	return (vector_scalar_product(&inter2, &inter2)
-		- powf(radius, 2));
-}
-
-bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
-{
-	t_vector	inter;
-
-	vector_substract(&inter, sect, &self->position);
-	return (vector_scalar_product(&inter, &self->normal) > 0
-		&& vector_scalar_product(&inter, &self->normal) <= self->height);
-}
-
-t_vector	cylinder_intersect_normal(
-		t_vector *origin, t_vector *inter, t_vector *normal, float width)
-{
-	float		a;
-	float		b;
-	float		c;
-	t_vector	ret;
-
-	a = powf(width, 2);
-	vector_substract(&ret, origin, inter);
-	c = powf(vector_length(&ret), 2);
-	b = c - a;
-	b = sqrtf(b);
-	vector_multiply_digit(&ret, normal, b);
-	vector_substract(&ret, &ret, inter);
-	vector_normalize(&ret);
-	vector_multiply_digit(&ret, &ret, 1);
-	return (ret);
-}
-
-bool	hit_cylinder_top(
-		t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect)
-{
-	t_vector	obj_normal;
-	t_vector	obj_position;
-	t_vector	inter;
-	float		d;
-
-	obj_normal = obj->normal;
-	vector_multiply_digit(&obj_position, &obj_normal, obj->height);
-	vector_addition(&obj_position, &obj_position, &obj->position);
-	vector_substract(&inter, &obj_position, origin);
-	d = vector_scalar_product(&inter, &obj_normal)
-		/ vector_scalar_product(ray, &obj_normal);
-	obj->disthit = d;
-	obj->col_normal = obj_normal;
-	vector_multiply_digit(&inter, ray, d);
-	vector_addition(sect, origin, &inter);
-	vector_substract(&inter, sect, &obj_position);
-	return (vector_length(&inter) < obj->width);
-}
-
-bool	hit_cylinder_bottom(
-		t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect)
-{
-	t_vector	obj_normal;
-	t_vector	inter;
-	t_vector	obj_position;
-	float		d;
-
-	obj_normal = obj->normal;
-	obj_position = obj->position;
-	vector_substract(&inter, &obj_position, origin);
-	d = vector_scalar_product(&inter, &obj_normal)
-		/ vector_scalar_product(ray, &obj_normal);
-	obj->disthit = d;
-	vector_multiply_digit(&obj->col_normal, &obj_normal, -1);
-	vector_multiply_digit(&inter, ray, d);
-	vector_addition(sect, origin, &inter);
-	vector_substract(&inter, sect, &obj_position);
-	return (vector_length(&inter) < obj->width);
-}
-
-bool	hit_cylinder_caps(
-			t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect)
-{
-	t_vector	inter;
-	bool		top;
-	bool		bot;
-
-	top = hit_cylinder_top(origin, obj, ray, sect);
-	if (top)
-		inter = *sect;
-	bot = hit_cylinder_bottom(origin, obj, ray, sect);
-	if (top && bot && vector_length(&inter) < vector_length(sect))
-		*sect = inter;
-	return (top || bot);
+	s->obj->disthit = s->d;
+	vector_multiply_digit(s->inter, s->ray, s->d);
+	vector_addition(s->inter, s->inter, s->origin);
+	if (!cylinder_length_check(s->obj, s->inter))
+		return (false);
+	s->obj->col_normal = cylinder_intersect_normal(&s->obj->position, s->inter,
+			&s->obj->normal, s->obj->width);
+	return (true);
 }
 
 bool	hit_cylinder_mantel(
 			t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *inter)
 {
-	float	a;
-	float	b;
-	float	c;
-	float	d;
-	float	root;
+	struct s_test	s;
+	bool			second;
 
-	a = cylinder_part_a(ray, &obj->normal);
-	b = cylinder_part_b(ray, &obj->normal, origin, &obj->position);
-	c = cylinder_part_c(*origin, obj->position, obj->normal, obj->width);
-	root = powf(b, 2);
-	root -= a * c * 4;
-	if (root < 0)
-		return (false);
-	root = sqrtf(root);
-	a *= 2;
-	d = ((-b) - root) / a;
-	if (d < FLT_MAX && d > 0.001)
+	s.origin = origin;
+	s.ray = ray;
+	s.inter = inter;
+	s.obj = obj;
+	if (hit_cylinder1(&s, &second) && second)
+		return (hit_cylinder2(&s));
+	else if (second)
 	{
-		obj->disthit = d;
-		vector_multiply_digit(inter, ray, d);
-		vector_addition(inter, inter, origin);
-		if (!cylinder_length_check(obj, inter))
-			return (false);
-		obj->col_normal = cylinder_intersect_normal(&obj->position, inter,
-				&obj->normal, obj->width);
-		return (true);
-	}
-	d = ((-b) + root) / a;
-	if (d < FLT_MAX && d > 0.001)
-	{
-		obj->disthit = d;
-		vector_multiply_digit(inter, ray, d);
-		vector_addition(inter, inter, origin);
-		if (!cylinder_length_check(obj, inter))
-			return (false);
-		obj->col_normal = cylinder_intersect_normal(&obj->position, inter,
-				&obj->normal, obj->width);
-		return (true);
+		s.d = ((-s.b) + s.root) / s.a;
+		if (s.d < FLT_MAX && s.d > 0.001f)
+			return (hit_cylinder2(&s));
 	}
 	return (false);
 }
