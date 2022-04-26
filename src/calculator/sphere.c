@@ -14,45 +14,49 @@
 #include <math.h>
 #include <float.h>
 
+static inline bool	hit_sphere2(struct s_anti_norm *s)
+{
+	s->obj->disthit = s->temp;
+	vector_multiply_digit(&s->oc, s->ray, s->temp);
+	vector_addition(s->ret, s->origin, &s->oc);
+	vector_substract(&s->oc, s->ret, &s->obj->position);
+	vector_division(&s->obj->col_normal, &s->oc, s->obj->height);
+	if (s->obj->inv_normal)
+		vector_multiply_digit(&s->obj->col_normal, &s->obj->col_normal, -1);
+	return (true);
+}
+
+static inline bool	hit_sphere1(struct s_anti_norm *s, bool *second)
+{
+	*second = false;
+	vector_substract(&s->oc, s->origin, &s->obj->position);
+	s->a = vector_scalar_product(s->ray, s->ray);
+	s->b = vector_scalar_product(&s->oc, s->ray);
+	s->c = vector_scalar_product(&s->oc, &s->oc) - powf(s->obj->height, 2);
+	s->d = powf(s->b, 2) - s->a * s->c;
+	if (s->d < 0)
+		return (false);
+	s->temp = (-s->b - sqrtf(s->d)) / s->a;
+	*second = true;
+	return (s->temp < FLT_MAX && s->temp > 0.001f);
+}
+
 bool	hit_sphere(t_vector	*origin, t_obj_l *obj, t_vector *ray, t_vector *ret)
 {
-	float		a;
-	float		b;
-	float		c;
-	float		d;
-	float		temp;
-	t_vector	oc;
+	struct s_anti_norm	s;
+	bool				second;
 
-	vector_substract(&oc, origin, &obj->position);
-	a = vector_scalar_product(ray, ray);
-	b = vector_scalar_product(&oc, ray);
-	c = vector_scalar_product(&oc, &oc) - powf(obj->height, 2);
-	d = powf(b, 2) - a * c;
-	if (d < 0)
-		return (false);
-	temp = (-b - sqrtf(d)) / a;
-	if (temp < FLT_MAX && temp > 0.001f)
+	s.origin = origin;
+	s.obj = obj;
+	s.ray = ray;
+	s.ret = ret;
+	if (hit_sphere1(&s, &second) && second)
+		return (hit_sphere2(&s));
+	else
 	{
-		obj->disthit = temp;
-		vector_multiply_digit(&oc, ray, temp);
-		vector_addition(ret, origin, &oc);
-		vector_substract(&oc, ret, &obj->position);
-		vector_division(&obj->col_normal, &oc, obj->height);
-		if (obj->inv_normal)
-			vector_multiply_digit(&obj->col_normal, &obj->col_normal, -1);
-		return (true);
-	}
-	temp = (-b + sqrtf(d)) / a;
-	if (temp < FLT_MAX && temp > 0.001f)
-	{
-		obj->disthit = temp;
-		vector_multiply_digit(&oc, ray, temp);
-		vector_addition(ret, origin, &oc);
-		vector_substract(&oc, ret, &obj->position);
-		vector_division(&obj->col_normal, &oc, obj->height);
-		if (obj->inv_normal)
-			vector_multiply_digit(&obj->col_normal, &obj->col_normal, -1);
-		return (true);
+		s.temp = (-s.b + sqrtf(s.d)) / s.a;
+		if (s.temp < FLT_MAX && s.temp > 0.001f)
+			return (hit_sphere2(&s));
 	}
 	return (false);
 }

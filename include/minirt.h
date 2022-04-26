@@ -146,6 +146,19 @@ typedef struct s_iobj {
 	t_obj_l		*obj_col;
 }	t_iobj;
 
+typedef struct s_anti_norm {
+	float		a;
+	float		b;
+	float		c;
+	float		d;
+	float		temp;
+	t_vector	oc;
+	t_vector	*origin;
+	t_vector	*ray;
+	t_vector	*ret;
+	t_obj_l		*obj;
+}	t_anti_norm;
+
 /* Functions */
 
 /*				Main */
