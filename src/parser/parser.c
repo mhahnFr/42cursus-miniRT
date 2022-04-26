@@ -33,7 +33,7 @@ int	add_camera(char **line, t_cam *camera)
 	if (line == NULL)
 		return (5);
 	camera->position = get_vector(line[1]);
-	camera->position.y *= -1;
+//	camera->position.y *= -1;
 	camera->normal = get_vector(line[2]);
 	vector_normalize(&(camera->normal));
 	camera->fov = ft_atoi(line[3]);

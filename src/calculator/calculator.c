@@ -36,7 +36,7 @@ void	calculator(t_mixer *mixer, int *ret)
 		ii = 0;
 		while (ii < RESOLUTION_X)
 		{
-			color = calc_first_ray_of_the_day(mixer, &(mixer->cam.vecs[i][ii]));
+			color = calc_first_ray_of_the_day(mixer, &(mixer->cam.vecs[RESOLUTION_Y - i - 1][ii]));
 			draw_point(ii, i, mixer->image, color);
 			ii++;
 		}

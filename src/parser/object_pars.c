@@ -18,7 +18,7 @@ int	add_light_p2(t_obj_l *curr, char **line)
 {
 	curr->next->emitter = true;
 	curr->next->position = get_vector(line[1]);
-	curr->next->position.y *= -1;
+//	curr->next->position.y *= -1;
 	curr->next->brightness = ft_atof(line[2]);
 	curr->next->color = get_color(line[3]);
 	curr->next->height = 0.5;
@@ -63,7 +63,7 @@ int	add_plane(char **line, t_mixer *m_data)
 	curr->next->emitter = false;
 	curr->next->obj_type = PLANE;
 	curr->next->position = get_vector(line[1]);
-	curr->next->position.y *= -1;
+//	curr->next->position.y *= -1;
 	curr->next->normal = get_vector(line[2]);
 	vector_normalize(&(curr->next->normal));
 	curr->next->diffusion = ft_atof(line[3]);
@@ -86,7 +86,7 @@ int	add_sphere(char **line, t_mixer *m_data)
 		return (3);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
-	curr->next->position.y *= -1;
+//	curr->next->position.y *= -1;
 	curr->next->height = ft_atof(line[2]);
 	curr->next->diffusion = ft_atof(line[3]);
 	curr->next->reflec_fac = ft_atof(line[4]);
@@ -142,7 +142,7 @@ int	add_cylinder(char **line, t_mixer *m_data)
 		return (3);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
-	curr->next->position.y *= -1;
+//	curr->next->position.y *= -1;
 	curr->next->normal = get_vector(line[2]);
 	vector_normalize(&(curr->next->normal));
 	curr->next->height = ft_atof(line[3]);

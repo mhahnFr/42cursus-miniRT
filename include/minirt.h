@@ -19,10 +19,10 @@
 # include "libft.h"
 
 /* Resolution in Pixel */
-# define RESOLUTION_X	1080
-# define RESOLUTION_Y	720
+# define RESOLUTION_X	1000
+# define RESOLUTION_Y	1000
 # define ANTI_ALIASING	10
-# define MAX_BOUNCES	4
+# define MAX_BOUNCES	1
 /* Object-types */
 # define CAMERA		   -2
 # define AMBIENT	   -1

@@ -107,7 +107,7 @@ bool	hit_cylinder_top(
 	float 		d;
 
 	obj_normal = obj->normal;
-	vector_multiply_digit(&obj_normal, &obj->normal, -1);
+//	vector_multiply_digit(&obj_normal, &obj->normal, -1);
 	vector_multiply_digit(&obj_position, &obj_normal, obj->height);
 	vector_addition(&obj_position, &obj_position, &obj->position);
 	vector_substract(&inter, &obj_position, origin);
@@ -134,7 +134,6 @@ bool	hit_cylinder_bottom(
 
 	obj_normal = obj->normal;
 	obj_position = obj->position;
-	//vector_multiply_digit(&obj_normal, &obj->normal, -1);
 //	vector_multiply_digit(&obj_position, &obj_normal, obj->height);
 //	vector_addition(&obj_position, &obj_position, &obj->position);
 	vector_substract(&inter, &obj_position, origin);
@@ -143,7 +142,7 @@ bool	hit_cylinder_bottom(
 	//if (vector_scalar_product(ray, &obj_normal) > 0)
 	//vector_multiply_digit(&obj->col_normal, &obj_normal, -1);
 	//else
-	obj->col_normal = obj_normal;
+	vector_multiply_digit(&obj->col_normal, &obj_normal, -1);
 	vector_multiply_digit(&inter, ray, d);
 	vector_addition(sect, origin, &inter);
 	vector_substract(&inter, sect, &obj_position);
@@ -205,10 +204,15 @@ bool	hit_cylinder_mantel(
 	{
 		obj->disthit = d;
 		vector_multiply_digit(inter, ray, d);
+		vector_addition(inter, inter, origin);
 		if (!cylinder_length_check(obj, inter))
 			return (false);
 		obj->col_normal = cylinder_intersect_normal(&obj->position, inter, &obj->normal, obj->width);
 		//needs eventual normal flip
+		if (c == 99.0) {
+			printf("a = %f b = %f c = %f\n", a / 2, b, c);
+			printf("%f %f %f\n", ray->x, ray->y, ray->z);
+		}
 		return (true);
 	}
 	d = ((-b) + root) / a;
@@ -216,9 +220,14 @@ bool	hit_cylinder_mantel(
 	{
 		obj->disthit = d;
 		vector_multiply_digit(inter, ray, d);
+		vector_addition(inter, inter, origin);
 		if (!cylinder_length_check(obj, inter))
 			return (false);
 		obj->col_normal = cylinder_intersect_normal(&obj->position, inter, &obj->normal, obj->width);
+		if (c == 99.0) {
+			printf("a = %f b = %f c = %f\n", a / 2, b, c);
+			printf("%f %f %f\n", ray->x, ray->y, ray->z);
+		}
 		return (true);
 	}
 	return (false);
