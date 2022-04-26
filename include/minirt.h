@@ -68,7 +68,6 @@ typedef struct s_object_l {
 	float				intensity;
 	float				reflec_fac;
 	float				max_length;
-//	float				max_angle;
 	int					obj_type;
 	t_rgbof				color;
 	t_vector			col_normal;
@@ -195,10 +194,10 @@ bool		hit_sphere(
 				t_vector *ret);
 
 //calculates the color of a pixel if obj and light present
-bool	intersect_object(
-		t_mixer *mixer,
-		t_iobj *i_struc,
-		float length);
+bool		intersect_object(
+				t_mixer *mixer,
+				t_iobj *i_struc,
+				float length);
 
 /*
  * Calculates the intersecting vector for the given ray vector for the next
@@ -227,11 +226,11 @@ t_rgbof		calc_random_rays(t_mixer *mixer, t_vector *ray, int y, int x);
  */
 t_rgbof		calc_intersec_first(t_mixer *mixer, t_vector *ray, t_rgbof pcolor);
 
-bool	diffuse_nearest(
-		t_mixer *mixer,
-		t_diff *diff,
-		t_vector *start,
-		t_vector *result);
+bool		diffuse_nearest(
+				t_mixer *mixer,
+				t_diff *diff,
+				t_vector *start,
+				t_vector *result);
 
 /*
  * Calculates the intersecting vector for the given object and the camera
