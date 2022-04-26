@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include <math.h>
+
+#include "parser.h"
 #include "minirt.h"
 
 int	add_light_p2(t_obj_l *curr, char **line)
 {
 	curr->next->emitter = true;
 	curr->next->position = get_vector(line[1]);
-//	curr->next->position.y *= -1;
 	curr->next->brightness = ft_atof(line[2]);
 	curr->next->color = get_color(line[3]);
-	curr->next->height = 0.5;
+	curr->next->height = 0.5f;
 	curr->next->width = curr->next->height;
 	if (line[4] != NULL)
 		curr->next->intensity = ft_atof(line[4]);
@@ -63,7 +63,6 @@ int	add_plane(char **line, t_mixer *m_data)
 	curr->next->emitter = false;
 	curr->next->obj_type = PLANE;
 	curr->next->position = get_vector(line[1]);
-//	curr->next->position.y *= -1;
 	curr->next->normal = get_vector(line[2]);
 	vector_normalize(&(curr->next->normal));
 	curr->next->diffusion = ft_atof(line[3]);
@@ -86,7 +85,6 @@ int	add_sphere(char **line, t_mixer *m_data)
 		return (3);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
-//	curr->next->position.y *= -1;
 	curr->next->height = ft_atof(line[2]);
 	curr->next->diffusion = ft_atof(line[3]);
 	curr->next->reflec_fac = ft_atof(line[4]);
@@ -98,38 +96,6 @@ int	add_sphere(char **line, t_mixer *m_data)
 	return (0);
 }
 
-static t_vector	vector_rand()
-{
-	t_vector	self;
-
-	self.x = (float)(((float)(arc4random() % 10) / 10));
-	self.y = (float)(((float)(arc4random() % 10) / 10));
-	self.z = (float)(((float)(arc4random() % 10) / 10));
-	return (self);
-}
-
-float	cylinder_angle(t_obj_l *self)
-{
-	t_vector	top_p;
-	t_vector	ran_p;
-	t_vector	inter;
-	t_vector	result;
-	float		angle;
-
-	vector_multiply_digit(&top_p, &self->normal, self->height);
-	vector_addition(&top_p, &top_p, &self->position);
-	ran_p = vector_rand();
-	vector_addition(&ran_p, &ran_p, &self->position);
-	vector_substract(&ran_p, &ran_p, &top_p);
-	vector_substract(&inter, &self->position, &top_p);
-	vector_cross_product(&result, &inter, &ran_p);
-	vector_multiply_digit(&result, &result, self->height);
-	vector_addition(&result, &result, &top_p);
-	vector_substract(&result, &self->position, &result);
-	return (360 - acosf(vector_scalar_product(&result, &top_p) / (vector_length(&result) * vector_length(&top_p))));
-}
-
-#include <stdio.h>
 int	add_cylinder(char **line, t_mixer *m_data)
 {
 	t_obj_l	*curr;
@@ -142,7 +108,6 @@ int	add_cylinder(char **line, t_mixer *m_data)
 		return (3);
 	curr->next->emitter = false;
 	curr->next->position = get_vector(line[1]);
-//	curr->next->position.y *= -1;
 	curr->next->normal = get_vector(line[2]);
 	vector_normalize(&(curr->next->normal));
 	curr->next->height = ft_atof(line[3]);
@@ -152,10 +117,6 @@ int	add_cylinder(char **line, t_mixer *m_data)
 	curr->next->color = get_color(line[7]);
 	curr->next->obj_type = CYLINDER;
 	curr->next->next = NULL;
-//	curr->next->max_angle = cylinder_angle(curr->next);
-//	printf("%f\n", curr->next->max_angle);
-	curr->next->max_length = sqrtf(powf(curr->next->width, 2) + powf(curr->next->height, 2));
-	printf("%f\n", curr->next->max_length);
 	ft_free_char_arr(line);
 	return (0);
 }
