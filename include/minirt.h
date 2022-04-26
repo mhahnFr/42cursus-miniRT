@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:50:22 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/11 14:14:10 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/26 18:44:02 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,7 +279,10 @@ bool		hit_cylinder(
 bool		cylinder_length_check(t_obj_l *self, t_vector *sect);
 
 t_vector	cylinder_intersect_normal(
-				t_vector *origin, t_vector *inter, t_vector *normal, float width);
+				t_vector *origin,
+				t_vector *inter,
+				t_vector *normal,
+				float width);
 
 bool		hit_cylinder_top(
 				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect);
