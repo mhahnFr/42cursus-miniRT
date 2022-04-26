@@ -36,8 +36,7 @@ bool	diffuse_nearest(
 		t_vector *start,
 		t_vector *result)
 {
-	t_vector	intersect;
-	t_vector	new_intersect;
+	t_vector	vecs[2];
 	t_obj_l		*objs;
 	t_obj_l		*curr;
 	float		distsf;
@@ -48,16 +47,16 @@ bool	diffuse_nearest(
 	while (objs != NULL)
 	{
 		if (diff->hit != objs && diffuse_next(objs, start, diff->ray, \
-		&intersect) && (!sw || (sw && distsf > objs->disthit)))
+		&vecs[0]) && (!sw || distsf > objs->disthit))
 		{
 			distsf = objs->disthit;
-			new_intersect = intersect;
+			vecs[1] = vecs[0];
 			sw = true;
 			curr = objs;
 		}
 		objs = objs->next;
 	}
-	*result = new_intersect;
+	*result = vecs[1];
 	diff->hit = curr;
 	return (sw);
 }

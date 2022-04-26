@@ -15,32 +15,6 @@
 #include "parser.h"
 #include "minirt.h"
 
-int	add_ambient(char **line, t_ambient *ambient)
-{
-	if (line == NULL)
-		return (5);
-	ambient->a_light = ft_atof(line[1]);
-	ambient->color = get_color(line[2]);
-	ambient->color.cal_r = ambient->color.r;
-	ambient->color.cal_g = ambient->color.g;
-	ambient->color.cal_b = ambient->color.b;
-	ft_free_char_arr(line);
-	return (0);
-}
-
-int	add_camera(char **line, t_cam *camera)
-{
-	if (line == NULL)
-		return (5);
-	camera->position = get_vector(line[1]);
-	camera->normal = get_vector(line[2]);
-	vector_normalize(&(camera->normal));
-	camera->fov = ft_atoi(line[3]);
-	camera->aspect_ratio = (float) RESOLUTION_X / RESOLUTION_Y;
-	ft_free_char_arr(line);
-	return (0);
-}
-
 int	add_object(char *buffer, t_mixer *m_data)
 {
 	if (buffer == NULL)
@@ -82,6 +56,22 @@ char	**find_line(char **buffer, int size, char *search)
 	return (ft_strsplit(buffer[amount], " 	"));
 }
 
+static inline int	parser2(char **buffer, t_mixer *m_data)
+{
+	ft_gc_free(buffer);
+	if (m_data->light_count == 0)
+		return (5);
+	m_data->col_sum.sum = ft_calloc(1, (m_data->light_count + 2) * \
+	sizeof(t_vector));
+	if (m_data->col_sum.sum == NULL)
+		ft_gc_exit(1);
+	m_data->col_sum.fac = ft_calloc(1, (m_data->light_count + 2) * \
+	sizeof(float));
+	if (m_data->col_sum.fac == NULL)
+		ft_gc_exit(1);
+	return (0);
+}
+
 int	parser(char **buffer, t_mixer *m_data, int size)
 {
 	int	i;
@@ -103,16 +93,5 @@ int	parser(char **buffer, t_mixer *m_data, int size)
 		ft_gc_free(buffer[i]);
 		i++;
 	}
-	ft_gc_free(buffer);
-	if (m_data->light_count == 0)
-		return (5);
-	m_data->col_sum.sum = ft_calloc(1, (m_data->light_count + 2) * \
-	sizeof(t_vector));
-	if (m_data->col_sum.sum == NULL)
-		ft_gc_exit(1);
-	m_data->col_sum.fac = ft_calloc(1, (m_data->light_count + 2) * \
-	sizeof(float));
-	if (m_data->col_sum.fac == NULL)
-		ft_gc_exit(1);
-	return (0);
+	return (parser2(buffer, m_data));
 }
