@@ -10,44 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "minirt.h"
 #include "vector.h"
-
-t_rgbof	sumup_light(t_mixer *mixer, t_col *c_s)
-{
-	t_rgbof		color;
-	t_vector	final_color;
-	t_vector	inter;
-	int			i;
-
-	vector_create(&final_color, 0, 0, 0);
-	i = 0;
-	while (i < c_s->l_count)
-	{
-		vector_multiply_digit(&c_s->sum[i], &c_s->sum[i], c_s->fac[i]);
-		vector_addition(&final_color, &final_color, &(c_s->sum[i]));
-		i++;
-	}
-	if (i == 0)
-		final_color = c_s->diff;
-	else
-	{
-		vector_multiply_digit(&inter, &c_s->diff, mixer->ambient.a_light);
-		vector_addition(&final_color, &final_color, &inter);
-	}
-	color = vector_cast_rgbof(final_color);
-	return (color);
-}
 
 t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector intersect)
 {
 	t_iobj		i_struc;
-	t_vector	stack_vecs[3];
+	t_vector	stack_vecs[4];
 	float		length;
 
 	i_struc.obj_col = curr;
-	vector_create(&stack_vecs[2], 0, 0, 0);
+	stack_vecs[2] = rgbof_cast_vector(curr->color);
+	stack_vecs[3] = rgbof_cast_vector(mixer->ambient.color);
+	vector_multiply_digit(&stack_vecs[2], &stack_vecs[2], mixer->ambient.a_light);
+	vector_multiply(&stack_vecs[2], &stack_vecs[2], &stack_vecs[3]);
 	i_struc.light = mixer->obj_list;
 	while (i_struc.light != NULL)
 	{
@@ -59,7 +35,8 @@ t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector intersect)
 			vector_normalize(&i_struc.ray);
 			i_struc.origin = intersect;
 			intersect_object(mixer, &i_struc, length);
-			vector_addition(&stack_vecs[2], &stack_vecs[2], &i_struc.ret_color);
+			if (!i_struc.shadow)
+				vector_addition(&stack_vecs[2], &stack_vecs[2], &i_struc.ret_color);
 		}
 		i_struc.light = i_struc.light->next;
 	}

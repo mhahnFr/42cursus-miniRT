@@ -61,6 +61,7 @@ bool	hit_cylinder_top(
 		/ vector_scalar_product(ray, &obj_normal);
 	obj->disthit = d;
 	obj->col_normal = obj_normal;
+	vector_multiply_digit(&obj->col_normal, &obj->col_normal, 1);
 	vector_multiply_digit(&inter, ray, d);
 	vector_addition(sect, origin, &inter);
 	vector_substract(&inter, sect, &obj_position);
@@ -81,7 +82,7 @@ bool	hit_cylinder_bottom(
 	d = vector_scalar_product(&inter, &obj_normal)
 		/ vector_scalar_product(ray, &obj_normal);
 	obj->disthit = d;
-	vector_multiply_digit(&obj->col_normal, &obj_normal, -1);
+	vector_multiply_digit(&obj->col_normal, &obj_normal, 1);
 	vector_multiply_digit(&inter, ray, d);
 	vector_addition(sect, origin, &inter);
 	vector_substract(&inter, sect, &obj_position);
@@ -92,14 +93,21 @@ bool	hit_cylinder_caps(
 		t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect)
 {
 	t_vector	inter;
+	t_vector	save_norm;
 	bool		top;
 	bool		bot;
 
 	top = hit_cylinder_top(origin, obj, ray, sect);
 	if (top)
+	{
 		inter = *sect;
+		save_norm = obj->col_normal;
+	}
 	bot = hit_cylinder_bottom(origin, obj, ray, sect);
-	if (top && bot && vector_length(&inter) < vector_length(sect))
+	if (!bot || (top && vector_length(&inter) < vector_length(sect)))
+	{
 		*sect = inter;
+		obj->col_normal = save_norm;
+	}
 	return (top || bot);
 }

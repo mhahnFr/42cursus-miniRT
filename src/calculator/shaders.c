@@ -109,11 +109,13 @@ t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, \
 	mixer->bounces++;
 	if (mixer->bounces == MAX_BOUNCES + 1)
 		return (mixer->ambient.color);
-	color = color_rgb(mixer->ambient.color.r, mixer->ambient.color.g, \
-	mixer->ambient.color.g);
+	color = mixer->ambient.color;
 	col_sum->diff = rgbof_cast_vector(color);
-	if (trace_hardshadow(mixer, col_sum, origin, ray))
+	col_sum->sw = trace_hardshadow(mixer, col_sum, origin, ray);
+	if (col_sum->sw)
 		col_sum->diff = diffuse_main(mixer, NULL, &cp);
-	color = sumup_light(mixer, col_sum);
-	return (color);
+	if (!col_sum->l_count)
+		return (vector_cast_rgbof(col_sum->diff));
+	else
+		return (vector_cast_rgbof(col_sum->sum[0]));
 }

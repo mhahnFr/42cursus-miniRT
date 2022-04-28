@@ -22,7 +22,7 @@
 # define RESOLUTION_X	1000
 # define RESOLUTION_Y	1000
 # define ANTI_ALIASING	10
-# define MAX_BOUNCES	1
+# define MAX_BOUNCES	3
 /* Object-types */
 # define CAMERA		   -2
 # define AMBIENT	   -1
@@ -138,8 +138,8 @@ typedef struct s_iobj {
 	t_vector	ray;
 	t_vector	origin;
 	t_vector	inter;
-	t_vector	inter_final;
 	t_vector	ret_color;
+	bool		shadow;
 	t_obj_l		*list;
 	t_obj_l		*curr;
 	t_obj_l		*light;
@@ -356,8 +356,5 @@ int			validation_check(char **buffer, int size);
 int			lexer(char *path, t_mixer *m_data, int *retval);
 int			parser(char **buffer, t_mixer *m_data, int size);
 void		correct_normals(t_mixer *aaaaaaaaaa);
-
-/* Baseimage */
-t_rgbof		sumup_light(t_mixer *mixer, t_col *c_s);
 
 #endif /* MINIRT_H */

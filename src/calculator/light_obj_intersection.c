@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include <stdio.h>
+#include <math.h>
 
 bool	intersec_next(
 		t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *inter)
@@ -54,19 +56,33 @@ float	light_distance_factor(float number)
 	return (result);
 }
 
-void	intersect_obj_color(t_iobj *i_struc, float length)
+void	intersect_obj_color(t_mixer *mixer, t_iobj *i_struc, float length)
 {
 	t_vector	intercol;
+	float		fact;
 
-	i_struc->ret_color = rgbof_cast_vector(i_struc->light->color);
 	intercol = rgbof_cast_vector(i_struc->obj_col->color);
-	vector_multiply(&i_struc->ret_color, &i_struc->ret_color, &intercol);
+	i_struc->shadow = true;
+//	if (length >= i_struc->light->intensity)
+//		return ;
 	if (i_struc->curr == NULL)
+	{
+		fact = 0.5f;
+		if (length > i_struc->light->intensity)
+		{
+			length = (length - i_struc->light->intensity);
+			length /= i_struc->light->intensity / 2;
+			fact += length;
+		}
+		fact = light_distance_factor(fact);
+		i_struc->shadow = false;
+		i_struc->ret_color = rgbof_cast_vector(i_struc->light->color);
 		vector_multiply_digit(&i_struc->ret_color, &i_struc->ret_color, \
-		i_struc->light->brightness * light_distance_factor(length * 0.5));
+		i_struc->light->brightness * fact);
+		vector_multiply(&i_struc->ret_color, &i_struc->ret_color, &intercol);
+	}
 	else
-		vector_multiply_digit(&i_struc->ret_color, &i_struc->ret_color, \
-		i_struc->light->brightness / 10);
+		i_struc->ret_color = intercol;
 }
 
 bool	intersect_object(
@@ -83,7 +99,7 @@ bool	intersect_object(
 	while (i_struc->list != NULL)
 	{
 		if (i_struc->list->obj_type != LIGHT && intersec_next(i_struc->list, \
-		&i_struc->origin, &i_struc->ray, &i_struc->inter) && \
+		&i_struc->origin, &i_struc->ray, &i_struc->inter) && length > i_struc->list->disthit && \
 		(!sw || distsf > i_struc->list->disthit))
 		{
 			distsf = i_struc->list->disthit;
@@ -92,6 +108,6 @@ bool	intersect_object(
 		}
 		i_struc->list = i_struc->list->next;
 	}
-	intersect_obj_color(i_struc, length);
+	intersect_obj_color(mixer, i_struc, length);
 	return (true);
 }
