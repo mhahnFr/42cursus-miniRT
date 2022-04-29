@@ -68,6 +68,7 @@ bool	hit_cylinder_mantel(
 	return (false);
 }
 
+#include <stdio.h>
 bool	hit_cylinder(
 			t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect)
 {
@@ -87,6 +88,10 @@ bool	hit_cylinder(
 	{
 		*sect = inter;
 		obj->col_normal = save_norm;
+	}
+	if (mat || cap) {
+		//printf("%f %f %f\n", obj->col_normal.x, obj->col_normal.y, obj->col_normal.z);
+		vector_normalize(&obj->col_normal);
 	}
 	return (mat || cap);
 }

@@ -61,11 +61,11 @@ bool	hit_cylinder_top(
 		/ vector_scalar_product(ray, &obj_normal);
 	obj->disthit = d;
 	obj->col_normal = obj_normal;
-	vector_multiply_digit(&obj->col_normal, &obj->col_normal, 1);
+	//vector_multiply_digit(&obj->col_normal, &obj->col_normal, -1);
 	vector_multiply_digit(&inter, ray, d);
 	vector_addition(sect, origin, &inter);
 	vector_substract(&inter, sect, &obj_position);
-	return (vector_length(&inter) < obj->width);
+	return (vector_length(&inter) < obj->width && vector_scalar_product(ray, sect) > 0 && d >= 0.01f);
 }
 
 bool	hit_cylinder_bottom(
@@ -82,11 +82,11 @@ bool	hit_cylinder_bottom(
 	d = vector_scalar_product(&inter, &obj_normal)
 		/ vector_scalar_product(ray, &obj_normal);
 	obj->disthit = d;
-	vector_multiply_digit(&obj->col_normal, &obj_normal, 1);
+	vector_multiply_digit(&obj->col_normal, &obj_normal, -1);
 	vector_multiply_digit(&inter, ray, d);
 	vector_addition(sect, origin, &inter);
 	vector_substract(&inter, sect, &obj_position);
-	return (vector_length(&inter) < obj->width);
+	return (vector_length(&inter) < obj->width && vector_scalar_product(ray, sect) > 0 && d >= 0.01f);
 }
 
 bool	hit_cylinder_caps(

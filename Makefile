@@ -25,7 +25,7 @@ UTILS_SRC   = $(addprefix utils/,$(UTILS_FILES)) $(addprefix utils/math/,$(MATH_
 SRC_FOLDER	= src/
 
 M_SRC    	= builder.c main.c mixer.c
-CALC_SRC	= calculator.c color.c diffuse.c sphere.c plane.c baseimage.c specular.c shaders.c cylinder.c light_obj_intersection.c diffuse_intersection.c cylinder1.c cylinder2.c
+CALC_SRC	= calculator.c color.c diffuse.c sphere.c plane.c baseimage.c specular.c shaders.c cylinder4.c light_obj_intersection.c diffuse_intersection.c #cylinder1.c cylinder2.c
 LEXER_SRC	= lexer.c validator.c basic_check.c type_check.c object_check.c normal_corrector.c
 PARSER_SRC	= parser.c object_pars.c basic_pars.c parser2.c
 PAINTER_SRC = renderer_image.c key_handler.c
