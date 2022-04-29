@@ -57,6 +57,8 @@ bool	hit_cylinder_mantel(
 	s.ray = ray;
 	s.inter = inter;
 	s.obj = obj;
+
+
 	if (hit_cylinder1(&s, &second) && second)
 		return (hit_cylinder2(&s));
 	else if (second)

@@ -169,15 +169,22 @@ bool	hit_cylinder_caps(
 			t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect)
 {
 	t_vector	inter;
+	t_vector	save_norm;
 	bool		top;
 	bool		bot;
 
 	top = hit_cylinder_top(origin, obj, ray, sect);
 	if (top)
+	{
 		inter = *sect;
+		save_norm = obj->col_normal;
+	}
 	bot = hit_cylinder_bottom(origin, obj, ray, sect);
-	if (top && bot && vector_length(&inter) < vector_length(sect))
+	if (!bot && (top && vector_length(&inter) < vector_length(sect)))
+	{
 		*sect = inter;
+		obj->col_normal = save_norm;
+	}
 	return (top || bot);
 }
 
@@ -239,14 +246,21 @@ bool	hit_cylinder(
 			t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect)
 {
 	t_vector	inter;
+	t_vector	save_norm;
 	bool		mat;
 	bool		cap;
 
 	mat = hit_cylinder_mantel(origin, obj, ray, sect);
 	if (mat)
+	{
 		inter = *sect;
+		save_norm = obj->col_normal;
+	}
 	cap = hit_cylinder_caps(origin, obj, ray, sect);
-	if (mat && cap && vector_length(&inter) < vector_length(sect))
+	if (!cap || (mat && vector_length(&inter) < vector_length(sect)))
+	{
 		*sect = inter;
+		obj->col_normal = save_norm;
+	}
 	return (mat || cap);
 }
