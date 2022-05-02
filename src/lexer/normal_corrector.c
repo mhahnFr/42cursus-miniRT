@@ -12,6 +12,23 @@
 
 #include "minirt.h"
 
+void	correct_cylinder(t_obj_l *self, t_cam *cam)
+{
+	float		t;
+	t_vector	res;
+
+	vector_substract(&res, &cam->position, &self->position);
+	t = vector_scalar_product(&res, &self->normal);
+	vector_multiply_digit(&res, &cam->position, t);
+	vector_addition(&res, &res, &self->position);
+	vector_substract(&res, &cam->position, &res);
+	t = vector_length(&res);
+	if (t <= self->width)
+		self->inv_normal = true;
+	else
+		self->inv_normal = false;
+}
+
 void	correct_spheres(t_obj_l *self, t_cam *cam)
 {
 	t_vector	inter;
@@ -43,8 +60,8 @@ void	correct_normals(t_mixer *self)
 			correct_spheres(inter, &self->cam);
 		else if (inter->obj_type == PLANE)
 			correct_planes(inter, &self->cam);
+		else if (inter->obj_type == CYLINDER)
+			correct_cylinder(inter, &self->cam);
 		inter = inter->next;
 	}
 }
-//		else if (inter->obj_type == CYLINDER)
-//			correct_cylinder(inter, &self->cam);

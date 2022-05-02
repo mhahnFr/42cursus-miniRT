@@ -19,8 +19,8 @@
 # include "libft.h"
 
 /* Resolution in Pixel */
-# define RESOLUTION_X	1920
-# define RESOLUTION_Y	1080
+# define RESOLUTION_X	500
+# define RESOLUTION_Y	500
 # define ANTI_ALIASING	10
 # define MAX_BOUNCES	15
 /* Object-types */
@@ -284,7 +284,8 @@ bool		cylinder_length_check(t_obj_l *self, t_vector *sect);
 t_vector	cylinder_intersect_normal(
 				t_vector *origin,
 				t_vector *inter,
-				t_vector *normal);
+				t_vector *normal,
+				bool inv);
 
 bool		hit_cylinder_top(
 				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect);
@@ -357,6 +358,6 @@ int			key_handler(int key, t_mixer *p_null);
 int			validation_check(char **buffer, int size);
 int			lexer(char *path, t_mixer *m_data, int *retval);
 int			parser(char **buffer, t_mixer *m_data, int size);
-void		correct_normals(t_mixer *aaaaaaaaaa);
+void		correct_normals(t_mixer *mixer);
 
 #endif /* MINIRT_H */

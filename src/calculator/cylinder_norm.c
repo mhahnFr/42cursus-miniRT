@@ -63,7 +63,8 @@ bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
 
 inline t_vector	cylinder_intersect_normal(t_vector *origin,
 											t_vector *inter,
-											t_vector *normal)
+											t_vector *normal,
+											bool inv)
 {
 	float		t;
 	t_vector	res;
@@ -74,6 +75,8 @@ inline t_vector	cylinder_intersect_normal(t_vector *origin,
 	vector_addition(&res, &res, origin);
 	vector_substract(&res, inter, &res);
 	vector_normalize(&res);
+	if (inv)
+		vector_multiply_digit(&res, &res, -1);
 	return (res);
 }
 
@@ -88,7 +91,8 @@ bool	hit_cylinder_part_b_a(t_test cy_struct)
 		if (!cylinder_length_check(cy_struct.obj, cy_struct.inter))
 			return (false);
 		cy_struct.obj->col_normal = cylinder_intersect_normal(\
-		&cy_struct.obj->position, cy_struct.inter, &cy_struct.obj->normal);
+		&cy_struct.obj->position, cy_struct.inter, \
+		&cy_struct.obj->normal, cy_struct.obj->inv_normal);
 		return (true);
 	}
 	return (false);
@@ -105,7 +109,8 @@ bool	hit_cylinder_part_b_b(t_test cy_struct)
 		if (!cylinder_length_check(cy_struct.obj, cy_struct.inter))
 			return (false);
 		cy_struct.obj->col_normal = cylinder_intersect_normal(\
-		&cy_struct.obj->position, cy_struct.inter, &cy_struct.obj->normal);
+		&cy_struct.obj->position, cy_struct.inter, \
+		&cy_struct.obj->normal, cy_struct.obj->inv_normal);
 		return (true);
 	}
 	return (false);
@@ -153,6 +158,8 @@ bool	hit_cylinder_top(
 	vector_scalar_product(ray, &obj_normal);
 	obj->disthit = d;
 	obj->col_normal = obj_normal;
+	if (obj->inv_normal)
+		vector_multiply_digit(&obj->col_normal, &obj->col_normal, -1);
 	vector_multiply_digit(&inter, ray, d);
 	vector_addition(sect, origin, &inter);
 	vector_substract(&inter, sect, &obj_position);
@@ -174,7 +181,10 @@ bool	hit_cylinder_bottom(
 	d = vector_scalar_product(&inter, &obj_normal) / \
 	vector_scalar_product(ray, &obj_normal);
 	obj->disthit = d;
-	vector_multiply_digit(&obj->col_normal, &obj_normal, -1);
+	if (obj->inv_normal)
+		vector_multiply_digit(&obj->col_normal, &obj_normal, 1);
+	else
+		vector_multiply_digit(&obj->col_normal, &obj_normal, -1);
 	vector_multiply_digit(&inter, ray, d);
 	vector_addition(sect, origin, &inter);
 	vector_substract(&inter, sect, &obj_position);
