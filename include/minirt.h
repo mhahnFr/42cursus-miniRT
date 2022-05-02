@@ -19,8 +19,8 @@
 # include "libft.h"
 
 /* Resolution in Pixel */
-# define RESOLUTION_X	2560
-# define RESOLUTION_Y	1440
+# define RESOLUTION_X	1920
+# define RESOLUTION_Y	1080
 # define ANTI_ALIASING	10
 # define MAX_BOUNCES	15
 /* Object-types */
@@ -141,10 +141,12 @@ typedef struct s_iobj {
 	t_vector	inter;
 	t_vector	ret_color;
 	bool		shadow;
+	float		length;
 	t_obj_l		*list;
 	t_obj_l		*curr;
 	t_obj_l		*light;
 	t_obj_l		*obj_col;
+	t_vector	stack_vecs[4];
 }	t_iobj;
 
 typedef struct s_anti_norm {

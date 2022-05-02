@@ -31,6 +31,7 @@ void	calculator(t_mixer *mixer, int *ret)
 
 	(void) ret;
 	i = 0;
+	printf("00.00 %%");
 	while (i < RESOLUTION_Y)
 	{
 		ii = 0;
@@ -40,10 +41,12 @@ void	calculator(t_mixer *mixer, int *ret)
 					&(mixer->cam.vecs[RESOLUTION_Y - i - 1][ii]));
 			draw_point(ii, i, mixer->image, color);
 			ii++;
+			printf("\r\r\r\r\r\r\r%.2f %%", (float)((float) \
+			(ii + i * RESOLUTION_X) / (RESOLUTION_X * RESOLUTION_Y)) *100);
 		}
 		i++;
 	}
-	printf("Finished!\n");
+	printf("\nFinished!\n");
 }
 
 t_vector	vector_rand(t_vector self, t_vector step)

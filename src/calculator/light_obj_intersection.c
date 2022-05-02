@@ -56,15 +56,13 @@ float	light_distance_factor(float number)
 	return (result);
 }
 
-void	intersect_obj_color(t_mixer *mixer, t_iobj *i_struc, float length)
+void	intersect_obj_color(t_iobj *i_struc, float length)
 {
 	t_vector	intercol;
 	float		fact;
 
 	intercol = rgbof_cast_vector(i_struc->obj_col->color);
 	i_struc->shadow = true;
-//	if (length >= i_struc->light->intensity)
-//		return ;
 	if (i_struc->curr == NULL)
 	{
 		fact = 0.5f;
@@ -99,8 +97,8 @@ bool	intersect_object(
 	while (i_struc->list != NULL)
 	{
 		if (i_struc->list->obj_type != LIGHT && intersec_next(i_struc->list, \
-		&i_struc->origin, &i_struc->ray, &i_struc->inter) && length > i_struc->list->disthit && \
-		(!sw || distsf > i_struc->list->disthit))
+		&i_struc->origin, &i_struc->ray, &i_struc->inter) && length > i_struc \
+		->list->disthit && (!sw || distsf > i_struc->list->disthit))
 		{
 			distsf = i_struc->list->disthit;
 			sw = true;
@@ -108,6 +106,6 @@ bool	intersect_object(
 		}
 		i_struc->list = i_struc->list->next;
 	}
-	intersect_obj_color(mixer, i_struc, length);
+	intersect_obj_color(i_struc, length);
 	return (true);
 }
