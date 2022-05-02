@@ -14,6 +14,7 @@
 #include <math.h>
 #include <stdbool.h>
 #include <float.h>
+#include <stdio.h>
 #include "vector.h"
 
 inline float	cylinder_part_a(t_vector *d, t_vector *d_c)
@@ -62,24 +63,18 @@ bool	cylinder_length_check(t_obj_l *self, t_vector *sect)
 
 inline t_vector	cylinder_intersect_normal(t_vector *origin,
 											t_vector *inter,
-											t_vector *normal,
-											float width)
+											t_vector *normal)
 {
-	float		a;
-	float		b;
-	float		c;
-	t_vector	ret;
+	float		t;
+	t_vector	res;
 
-	a = powf(width, 2);
-	vector_substract(&ret, origin, inter);
-	c = powf(vector_length(&ret), 2);
-	b = c - a;
-	b = sqrtf(b);
-	vector_multiply_digit(&ret, normal, b);
-	vector_substract(&ret, &ret, inter);
-	vector_normalize(&ret);
-	vector_multiply_digit(&ret, &ret, -1);
-	return (ret);
+	vector_substract(&res, inter, origin);
+	t = vector_scalar_product(&res, normal);
+	vector_multiply_digit(&res, normal, t);
+	vector_addition(&res, &res, origin);
+	vector_substract(&res, inter, &res);
+	vector_normalize(&res);
+	return (res);
 }
 
 bool	hit_cylinder_part_b_a(t_test cy_struct)
@@ -93,9 +88,7 @@ bool	hit_cylinder_part_b_a(t_test cy_struct)
 		if (!cylinder_length_check(cy_struct.obj, cy_struct.inter))
 			return (false);
 		cy_struct.obj->col_normal = cylinder_intersect_normal(\
-		&cy_struct.obj->position, cy_struct.inter, &cy_struct.obj->normal, \
-		cy_struct.obj->width);
-		vector_multiply_digit(&cy_struct.obj->col_normal, &cy_struct.obj->col_normal, -1);
+		&cy_struct.obj->position, cy_struct.inter, &cy_struct.obj->normal);
 		return (true);
 	}
 	return (false);
@@ -112,9 +105,7 @@ bool	hit_cylinder_part_b_b(t_test cy_struct)
 		if (!cylinder_length_check(cy_struct.obj, cy_struct.inter))
 			return (false);
 		cy_struct.obj->col_normal = cylinder_intersect_normal(\
-		&cy_struct.obj->position, cy_struct.inter, &cy_struct.obj->normal, \
-		cy_struct.obj->width);
-		vector_multiply_digit(&cy_struct.obj->col_normal, &cy_struct.obj->col_normal, 1);
+		&cy_struct.obj->position, cy_struct.inter, &cy_struct.obj->normal);
 		return (true);
 	}
 	return (false);

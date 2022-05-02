@@ -19,10 +19,10 @@
 # include "libft.h"
 
 /* Resolution in Pixel */
-# define RESOLUTION_X	1000
-# define RESOLUTION_Y	1000
+# define RESOLUTION_X	2560
+# define RESOLUTION_Y	1440
 # define ANTI_ALIASING	10
-# define MAX_BOUNCES	3
+# define MAX_BOUNCES	15
 /* Object-types */
 # define CAMERA		   -2
 # define AMBIENT	   -1
@@ -100,6 +100,7 @@ typedef struct s_cam {
 	int			fov;
 	t_vector	hori;
 	t_vector	llc;
+	t_vector	ey;
 	t_vector	normal;
 	t_vector	position;
 	t_vector	step;
@@ -281,8 +282,7 @@ bool		cylinder_length_check(t_obj_l *self, t_vector *sect);
 t_vector	cylinder_intersect_normal(
 				t_vector *origin,
 				t_vector *inter,
-				t_vector *normal,
-				float width);
+				t_vector *normal);
 
 bool		hit_cylinder_top(
 				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect);

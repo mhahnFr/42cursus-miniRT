@@ -22,7 +22,9 @@ int	check_camera(char **splitline)
 		return (1);
 	if (check_orientation(splitline[2]))
 		return (1);
-	if (check_cam_int(splitline[3]))
+	if (check_orientation(splitline[3]))
+		return (1);
+	if (check_cam_int(splitline[4]))
 		return (1);
 	return (0);
 }

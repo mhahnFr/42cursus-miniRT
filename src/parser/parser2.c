@@ -33,8 +33,10 @@ int	add_camera(char **line, t_cam *camera)
 		return (5);
 	camera->position = get_vector(line[1]);
 	camera->normal = get_vector(line[2]);
+	camera->ey = get_vector(line[3]);
 	vector_normalize(&(camera->normal));
-	camera->fov = ft_atoi(line[3]);
+	camera->fov = ft_atoi(line[4]);
+	vector_normalize(&(camera->ey));
 	camera->aspect_ratio = (float) RESOLUTION_X / RESOLUTION_Y;
 	ft_free_char_arr(line);
 	return (0);

@@ -45,3 +45,4 @@ int	key_redcross(t_mixer *p_null)
 	key_escape(p_null);
 	return (0);
 }
+
