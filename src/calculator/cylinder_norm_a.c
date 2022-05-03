@@ -113,18 +113,21 @@ bool	hit_cylinder_caps(
 	t_vector	save_norm;
 	bool		top;
 	bool		bot;
+	float		disthit;
 
 	top = hit_cylinder_top(origin, obj, ray, sect);
 	if (top)
 	{
 		inter = *sect;
 		save_norm = obj->col_normal;
+		disthit = obj->disthit;
 	}
 	bot = hit_cylinder_bottom(origin, obj, ray, sect);
 	if (!bot && (top && vector_length(&inter) < vector_length(sect)))
 	{
 		*sect = inter;
 		obj->col_normal = save_norm;
+		obj->disthit = disthit;
 	}
 	return (top || bot);
 }

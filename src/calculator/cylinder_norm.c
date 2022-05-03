@@ -76,18 +76,21 @@ bool	hit_cylinder(
 	t_vector	save_norm;
 	bool		mat;
 	bool		cap;
+	float		disthit;
 
 	mat = hit_cylinder_mantel(origin, obj, ray, sect);
 	if (mat)
 	{
 		inter = *sect;
 		save_norm = obj->col_normal;
+		disthit = obj->disthit;
 	}
 	cap = hit_cylinder_caps(origin, obj, ray, sect);
 	if (!cap || (mat && vector_length(&inter) < vector_length(sect)))
 	{
 		*sect = inter;
 		obj->col_normal = save_norm;
+		obj->disthit = disthit;
 	}
 	return (mat || cap);
 }
