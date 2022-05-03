@@ -296,6 +296,13 @@ bool		hit_cylinder_bottom(
 bool		hit_cylinder_caps(
 				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect);
 
+bool		hit_cylinder_mantel(t_vector *origin,
+				t_obj_l *obj,
+				t_vector *ray,
+				t_vector *inter);
+
+bool		hit_cylinder_part_b_a(t_test cy_struct);
+
 t_rgbof		calc_shader(
 				t_vector *origin,
 				t_vector *ray,
