@@ -13,6 +13,12 @@
 #include "minirt.h"
 #include "mlx.h"
 #include "libft.h"
+#include <stdio.h>
+
+void	vector_print(t_vector *vec)
+{
+	printf("%f | %f | %f\n", vec->x, vec->y, vec->z);
+}
 
 static void	print_lexer_error(int error)
 {

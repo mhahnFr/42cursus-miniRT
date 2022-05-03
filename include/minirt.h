@@ -182,7 +182,7 @@ typedef struct s_test {
  * store the error code.
  */
 t_mixer		*init_mainstruct(int *err);
-
+void		vector_print(t_vector *vec);
 /*
  * Initializes the values of the camera. Takes the mixer object as parameter.
  */
