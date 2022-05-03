@@ -84,7 +84,6 @@ int		ft_putnbbase(long long number, char *base, int len);
 long	ft_numlen(long nb, int base);
 void	*ft_realloc(void *old, size_t newsize, size_t size, int i);
 char	**ft_realloc_charpp(char **old, size_t new_size);
-int		ft_isallnum(char *str);
 int		ft_char_arr_len(char **arr);
 char	**ft_strsplit(char const *s, char *c);
 float	ft_atof(char *str);

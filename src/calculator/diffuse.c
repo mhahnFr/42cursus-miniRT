@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include <stdbool.h>
 
 inline t_vector	diffuse_rand(t_diff diff)
 {
@@ -29,9 +28,9 @@ inline t_vector	diffuse_rand(t_diff diff)
 	x = (float) drand48() + reflection.x;
 	y = (float) drand48() + reflection.y;
 	z = (float) drand48() + reflection.z;
-	tmp.x = (x - 0.5) * (diff.hit->diffusion * 0.5);
-	tmp.y = (y - 0.5) * (diff.hit->diffusion * 0.5);
-	tmp.z = (z - 0.5) * (diff.hit->diffusion * 0.5);
+	tmp.x = (x - 0.5f) * (diff.hit->diffusion * 0.5f);
+	tmp.y = (y - 0.5f) * (diff.hit->diffusion * 0.5f);
+	tmp.z = (z - 0.5f) * (diff.hit->diffusion * 0.5f);
 	vector_normalize(&tmp);
 	vector_addition(&tmp, &tmp, &reflection);
 	return (tmp);

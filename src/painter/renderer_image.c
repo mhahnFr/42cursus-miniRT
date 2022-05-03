@@ -29,7 +29,7 @@ t_renderer_image	*renderer_image_new(
 	ret = ft_gc_malloc(sizeof(struct s_renderer_image));
 	if (ret == NULL)
 		return (NULL);
-	ret->mlx_img = mlx_new_image(mlx_ptr, width, height);
+	ret->mlx_img = mlx_new_image(mlx_ptr, (int) width, (int) height);
 	ret->mlx_ptr = mlx_ptr;
 	renderer_image_create(ret, ret->mlx_img, width, height);
 	return (ret);

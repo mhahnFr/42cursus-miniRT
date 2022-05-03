@@ -18,6 +18,6 @@ float	vector_distance(t_vector *first, t_vector *second)
 {
 	if (first == NULL || second == NULL)
 		return (0);
-	return (sqrt(powf(first->x - second->x, 2) + powf(first->y - second->y, 2)
+	return (sqrtf(powf(first->x - second->x, 2) + powf(first->y - second->y, 2)
 			+ powf(first->z - second->z, 2)));
 }

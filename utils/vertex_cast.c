@@ -37,7 +37,7 @@ t_point	*vertex3d_cast_new_point(t_vertex3d *this)
 
 	if (this == NULL)
 		return (NULL);
-	ret = point_new(this->x, this->y);
+	ret = point_new((long) this->x, (long) this->y);
 	return (ret);
 }
 
@@ -45,7 +45,7 @@ void	vertex3d_cast_point(t_vertex3d *this, t_point *point)
 {
 	if (this == NULL || point == NULL)
 		return ;
-	point_create(point, this->x, this->y);
+	point_create(point, (long) this->x, (long) this->y);
 	point->r = this->r;
 	point->g = this->g;
 	point->b = this->b;

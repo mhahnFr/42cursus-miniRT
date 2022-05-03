@@ -37,7 +37,7 @@ float	vector_length(t_vector *this)
 {
 	if (this == NULL)
 		return (0);
-	return (sqrt(this->x * this->x + this->y * this->y + this->z * this->z));
+	return (sqrtf(this->x * this->x + this->y * this->y + this->z * this->z));
 }
 
 void	vector_normalize(t_vector *this)

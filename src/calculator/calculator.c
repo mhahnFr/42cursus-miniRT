@@ -14,7 +14,7 @@
 #include "minirt.h"
 #include "renderer_image.h"
 
-void	draw_point(int x, int y, t_renderer_image *buf, t_rgbof color)
+void	draw_point(size_t x, size_t y, t_renderer_image *buf, t_rgbof color)
 {
 	char	*dst;
 

@@ -65,8 +65,8 @@ void	build_rays(t_mixer *mixer, t_vector s)
 		ii = 0;
 		while (ii < RESOLUTION_X)
 		{
-			mixer->cam.vecs[i][ii].x = s.x + (mixer->cam.step.x * ii);
-			mixer->cam.vecs[i][ii].y = s.y + (mixer->cam.step.y * i);
+			mixer->cam.vecs[i][ii].x = s.x + (mixer->cam.step.x * (float) ii);
+			mixer->cam.vecs[i][ii].y = s.y + (mixer->cam.step.y * (float) i);
 			mixer->cam.vecs[i][ii].z = s.z;
 			vector_normalize(&mixer->cam.vecs[i][ii]);
 			ii++;

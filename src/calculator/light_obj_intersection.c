@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include <stdio.h>
-#include <math.h>
 
 bool	intersec_next(
 		t_obj_l *objs, t_vector *origin, t_vector *ray, t_vector *inter)
@@ -30,7 +28,7 @@ bool	intersec_next(
 }
 
 /*
-	Function does following black-magic, but in normed manner:
+	Function does the following black-magic, but in normed manner:
 
  	union
 	{

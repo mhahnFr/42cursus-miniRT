@@ -90,7 +90,7 @@ t_arraylist		*arraylist_get_element_unsafe(
  * element will have the corresponding index. Returns true if the element was
  * inserted as desired, false if the element was appended at the end of the
  * list or if at least one parameter is missing or the given index is outside
- * of the given list.
+ * the given list.
  */
 bool			arraylist_insert_at(
 					t_arraylist **this,
@@ -126,7 +126,7 @@ bool			arraylist_insert_after(
  * optionally given delete function. Returns true, if the element at the given
  * index was successfully deleted, false if no list is given or the given index
  * does not exist in the given list. Does not delete anything if the index is
- * outside of the list.
+ * outside the list.
  */
 bool			arraylist_remove_at_index(
 					t_arraylist **this,
