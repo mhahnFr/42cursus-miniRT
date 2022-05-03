@@ -16,7 +16,7 @@
 
 int	check_camera(char **splitline)
 {
-	if (ft_char_arr_len(splitline) < 4)
+	if (ft_char_arr_len(splitline) < 5)
 		return (1);
 	if (check_vector(splitline[1]))
 		return (1);
