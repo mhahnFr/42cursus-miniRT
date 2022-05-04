@@ -95,6 +95,21 @@ void	rt_runner(t_thread *self)
 	}
 }
 
+t_mixer	*copy_mixer(t_mixer *self) {
+	t_mixer *ret = ft_gc_malloc(sizeof(t_mixer));
+	// TODO make a deep copy
+	ret->image = self->image;
+	ret->p_mlx_init = self->p_mlx_init;
+	ret->p_mlx_window = self->p_mlx_window;
+	ret->bounces = 0;
+	ret->light_count = self->light_count;
+	ret->cam = self->cam;
+	ret->col_sum = self->col_sum;
+	ret->ambient = self->ambient;
+	ret->cores = self->cores;
+	return ret;
+}
+
 void	rt_forker(t_mixer *mixer)
 {
 	size_t	i;
@@ -102,13 +117,13 @@ void	rt_forker(t_mixer *mixer)
 
 	mixer->cores = sysconf(_SC_NPROCESSORS_CONF);
 	//mixer->cores = 1;
-	mixer->threads = malloc(sizeof(t_thread) * mixer->cores);
+	mixer->threads = ft_gc_malloc(sizeof(t_thread) * mixer->cores);
 	printf("Using %zu threads to render the scene...\n", mixer->cores);
 	i = 0;
 	ii = 0;
 	while (i < mixer->cores)
 	{
-		mixer->threads[i].mixer = mixer;
+		mixer->threads[i].mixer = copy_mixer(mixer);//mixer;
 		mixer->threads[i].index = i;
 		if (pthread_create(&mixer->threads[i].thread, NULL, (t_run) rt_runner, (void *) &mixer->threads[i]) == 0)
 			ii++;
@@ -138,12 +153,12 @@ t_tile	**rt_divide(float aspect)
 
 	tiles_per_axis = ceil((double) RESOLUTION_Y / BLOCK_SIZE);
 	//ret = malloc((long) pow(tiles_per_axis, 2) * sizeof(t_tile));
-	ret = malloc(tiles_per_axis * sizeof(void *));
+	ret = ft_gc_malloc(tiles_per_axis * sizeof(void *));
 	i = 0;
 	while (i < tiles_per_axis)
 	{
 		ii = 0;
-		ret[i] = malloc(tiles_per_axis * sizeof(t_tile));
+		ret[i] = ft_gc_malloc(tiles_per_axis * sizeof(t_tile));
 		while (ii < tiles_per_axis)
 		{
 			//ret[i] = (void *) ret + tiles_per_axis * i + ii * sizeof(t_tile) + tiles_per_axis * sizeof(void *);
