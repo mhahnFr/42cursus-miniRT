@@ -16,7 +16,7 @@
 # include <stddef.h>
 
 /*
- * Represents an image. Contains all informations of the MiniLibX image.
+ * Represents an image. Contains all information of the MiniLibX image.
  * Contains the background color as well.
  */
 typedef struct s_renderer_image

@@ -16,7 +16,7 @@
 # include "libft.h"
 
 /*
- * Represents a two dimensional point. Consists of the X and the Y value and
+ * Represents a two-dimensional point. Consists of the X and the Y value and
  * the colour values.
  */
 typedef struct s_point {

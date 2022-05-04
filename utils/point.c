@@ -6,11 +6,9 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 16:37:17 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/07 16:37:18 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/08 17:35:19 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdlib.h>
 
 #include "point.h"
 
@@ -18,7 +16,7 @@ t_point	*point_new(long x, long y)
 {
 	t_point	*ret;
 
-	ret = malloc(sizeof(struct s_point));
+	ret = ft_gc_malloc(sizeof(struct s_point));
 	if (ret == NULL)
 		return (NULL);
 	point_create(ret, x, y);
@@ -46,5 +44,5 @@ void	point_delete(t_point *this)
 {
 	if (this == NULL)
 		return ;
-	free(this);
+	ft_gc_free(this);
 }

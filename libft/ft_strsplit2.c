@@ -6,13 +6,13 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 17:00:39 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/06 17:16:51 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:23:19 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 #include <stdio.h>
+
+#include "libft.h"
 
 void	ft_skip_c(char *s, char *c, size_t *count)
 {

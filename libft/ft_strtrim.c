@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
-#include <string.h>
 
 static char	*ft_cal(char *rs, size_t s1len, size_t i, char const *s1)
 {

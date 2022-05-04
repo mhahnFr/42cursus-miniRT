@@ -6,7 +6,7 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 15:09:31 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/29 18:16:06 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/13 14:08:48 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 #include "libft.h"
 #include "lexer.h"
 #include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
 
 int	checkfile(char *name)
 {
-	int	i;
+	size_t	i;
 
 	i = ft_strlen(name);
 	if (i < 4 || name[i - 1] != 't' || name[i - 2] != 'r' || name[i - 3] != '.')
@@ -81,14 +80,13 @@ char	**loader(char *path, int *errnum, int *size)
 	return (buff);
 }
 
-//cant handle trailing whitespaces before nl
+//can't handle trailing whitespaces before nl
 int	lexer(char *path, t_mixer *m_data, int *errnum)
 {
 	char	**buffer;
 	int		size;
 
 	size = 0;
-	(void) m_data;
 	buffer = loader(path, errnum, &size);
 	if (buffer == NULL || size < 3 || *errnum)
 	{
@@ -106,6 +104,7 @@ int	lexer(char *path, t_mixer *m_data, int *errnum)
 		*errnum += 20;
 		return (1);
 	}
+	correct_normals(m_data);
 	printf("file read successfull!\n");
 	return (0);
 }

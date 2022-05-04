@@ -6,14 +6,11 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:53:20 by jkasper           #+#    #+#             */
-/*   Updated: 2022/04/06 17:14:07 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/04/08 17:40:08 by jkasper          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-#include <stdio.h>
-#include <stdlib.h>
 
 static char	**ft_freeman(char **restr, size_t count)
 {
@@ -22,10 +19,10 @@ static char	**ft_freeman(char **restr, size_t count)
 	i = count;
 	while (restr[i] != NULL)
 	{
-		free(restr[i]);
+		ft_gc_free(restr[i]);
 		i++;
 	}
-	free(restr);
+	ft_gc_free(restr);
 	return (NULL);
 }
 

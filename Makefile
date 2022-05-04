@@ -1,6 +1,6 @@
 ##		HEADER			##
 
-HEAD_FILES	= abs.h arraylist.h hex_str_to_unsigned_int.h matrix_new.h matrix.h minirt.h \
+HEAD_FILES	= abs.h arraylist.h hex_str_to_unsigned_int.h matrix.h minirt.h \
 			  point.h vector.h vertex.h renderer_image.h
 
 HDR         = $(addprefix include/,$(HEAD_FILES))
@@ -11,7 +11,7 @@ UTILS_FILES = arraylist.c arraylist_array.c arraylist_array_unsafe.c arraylist_g
 			  arraylist_size.c hex_str_to_unsigned_int.c point.c point_copy.c        \
 			  vertex.c vertex_cast.c vertex_copy.c arraylist_find.c
 MATH_FILES  = abs.c matrix.c matrix_calculations.c matrix_destroy.c matrix_filler.c   \
-			  matrix_new.c vector.c vector_add_sub.c vector_delete.c vector_division.c\
+			  vector.c vector_add_sub.c vector_delete.c vector_division.c\
 			  vector_multiplications.c vector_length.c vector_multiplications_numbers.c
 GNL_FILES	= get_next_line.c get_next_line_utils.c
 
@@ -24,10 +24,10 @@ UTILS_SRC   = $(addprefix utils/,$(UTILS_FILES)) $(addprefix utils/math/,$(MATH_
 
 SRC_FOLDER	= src/
 
-M_SRC    	= builder.c main.c mixer.c mt.c
-CALC_SRC	= calculator.c color.c diffuse.c sphere.c plane.c baseimage.c specular.c
-LEXER_SRC	= lexer.c validator.c basic_check.c type_check.c object_check.c
-PARSER_SRC	= parser.c #object_pars.c basic_pars.c
+M_SRC    	= builder.c main.c mixer.c
+CALC_SRC	= calculator.c color.c diffuse.c sphere.c plane.c baseimage.c specular.c shaders.c light_obj_intersection.c diffuse_intersection.c cylinder_norm.c cylinder_norm_a.c cylinder_norm_b.c
+LEXER_SRC	= lexer.c validator.c basic_check.c type_check.c object_check.c normal_corrector.c
+PARSER_SRC	= parser.c object_pars.c basic_pars.c parser2.c cy_pars.c
 PAINTER_SRC = renderer_image.c key_handler.c
 
 SRC			= $(UTILS_SRC) $(addprefix src/painter/,$(PAINTER_SRC)) $(addprefix src/,$(M_SRC)) $(addprefix src/lexer/,$(LEXER_SRC)) $(addprefix src/parser/,$(PARSER_SRC)) $(addprefix src/calculator/,$(CALC_SRC))
@@ -48,9 +48,10 @@ OBJ         =  $(PAINTER_OBJ:.c=.o) $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OB
 ##		COMPILER		##
 NAME        = miniRT
 
-CFLAGS      = -Wall -Wextra -g -pedantic -Ofast#-fsanitize=thread#-Werror
+ #/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-profdata
+CFLAGS      = -Wall -Werror -Wextra -Ofast -march=native -funroll-loops -fno-trapping-math -fno-signed-zeros -fomit-frame-pointer -pedantic
 INC         = -Iinclude -Imlx -Ilibft
-LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit #-fsanitize=thread
+LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit
 
 MLX         = ./mlx/libmlx.a
 LIBFT       = ./libft/libft.a

@@ -6,33 +6,25 @@
 /*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:39:55 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/31 16:03:14 by jkasper          ###   ########.fr       */
+/*   Updated: 2022/04/13 15:03:39 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#include <stdio.h>
 #include "libft.h"
 #include "lexer.h"
 
-void	p_chararr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i] != NULL)
-		printf("%s ", arr[i++]);
-}
-
 int	check_camera(char **splitline)
 {
-	if (ft_char_arr_len(splitline) < 4)
+	if (ft_char_arr_len(splitline) < 5)
 		return (1);
 	if (check_vector(splitline[1]))
 		return (1);
 	if (check_orientation(splitline[2]))
 		return (1);
-	if (check_cam_int(splitline[3]))
+	if (check_orientation(splitline[3]))
+		return (1);
+	if (check_cam_int(splitline[4]))
 		return (1);
 	return (0);
 }
@@ -67,6 +59,24 @@ int	check_light(char **splitline)
 	return (0);
 }
 
+void	validation_p2(char **splitline, int *ret)
+{
+	if (!ft_strncmp(splitline[0], "C", 2))
+		*ret = check_camera(splitline);
+	else if (!ft_strncmp(splitline[0], "A", 2))
+		*ret = check_ambient(splitline);
+	else if (!ft_strncmp(splitline[0], "L", 2))
+		*ret = check_light(splitline);
+	else if (!ft_strncmp(splitline[0], "sp", 3))
+		*ret = check_sphere(splitline);
+	else if (!ft_strncmp(splitline[0], "pl", 3))
+		*ret = check_plane(splitline);
+	else if (!ft_strncmp(splitline[0], "cy", 3))
+		*ret = check_cylinder(splitline);
+	else
+		*ret = 1;
+}
+
 //I wish I had a switch tonight!
 int	validation_check(char **buffer, int size)
 {
@@ -81,20 +91,9 @@ int	validation_check(char **buffer, int size)
 		splitline = ft_strsplit(buffer[i++], " 	");
 		if (!ft_strncmp(splitline[0], "#", 1))
 			ret = 0;
-		else if (!ft_strncmp(splitline[0], "C", 2))
-			ret = check_camera(splitline);
-		else if (!ft_strncmp(splitline[0], "A", 2))
-			ret = check_ambient(splitline);
-		else if (!ft_strncmp(splitline[0], "L", 2))
-			ret = check_light(splitline);
-		else if (!ft_strncmp(splitline[0], "sp", 3))
-			ret = check_sphere(splitline);
-		else if (!ft_strncmp(splitline[0], "pl", 3))
-			ret = check_plane(splitline);
-		else if (!ft_strncmp(splitline[0], "cy", 3))
-			ret = check_cylinder(splitline);
 		else
-			ret = 1;
+			validation_p2(splitline, &ret);
+		ft_free_char_arr(splitline);
 	}
 	return (ret);
 }
