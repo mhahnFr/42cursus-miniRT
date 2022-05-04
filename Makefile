@@ -24,7 +24,7 @@ UTILS_SRC   = $(addprefix utils/,$(UTILS_FILES)) $(addprefix utils/math/,$(MATH_
 
 SRC_FOLDER	= src/
 
-M_SRC    	= builder.c main.c mixer.c
+M_SRC    	= builder.c main.c mixer.c mt.c
 CALC_SRC	= calculator.c color.c diffuse.c sphere.c plane.c baseimage.c specular.c shaders.c light_obj_intersection.c diffuse_intersection.c cylinder_norm.c cylinder_norm_a.c cylinder_norm_b.c
 LEXER_SRC	= lexer.c validator.c basic_check.c type_check.c object_check.c normal_corrector.c
 PARSER_SRC	= parser.c object_pars.c basic_pars.c parser2.c cy_pars.c
@@ -49,9 +49,9 @@ OBJ         =  $(PAINTER_OBJ:.c=.o) $(M_OBJ:.c=.o) $(LEXER_OBJ:.c=.o) $(UTILS_OB
 NAME        = miniRT
 
  #/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-profdata
-CFLAGS      = -Wall -Werror -Wextra -Ofast -march=native -funroll-loops -fno-trapping-math -fno-signed-zeros -fomit-frame-pointer -pedantic
+CFLAGS      = -g -fsanitize=thread -Wall -Werror -Wextra -Ofast -march=native -funroll-loops -fno-trapping-math -fno-signed-zeros -fomit-frame-pointer -pedantic
 INC         = -Iinclude -Imlx -Ilibft
-LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit
+LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit -fsanitize=thread
 
 MLX         = ./mlx/libmlx.a
 LIBFT       = ./libft/libft.a

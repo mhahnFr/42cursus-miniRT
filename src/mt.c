@@ -17,11 +17,15 @@
 #include <stdio.h>
 #include <unistd.h>
 
+typedef void*(*t_run)(void*);
+void draw_point(size_t x, size_t y, t_renderer_image *image, t_rgbof colour);
+
+
 void	render_ray(t_thread *self, t_vector *ray, size_t x, size_t y)
 {
 	t_rgbof	color;
 
-	color = calc_antialiasing(self, ray); 
+	color = calc_first_ray_of_the_day(self->mixer, ray);
 	draw_point(x, y, self->mixer->image, color);
 }
 
@@ -83,7 +87,7 @@ void	rt_runner(t_thread *self)
 			ii = to_render.y;
 			while (ii < to_render.y + BLOCK_SIZE && ii < RESOLUTION_Y)
 			{
-				render_ray(self, &self->mixer->cam.vecs[ii][i], i, ii);
+				render_ray(self, &(self->mixer->cam.vecs[RESOLUTION_Y - ii - 1][i]), i, ii);
 				ii++;
 			}
 			i++;
@@ -97,7 +101,7 @@ void	rt_forker(t_mixer *mixer)
 	size_t	ii;
 
 	mixer->cores = sysconf(_SC_NPROCESSORS_CONF);
-	mixer->cores = 1;
+	//mixer->cores = 1;
 	mixer->threads = malloc(sizeof(t_thread) * mixer->cores);
 	printf("Using %zu threads to render the scene...\n", mixer->cores);
 	i = 0;
@@ -122,7 +126,7 @@ void	rt_forker(t_mixer *mixer)
 	else
 		rt_runner(&mixer->threads[0]);
 	printf("Done.\n");
-	exit(0);
+	//exit(0);
 }
 
 t_tile	**rt_divide(float aspect)

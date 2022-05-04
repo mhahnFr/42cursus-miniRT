@@ -14,15 +14,16 @@
 # define MINIRT_H
 
 # include <stdbool.h>
+#include <pthread.h>
 # include "vector.h"
 # include "renderer_image.h"
 # include "libft.h"
 
 /* Resolution in Pixel */
-# define RESOLUTION_X	1920
-# define RESOLUTION_Y	1080
-# define ANTI_ALIASING	20
-# define MAX_BOUNCES	30
+# define RESOLUTION_X	500
+# define RESOLUTION_Y	500
+# define ANTI_ALIASING	2
+# define MAX_BOUNCES	3
 /* Object-types */
 # define CAMERA		   -2
 # define AMBIENT	   -1
@@ -35,6 +36,7 @@
 
 # define LEXER_BUFFER	100
 # define ESC_KEY		53
+# define BLOCK_SIZE		40
 
 /*
  * Red green blue values for an object or light 
@@ -120,7 +122,21 @@ typedef struct s_col_calc
 	t_vector	diff;
 }	t_col;
 
+typedef struct s_tile {
+	pthread_mutex_t m_rendered;
+	bool rendered;
+	size_t x, y;
+} t_tile;
+
+struct s_mixer;
 /* Mainstruct for MiniRT */
+typedef struct s_threads {
+	struct s_mixer *mixer;
+	struct s_col_calc col_sum;
+	size_t index;
+	pthread_t thread;
+} t_thread;
+
 typedef struct s_mixer {
 	t_renderer_image	*image;
 	void				*p_mlx_init;
@@ -133,7 +149,11 @@ typedef struct s_mixer {
 	struct s_col_calc	col_sum;
 	t_diff				diff_sh;
 	t_obj_l				*obj_list;
+	size_t cores;
+	t_tile **tile_array;
+	struct s_threads *threads;
 }	t_mixer;
+
 
 //needed for calculator, for norm reason
 typedef struct s_iobj {
