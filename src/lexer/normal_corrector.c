@@ -17,15 +17,20 @@ void	correct_cylinder(t_obj_l *self, t_cam *cam)
 	float		t;
 	t_vector	res;
 
-	self->inv_normal = false;
-	vector_substract(&res, &cam->position, &self->position);
-	t = vector_scalar_product(&res, &self->normal);
-	if (t > self->height)
-		return;
-	vector_multiply_digit(&res, &cam->position, t);
-	vector_addition(&res, &res, &self->position);
-	vector_substract(&res, &cam->position, &res);
-	self->inv_normal = vector_length(&res) <= self->width;
+	if (self->obj_type == CYLINDER_MAN)
+	{
+		self->inv_normal = false;
+		vector_substract(&res, &cam->position, &self->position);
+		t = vector_scalar_product(&res, &self->normal);
+		if (t > self->height)
+			return ;
+		vector_multiply_digit(&res, &cam->position, t);
+		vector_addition(&res, &res, &self->position);
+		vector_substract(&res, &cam->position, &res);
+		self->inv_normal = vector_length(&res) <= self->width;
+	}
+	else if (self->obj_type == CYLINDER_CAP)
+		self->inv_normal = self->prev->inv_normal;
 }
 
 void	correct_spheres(t_obj_l *self, t_cam *cam)
@@ -59,7 +64,7 @@ void	correct_normals(t_mixer *self)
 			correct_spheres(inter, &self->cam);
 		else if (inter->obj_type == PLANE)
 			correct_planes(inter, &self->cam);
-		else if (inter->obj_type == CYLINDER)
+		else if (inter->obj_type >= CYLINDER_CAP)
 			correct_cylinder(inter, &self->cam);
 		inter = inter->next;
 	}

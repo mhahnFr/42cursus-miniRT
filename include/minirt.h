@@ -29,8 +29,9 @@
 # define LIGHT			0
 # define SPHERE			1
 # define PLANE			2
-# define CYLINDER		3
-# define START			4
+# define START			3
+# define CYLINDER_CAP	4
+# define CYLINDER_MAN	5
 
 # define LEXER_BUFFER	100
 # define ESC_KEY		53
@@ -287,13 +288,7 @@ t_vector	cylinder_intersect_normal(
 				t_vector *normal,
 				bool inv);
 
-bool		hit_cylinder_top(
-				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect);
-
-bool		hit_cylinder_bottom(
-				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect);
-
-bool		hit_cylinder_caps(
+bool		hit_cylinder_cap(
 				t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect);
 
 bool		hit_cylinder_mantel(t_vector *origin,
@@ -331,7 +326,7 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result);
 t_vector	rgbof_cast_vector(t_rgbof self);
 t_rgbof		vector_cast_rgbof(t_vector self);
 
-t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector intersect);
+t_vector	trace_light(t_mixer *mixer, t_obj_l *curr, t_vector *vecs[2]);
 t_vector	trace_rand(t_vector ray, t_vector normal, float diffusion);
 bool		intersec_next(
 				t_obj_l *objs,

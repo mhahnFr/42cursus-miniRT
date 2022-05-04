@@ -72,25 +72,9 @@ inline t_vector	cylinder_intersect_normal(t_vector *origin,
 bool	hit_cylinder(
 		t_vector *origin, t_obj_l *obj, t_vector *ray, t_vector *sect)
 {
-	t_vector	inter;
-	t_vector	save_norm;
-	bool		mat;
-	bool		cap;
-	float		disthit;
-
-	mat = hit_cylinder_mantel(origin, obj, ray, sect);
-	if (mat)
-	{
-		inter = *sect;
-		save_norm = obj->col_normal;
-		disthit = obj->disthit;
-	}
-	cap = hit_cylinder_caps(origin, obj, ray, sect);
-	if (!cap || (mat && vector_length(&inter) < vector_length(sect)))
-	{
-		*sect = inter;
-		obj->col_normal = save_norm;
-		obj->disthit = disthit;
-	}
-	return (mat || cap);
+	if (obj->obj_type == CYLINDER_MAN)
+		return (hit_cylinder_mantel(origin, obj, ray, sect));
+	else if (obj->obj_type == CYLINDER_CAP)
+		return (hit_cylinder_cap(origin, obj, ray, sect));
+	return (false);
 }

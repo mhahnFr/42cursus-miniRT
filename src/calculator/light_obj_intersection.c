@@ -22,7 +22,7 @@ bool	intersec_next(
 		ret = hit_sphere(origin, objs, ray, inter);
 	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
 		ret = intersec_plane(ray, origin, objs, inter);
-	else if (objs->obj_type == CYLINDER)
+	else if (objs->obj_type >= CYLINDER_CAP)
 		ret = hit_cylinder(origin, objs, ray, inter);
 	return (ret);
 }
@@ -61,7 +61,9 @@ void	intersect_obj_color(t_iobj *i_struc, float length)
 
 	intercol = rgbof_cast_vector(i_struc->obj_col->color);
 	i_struc->shadow = true;
-	if (i_struc->curr == NULL)
+	if (i_struc->curr != NULL)
+		i_struc->ret_color = intercol;
+	else
 	{
 		fact = 0.5f;
 		if (length > i_struc->light->intensity)
@@ -77,8 +79,6 @@ void	intersect_obj_color(t_iobj *i_struc, float length)
 		i_struc->light->brightness * fact);
 		vector_multiply(&i_struc->ret_color, &i_struc->ret_color, &intercol);
 	}
-	else
-		i_struc->ret_color = intercol;
 }
 
 bool	intersect_object(

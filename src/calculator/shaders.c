@@ -41,7 +41,7 @@ void	shader_reflection_shadow(
 	if (curr->reflec_fac > 0)
 		s_col = trace_next(mixer, *vecs[0], *vecs[1], curr);
 	if (curr->reflec_fac < 1)
-		l_col = trace_light(mixer, curr, *vecs[0]);
+		l_col = trace_light(mixer, curr, vecs);
 	vector_multiply_digit(&s_col, &s_col, curr->reflec_fac);
 	vector_multiply_digit(&l_col, &l_col, 1 - curr->reflec_fac);
 	vector_addition(vecs[0], &s_col, &l_col);

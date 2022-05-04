@@ -25,7 +25,7 @@ static inline bool	diffuse_next(
 		ret = hit_sphere(start, obj, ray, inter);
 	else if (obj->obj_type == PLANE && fast_intersec_plane(ray, &obj->normal))
 		ret = intersec_plane(ray, start, obj, inter);
-	else if (obj->obj_type == CYLINDER)
+	else if (obj->obj_type >= CYLINDER_CAP)
 		return (hit_cylinder(start, obj, ray, inter));
 	return (ret);
 }
