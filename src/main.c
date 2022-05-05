@@ -66,7 +66,6 @@ static void	open_mlx(t_mixer *all_struct)
 	mlx_loop(all_struct->p_mlx_init);
 }
 
-void rt_start(t_mixer*);
 int	main(int argc, char **argv)
 {
 	t_mixer	*all_struct;
@@ -84,7 +83,6 @@ int	main(int argc, char **argv)
 		lexer(argv[1], all_struct, &ret);
 		print_error(ret);
 		rt_cam(all_struct);
-		//calculator(all_struct, &ret);
 		rt_start(all_struct);
 		print_error(ret);
 		open_mlx(all_struct);

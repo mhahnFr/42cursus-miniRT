@@ -14,7 +14,7 @@
 # define MINIRT_H
 
 # include <stdbool.h>
-#include <pthread.h>
+# include <pthread.h>
 # include "vector.h"
 # include "renderer_image.h"
 # include "libft.h"
@@ -123,20 +123,21 @@ typedef struct s_col_calc
 }	t_col;
 
 typedef struct s_tile {
-	pthread_mutex_t m_rendered;
-	bool rendered;
-	size_t x, y;
-} t_tile;
+	pthread_mutex_t	m_rendered;
+	size_t			x;
+	size_t			y;
+	bool			rendered;
+}	t_tile;
 
-struct s_mixer;
-/* Mainstruct for MiniRT */
+struct	s_mixer;
+
 typedef struct s_threads {
-	struct s_mixer *mixer;
-	struct s_col_calc col_sum;
-	size_t index;
-	pthread_t thread;
-} t_thread;
+	struct s_mixer		*mixer;
+	size_t				index;
+	pthread_t			thread;
+}	t_thread;
 
+/* Mainstruct for MiniRT */
 typedef struct s_mixer {
 	t_renderer_image	*image;
 	void				*p_mlx_init;
@@ -149,11 +150,10 @@ typedef struct s_mixer {
 	struct s_col_calc	col_sum;
 	t_diff				diff_sh;
 	t_obj_l				*obj_list;
-	size_t cores;
-	t_tile **tile_array;
-	struct s_threads *threads;
+	size_t				cores;
+	t_tile				**tile_array;
+	struct s_threads	*threads;
 }	t_mixer;
-
 
 //needed for calculator, for norm reason
 typedef struct s_iobj {
@@ -195,6 +195,8 @@ typedef struct s_test {
 	t_obj_l		*obj;
 }	t_test;
 
+typedef void	*(*t_run)(void*);
+
 /* Functions */
 
 /*				Main */
@@ -204,18 +206,16 @@ typedef struct s_test {
  */
 t_mixer		*init_mainstruct(int *err);
 void		vector_print(t_vector *vec);
+void		rt_start(t_mixer *mixer);
 /*
  * Initializes the values of the camera. Takes the mixer object as parameter.
  */
 void		rt_cam(t_mixer *mixer);
 
 /*				Painter */
-/*
- * Paints the whole scene. Takes the delegate with all objects and
- * precalculated values as well as a pointer to an integer, in which the error
- * code is saved.
- */
-void		paint(t_mixer *delegate, int *ret);
+void		draw_point(size_t x, size_t y, t_renderer_image *i, t_rgbof c);
+t_mixer		*copy_mixer(t_mixer *self);
+void		rt_runner(t_thread *self);
 
 /*				Calculator */
 void		calculator(t_mixer *mixer, int *ret);
