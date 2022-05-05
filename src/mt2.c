@@ -40,16 +40,19 @@ static inline t_obj_l	*copy_obj(t_obj_l *self)
 	ret->inv_normal = self->inv_normal;
 	ret->height = self->height;
 	ret->width = self->width;
+	ret->depth = self->depth;
 	ret->brightness = self->brightness;
 	ret->diffusion = self->diffusion;
 	ret->disthit = self->disthit;
 	ret->intensity = self->intensity;
 	ret->reflec_fac = self->reflec_fac;
-	ret->max_length = self->max_length;
 	ret->obj_type = self->obj_type;
+	ret->cube_side = self->cube_side;
 	ret->color = self->color;
 	ret->col_normal = self->col_normal;
 	ret->normal = self->normal;
+	ret->normal_down = self->normal_down;
+	ret->normal_left = self->normal_left;
 	ret->position = self->position;
 	return (ret);
 }

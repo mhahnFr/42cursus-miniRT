@@ -20,8 +20,8 @@
 # include "libft.h"
 
 /* Resolution in Pixel */
-# define RESOLUTION_X	500
-# define RESOLUTION_Y	500
+# define RESOLUTION_X	2560
+# define RESOLUTION_Y	1440
 # define ANTI_ALIASING	20
 # define MAX_BOUNCES	30
 /* Object-types */
