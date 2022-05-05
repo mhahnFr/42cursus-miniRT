@@ -47,7 +47,7 @@ void	rt_forker(t_mixer *mixer)
 		mixer->threads[i].mixer = copy_mixer(mixer);
 		mixer->threads[i].index = i;
 		if (pthread_create(&mixer->threads[i].thread, NULL,
-				(t_run) rt_runner, (void *) &mixer->threads[i]) == 0)
+			(void *(*)(void *)) rt_runner, (void *) &mixer->threads[i]) == 0)
 			ii++;
 		i++;
 	}

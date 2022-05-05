@@ -199,8 +199,6 @@ typedef struct s_test {
 	t_obj_l		*obj;
 }	t_test;
 
-typedef void	*(*t_run)(void*);
-
 /* Functions */
 
 /*				Main */
