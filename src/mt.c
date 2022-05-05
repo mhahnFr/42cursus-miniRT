@@ -74,8 +74,8 @@ void	rt_runner(t_thread *self)
 	size_t	ii;
 	size_t	limit_x;
 
-	self->col_sum.sum = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(t_vector));
-	self->col_sum.fac = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(float));
+	//self->col_sum.sum = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(t_vector));
+	//self->col_sum.fac = ft_calloc(1, (self->mixer->light_count + 2) * sizeof(float));
 	size_t iteration = 0;
 	while (rt_block_fetcher(self->mixer->tile_array, &to_render, self->index, iteration, self->mixer->cores))
 	{
@@ -95,17 +95,68 @@ void	rt_runner(t_thread *self)
 	}
 }
 
+void append_obj(t_obj_l **head, t_obj_l *appendix) {
+	t_obj_l *tmp;
+
+	tmp = *head;
+	if (tmp == NULL) {
+		*head = appendix;
+		appendix->prev = NULL;
+		appendix->next = NULL;
+		return;
+	}
+	while (tmp->next != NULL) {
+		tmp = tmp->next;
+	}
+	tmp->next = appendix;
+	appendix->prev = tmp;
+	appendix->next = NULL;
+}
+
+t_obj_l *copy_objs(t_mixer *self) {
+	t_obj_l *ret = NULL;
+	t_obj_l *old;
+	t_obj_l *curr = NULL;
+
+	old = self->obj_list;
+	while (old != NULL) {
+		curr = ft_gc_malloc(sizeof(t_obj_l));
+		curr->emitter = old->emitter;
+		curr->inv_normal = old->inv_normal;
+		curr->height = old->height;
+		curr->width = old->width;
+		curr->brightness = old->brightness;
+		curr->diffusion = old->diffusion;
+		curr->disthit = old->disthit;
+		curr->intensity = old->intensity;
+		curr->reflec_fac = old->reflec_fac;
+		curr->max_length = old->max_length;
+		curr->obj_type = old->obj_type;
+		curr->color = old->color;
+		curr->col_normal = old->col_normal;
+		curr->normal = old->normal;
+		curr->position = old->position;
+		append_obj(&ret, curr);
+		old = old->next;
+	}
+	return ret;
+}
+
 t_mixer	*copy_mixer(t_mixer *self) {
 	t_mixer *ret = ft_gc_malloc(sizeof(t_mixer));
-	// TODO make a deep copy
 	ret->image = self->image;
 	ret->p_mlx_init = self->p_mlx_init;
 	ret->p_mlx_window = self->p_mlx_window;
 	ret->bounces = 0;
 	ret->light_count = self->light_count;
+	ret->ambient = self->ambient;
 	ret->cam = self->cam;
 	ret->col_sum = self->col_sum;
-	ret->ambient = self->ambient;
+	ret->col_sum.sum = ft_calloc(1, (self->light_count + 2) * sizeof(t_vector));
+	ret->col_sum.fac = ft_calloc(1, (self->light_count + 2) * sizeof(float));
+	ret->diff_sh = self->diff_sh;
+	ret->obj_list = copy_objs(self);
+	ret->tile_array = self->tile_array;
 	ret->cores = self->cores;
 	return ret;
 }

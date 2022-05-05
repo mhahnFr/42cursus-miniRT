@@ -22,8 +22,8 @@
 /* Resolution in Pixel */
 # define RESOLUTION_X	500
 # define RESOLUTION_Y	500
-# define ANTI_ALIASING	2
-# define MAX_BOUNCES	3
+# define ANTI_ALIASING	20
+# define MAX_BOUNCES	30
 /* Object-types */
 # define CAMERA		   -2
 # define AMBIENT	   -1
