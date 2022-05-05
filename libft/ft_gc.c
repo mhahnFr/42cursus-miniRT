@@ -16,16 +16,17 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-static pthread_mutex_t *ft_gc_mutex(void)
+static pthread_mutex_t	*ft_gc_mutex(void)
 {
-	static pthread_mutex_t m;
-	static bool init = false;
+	static pthread_mutex_t	m;
+	static bool				init = false;
 
-	if (!init) {
+	if (!init)
+	{
 		pthread_mutex_init(&m, NULL);
 		init = true;
 	}
-	return &m;
+	return (&m);
 }
 
 static t_arraylist	**ft_gc_list(void)
@@ -66,13 +67,13 @@ void	ft_gc_free(void *ptr)
 	pthread_mutex_unlock(ft_gc_mutex());
 }
 
-void	ft_gc_clear(void)
-{
-	pthread_mutex_lock(ft_gc_mutex());
-	arraylist_clear(ft_gc_list(), free);
-	*ft_gc_list() = NULL;
-	pthread_mutex_unlock(ft_gc_mutex());
-}
+//void	ft_gc_clear(void)
+//{
+//	pthread_mutex_lock(ft_gc_mutex());
+//	arraylist_clear(ft_gc_list(), free);
+//	*ft_gc_list() = NULL;
+//	pthread_mutex_unlock(ft_gc_mutex());
+//}
 
 void	ft_gc_exit(int code)
 {
