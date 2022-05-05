@@ -25,6 +25,7 @@ int	check_cam_int(char *str);
 int	check_camera(char **splitline);
 int	check_ambient(char **splitline);
 int	check_light(char **splitline);
+int	check_cube(char **splitline);
 int	validation_check(char **buffer, int size);
 int	check_vector(char *str);
 int	check_orientation(char *str);

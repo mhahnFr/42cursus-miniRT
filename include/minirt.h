@@ -33,6 +33,7 @@
 # define START			3
 # define CYLINDER_CAP	4
 # define CYLINDER_MAN	5
+# define CUBE_PLANE		6
 
 # define LEXER_BUFFER	100
 # define ESC_KEY		53
@@ -65,16 +66,19 @@ typedef struct s_object_l {
 	bool				inv_normal;
 	float				height;
 	float				width;
+	float				depth;
 	float				brightness;
 	float				diffusion;
 	float				disthit;
 	float				intensity;
 	float				reflec_fac;
-	float				max_length;
 	int					obj_type;
+	int					cube_side;
 	t_rgbof				color;
 	t_vector			col_normal;
 	t_vector			normal;
+	t_vector			normal_left;
+	t_vector			normal_down;
 	t_vector			position;
 
 	struct s_object_l	*next;
@@ -230,6 +234,8 @@ void		calc_object_ray(t_mixer *mixer, int *ret);
  * Skips the objects of the given type at the beginning of the given list.
  */
 void		skip_obj(t_obj_l **objs, int toskip);
+
+bool	hit_cube(t_vector *origin, t_obj_l *objs, t_vector *ray, t_vector *inter);
 
 /*
  * Calculates the intersecting vector of the given object, which is treated as

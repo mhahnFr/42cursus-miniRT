@@ -73,6 +73,8 @@ void	validation_p2(char **splitline, int *ret)
 		*ret = check_plane(splitline);
 	else if (!ft_strncmp(splitline[0], "cy", 3))
 		*ret = check_cylinder(splitline);
+	else if (!ft_strncmp(splitline[0], "cu", 3))
+		*ret = check_cube(splitline);
 	else
 		*ret = 1;
 }
