@@ -19,7 +19,6 @@ t_vector	determine_position(t_obj_l *self, t_vector vec, int side)
 {
 	t_vector	inter;
 
-	vector_print(&vec);
 	if (side == 1)
 		vector_multiply_digit(&inter, &self->normal, -(self->height / 2));
 	else if (side == 0)
@@ -40,6 +39,7 @@ void	determine_normal_the_sequel(t_vector up, \
 	vector_normalize(&up);
 	vector_normalize(&front);
 	vector_cross_product(&cross, &up, &front);
+	vector_normalize(&cross);
 	if (side == 2 || side == 3)
 	{
 		vector_multiply_digit(&self->normal, &cross, -1);
@@ -65,13 +65,15 @@ void	determine_normal(t_vector up, t_vector front, int side, t_obj_l *self)
 	vector_normalize(&up);
 	vector_normalize(&front);
 	vector_cross_product(&cross, &up, &front);
+	vector_normalize(&cross);
 	if (side == 0 || side == 1)
 	{
 		self->normal = up;
 		self->normal_left = cross;
 		self->normal_down = front;
 	}
-	determine_normal_the_sequel(up, front, side, self);
+	else
+		determine_normal_the_sequel(up, front, side, self);
 }
 
 //side: 0 top, 1 bottom, 2 left, 3 right, 4 front, 5 back

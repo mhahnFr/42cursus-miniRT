@@ -18,6 +18,7 @@ static inline bool	hit_cube_area(t_vector normal, t_vector inter, float length)
 	(length / 2) || vector_scalar_product(&inter, &normal) <= -(length / 2));
 }
 
+//0 top 1 bottom 2 left 3 right 4 behind 5 front
 static inline bool	determine_area(t_obj_l *obj, t_vector inter, \
 									t_vector *intersec)
 {
@@ -30,10 +31,9 @@ static inline bool	determine_area(t_obj_l *obj, t_vector inter, \
 			return (false);
 	if (obj->cube_side != 2 && obj->cube_side != 3)
 	{
-		if (obj->cube_side < 2 && hit_cube_area(obj->normal_left, inter, \
-		obj->width))
-			return (false);
-		else if (hit_cube_area(obj->normal_down, inter, obj->width))
+		if ((obj->cube_side < 2 && hit_cube_area(obj->normal_left, inter, \
+		obj->width)) || (obj->cube_side > 3 && hit_cube_area(\
+		obj->normal_down, inter, obj->width)))
 			return (false);
 	}
 	return (true);
