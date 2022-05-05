@@ -27,5 +27,6 @@ int			add_sphere(char **line, t_mixer *m_data);
 int			add_plane(char **line, t_mixer *m_data);
 int			add_light(char **line, t_mixer *data);
 int			add_camera(char **line, t_cam *camera);
+int			add_cube(char **line, t_mixer *m_data);
 int			add_ambient(char **line, t_ambient *ambient);
 #endif /* PARSER_H */

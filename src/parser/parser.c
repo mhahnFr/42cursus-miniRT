@@ -30,6 +30,8 @@ int	add_object(char *buffer, t_mixer *m_data)
 		add_cylinder(ft_strsplit(buffer, " 	"), m_data);
 	if (ft_strnstr(buffer, "L", ft_strlen(buffer)))
 		add_light(ft_strsplit(buffer, " 	"), m_data);
+	if (ft_strnstr(buffer, "cu", ft_strlen(buffer)))
+		add_cube(ft_strsplit(buffer, " 	"), m_data);
 	return (0);
 }
 

@@ -58,17 +58,60 @@ int	check_cylinder(char **splitline)
 		return (1);
 	if (check_float(splitline[3]))
 		return (1);
-	if (ft_atof(splitline[3]) < 0)
+	if (ft_atof(splitline[3]) <= 0)
 		return (1);
 	if (check_float(splitline[4]))
 		return (1);
-	if (ft_atof(splitline[4]) < 0)
+	if (ft_atof(splitline[4]) <= 0)
 		return (1);
 	if (ft_atof(splitline[5]) < 0 || ft_atof(splitline[5]) > 1)
 		return (1);
 	if (ft_atof(splitline[6]) < 0 || ft_atof(splitline[6]) > 1)
 		return (1);
 	if (check_rgb(splitline[7]))
+		return (1);
+	return (0);
+}
+
+int	check_rgb_sides(char **splitline)
+{
+	if (check_rgb(splitline[10]))
+		return (1);
+	if (check_rgb(splitline[11]))
+		return (1);
+	if (check_rgb(splitline[12]))
+		return (1);
+	if (check_rgb(splitline[13]))
+		return (1);
+	if (check_rgb(splitline[14]))
+		return (1);
+	return (0);
+}
+
+int	check_cube(char **splitline)
+{
+	if (ft_char_arr_len(splitline) < 10)
+		return (1);
+	if (check_vector(splitline[1]) || check_vector(splitline[3]))
+		return (1);
+	if (check_orientation(splitline[2]))
+		return (1);
+	if (check_float(splitline[4]) || check_float(splitline[5]))
+		return (1);
+	if (ft_atof(splitline[4]) <= 0 || ft_atof(splitline[5]) <= 0)
+		return (1);
+	if (check_float(splitline[6]))
+		return (1);
+	if (ft_atof(splitline[6]) <= 0)
+		return (1);
+	if (ft_atof(splitline[7]) < 0 || ft_atof(splitline[7]) > 1)
+		return (1);
+	if (ft_atof(splitline[8]) < 0 || ft_atof(splitline[8]) > 1)
+		return (1);
+	if (check_rgb(splitline[9]))
+		return (1);
+	if (ft_char_arr_len(splitline) > 10 && (ft_char_arr_len(splitline) != 15 || \
+		check_rgb_sides(splitline)))
 		return (1);
 	return (0);
 }

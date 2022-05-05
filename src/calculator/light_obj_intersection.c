@@ -22,6 +22,8 @@ bool	intersec_next(
 		ret = hit_sphere(origin, objs, ray, inter);
 	else if (objs->obj_type == PLANE && fast_intersec_plane(ray, &objs->normal))
 		ret = intersec_plane(ray, origin, objs, inter);
+	else if (objs->obj_type == CUBE_PLANE)
+		ret = hit_cube(origin, objs, ray, inter);
 	else if (objs->obj_type >= CYLINDER_CAP)
 		ret = hit_cylinder(origin, objs, ray, inter);
 	return (ret);

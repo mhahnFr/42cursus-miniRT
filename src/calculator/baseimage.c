@@ -22,7 +22,8 @@ static inline bool	check_side_of_obj(t_mixer *mixer, t_iobj *i_struc)
 	t_obj_l		*obj;
 
 	obj = i_struc->obj_col;
-	if (obj->obj_type != PLANE && obj->obj_type != CYLINDER_CAP)
+	if (obj->obj_type != PLANE && obj->obj_type != CYLINDER_CAP && \
+		obj->obj_type != CUBE_PLANE)
 		return (true);
 	vector_substract(&inter, &obj->position, &mixer->cam.position);
 	vector_substract(&inter2, &obj->position, &i_struc->light->position);

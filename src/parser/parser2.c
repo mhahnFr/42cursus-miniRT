@@ -13,6 +13,7 @@
 #include "minirt.h"
 #include "libft.h"
 #include "parser.h"
+#include "matrix.h"
 
 int	add_ambient(char **line, t_ambient *ambient)
 {

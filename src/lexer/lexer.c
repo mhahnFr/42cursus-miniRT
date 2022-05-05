@@ -105,6 +105,6 @@ int	lexer(char *path, t_mixer *m_data, int *errnum)
 		return (1);
 	}
 	correct_normals(m_data);
-	printf("file read successfull!\n");
+	printf("file read successfully!\n");
 	return (0);
 }
