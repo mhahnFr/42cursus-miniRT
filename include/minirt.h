@@ -235,7 +235,11 @@ void		calc_object_ray(t_mixer *mixer, int *ret);
  */
 void		skip_obj(t_obj_l **objs, int toskip);
 
-bool	hit_cube(t_vector *origin, t_obj_l *objs, t_vector *ray, t_vector *inter);
+bool		hit_cube(
+				t_vector *origin,
+				t_obj_l *objs,
+				t_vector *ray,
+				t_vector *inter);
 
 /*
  * Calculates the intersecting vector of the given object, which is treated as
