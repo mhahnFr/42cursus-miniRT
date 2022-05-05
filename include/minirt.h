@@ -20,10 +20,6 @@
 # include "libft.h"
 
 /* Resolution in Pixel */
-//# define RESOLUTION_X	2560
-//# define RESOLUTION_Y	1440
-//# define ANTI_ALIASING	20
-//# define MAX_BOUNCES	30
 /* Object-types */
 # define CAMERA		   -2
 # define AMBIENT	   -1
@@ -212,6 +208,7 @@ typedef struct s_test {
  */
 t_mixer		*init_mainstruct(int *err);
 void		init_mixer_image(t_mixer *self);
+void		config_mixer(t_mixer *self, char **argv, int argc);
 void		vector_print(t_vector *vec);
 void		rt_start(t_mixer *mixer);
 /*

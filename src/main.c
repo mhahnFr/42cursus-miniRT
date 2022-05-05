@@ -74,18 +74,14 @@ int	main(int argc, char **argv)
 
 	ret = 0;
 	all_struct = NULL;
-	if (argc != 2)
+	if (argc < 2)
 		ret = 1;
 	else
 	{
 		all_struct = init_mainstruct(&ret);
-		// TODO, FIXME, XXX aa, res und mb!!!
+		config_mixer(all_struct, argv, argc);
 		if (all_struct == NULL)
 			print_error(3);
-		all_struct->max_bounces = 30;
-		all_struct->antialiasing = 20;
-		all_struct->res_x = 500;
-		all_struct->res_y = 500;
 		init_mixer_image(all_struct);
 		lexer(argv[1], all_struct, &ret);
 		print_error(ret);
