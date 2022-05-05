@@ -94,5 +94,9 @@ t_mixer	*copy_mixer(t_mixer *self)
 	ret->obj_list = copy_objs(self);
 	ret->tile_array = self->tile_array;
 	ret->cores = self->cores;
+	ret->res_x = self->res_x;
+	ret->res_y = self->res_y;
+	ret->max_bounces = self->max_bounces;
+	ret->antialiasing = self->antialiasing;
 	return (ret);
 }

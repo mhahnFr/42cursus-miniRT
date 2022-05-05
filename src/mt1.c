@@ -59,7 +59,7 @@ static bool	rt_block_fetcher(t_tile **tile_array,
 	size_t	x;
 	size_t	y;
 
-	tiles_per_axis = ceil((double) RESOLUTION_Y / BLOCK_SIZE);
+	tiles_per_axis = ceil((double) self->mixer->res_y / BLOCK_SIZE);
 	next = self->index + (self->mixer->cores * iteration);
 	x = next % tiles_per_axis;
 	y = next / tiles_per_axis;
@@ -84,15 +84,15 @@ void	rt_runner(t_thread *self)
 		numbers[0] = to_render.x;
 		numbers[2] = to_render.x + (ceil((double) BLOCK_SIZE
 					* self->mixer->cam.aspect_ratio));
-		while (numbers[0] < numbers[2] && numbers[0] < RESOLUTION_X)
+		while (numbers[0] < numbers[2] && numbers[0] < self->mixer->res_x)
 		{
 			numbers[1] = to_render.y;
 			while (numbers[1] < to_render.y + BLOCK_SIZE
-				&& numbers[1] < RESOLUTION_Y)
+				&& numbers[1] < self->mixer->res_y)
 			{
 				render_ray(self,
-					&(self->mixer->cam.vecs[RESOLUTION_Y - numbers[1] - 1] \
-					[numbers[0]]), numbers[0], numbers[1]);
+					&(self->mixer->cam.vecs[self->mixer->res_y - \
+					numbers[1] - 1][numbers[0]]), numbers[0], numbers[1]);
 				numbers[1]++;
 			}
 			numbers[0]++;

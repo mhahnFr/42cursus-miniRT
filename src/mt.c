@@ -55,14 +55,14 @@ void	rt_forker(t_mixer *mixer)
 	rt_joiner(i, ii, mixer);
 }
 
-t_tile	**rt_divide(float aspect)
+t_tile	**rt_divide(float aspect, t_mixer *mixer)
 {
 	t_tile	**ret;
 	size_t	tiles_per_axis;
 	size_t	i;
 	size_t	ii;
 
-	tiles_per_axis = ceil((double) RESOLUTION_Y / BLOCK_SIZE);
+	tiles_per_axis = ceil((double) mixer->res_y / BLOCK_SIZE);
 	ret = ft_gc_malloc(tiles_per_axis * sizeof(void *));
 	i = 0;
 	while (i < tiles_per_axis)
@@ -84,6 +84,6 @@ t_tile	**rt_divide(float aspect)
 
 void	rt_start(t_mixer *mixer)
 {
-	mixer->tile_array = rt_divide(mixer->cam.aspect_ratio);
+	mixer->tile_array = rt_divide(mixer->cam.aspect_ratio, mixer);
 	rt_forker(mixer);
 }
