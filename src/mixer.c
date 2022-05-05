@@ -14,6 +14,13 @@
 #include "mlx.h"
 #include "renderer_image.h"
 
+void	init_mixer_image(t_mixer *self)
+{
+	self->cam.aspect_ratio = (float) self->res_x / (float) self->res_y;
+	self->image
+		= renderer_image_new(self->p_mlx_init, self->res_x, self->res_y);
+}
+
 t_mixer	*init_mainstruct(int *err)
 {
 	t_mixer	*ret;
@@ -25,7 +32,5 @@ t_mixer	*init_mainstruct(int *err)
 		return (NULL);
 	}
 	ret->p_mlx_init = mlx_init();
-	ret->image
-		= renderer_image_new(ret->p_mlx_init, RESOLUTION_X, RESOLUTION_Y);
 	return (ret);
 }

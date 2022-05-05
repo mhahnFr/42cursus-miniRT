@@ -32,17 +32,17 @@ void	calculator(t_mixer *mixer, int *ret)
 	(void) ret;
 	i = 0;
 	printf("00.00 %%");
-	while (i < RESOLUTION_Y)
+	while (i < mixer->res_y)
 	{
 		ii = 0;
-		while (ii < RESOLUTION_X)
+		while (ii < mixer->res_x)
 		{
 			color = calc_first_ray_of_the_day(mixer,
-					&(mixer->cam.vecs[RESOLUTION_Y - i - 1][ii]));
+					&(mixer->cam.vecs[mixer->res_y - i - 1][ii]));
 			draw_point(ii, i, mixer->image, color);
 			ii++;
 			printf("\r\r\r\r\r\r\r%.2f %%", (float)((float) \
-			(ii + i * RESOLUTION_X) / (RESOLUTION_X * RESOLUTION_Y)) *100);
+			(ii + i * mixer->res_x) / (mixer->res_x * mixer->res_y)) *100);
 		}
 		i++;
 	}
@@ -72,19 +72,19 @@ t_rgbof	calc_first_ray_of_the_day(t_mixer *mixer, t_vector *cam_vec)
 	mixer->bounces = 0;
 	color_sum.l_count = 0;
 	color = calc_shader(&(mixer->cam.position), &inter, mixer, &color_sum);
-	if (ANTI_ALIASING > 0)
+	if (mixer->antialiasing > 0)
 		return (calc_antialiasing(mixer, cam_vec, color));
 	return (color);
 }
 
 t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, t_rgbof color)
 {
-	int			i;
+	size_t		i;
 	t_rgbof		add;
 	t_vector	inter;
 	t_col		color_sum;
 
-	i = ANTI_ALIASING;
+	i = mixer->antialiasing;
 	color.cal_r = color.r;
 	color.cal_g = color.g;
 	color.cal_b = color.b;
@@ -98,5 +98,5 @@ t_rgbof	calc_antialiasing(t_mixer *mixer, t_vector *cam_vec, t_rgbof color)
 		color = color_add_cal(color, add);
 		i--;
 	}
-	return (color_cal_rgb(color, ANTI_ALIASING + 1));
+	return (color_cal_rgb(color, mixer->antialiasing + 1));
 }

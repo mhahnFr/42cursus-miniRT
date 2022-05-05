@@ -58,7 +58,8 @@ static void	print_error(int error)
 static void	open_mlx(t_mixer *all_struct)
 {
 	all_struct->p_mlx_window = mlx_new_window(
-			all_struct->p_mlx_init, RESOLUTION_X, RESOLUTION_Y, "miniRT");
+			all_struct->p_mlx_init, all_struct->res_x,
+			all_struct->res_y, "miniRT");
 	mlx_put_image_to_window(all_struct->p_mlx_init,
 		all_struct->p_mlx_window, all_struct->image->mlx_img, 0, 0);
 	mlx_key_hook(all_struct->p_mlx_window, key_handler, all_struct);
@@ -78,8 +79,14 @@ int	main(int argc, char **argv)
 	else
 	{
 		all_struct = init_mainstruct(&ret);
+		// TODO, FIXME, XXX aa, res und mb!!!
 		if (all_struct == NULL)
 			print_error(3);
+		all_struct->max_bounces = 30;
+		all_struct->antialiasing = 20;
+		all_struct->res_x = 500;
+		all_struct->res_y = 500;
+		init_mixer_image(all_struct);
 		lexer(argv[1], all_struct, &ret);
 		print_error(ret);
 		rt_cam(all_struct);

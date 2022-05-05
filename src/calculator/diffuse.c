@@ -82,7 +82,7 @@ t_vector	diffuse_get(t_mixer *mixer, t_diff diff, t_vector *result)
 	t_vector	s;
 	t_vector	ret;
 
-	if (diff.ray_count < MAX_BOUNCES
+	if (diff.ray_count < mixer->max_bounces
 		&& diffuse_nearest(mixer, &diff, diff.origin, result))
 	{
 		*diff.ray = diffuse_rand(diff);

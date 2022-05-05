@@ -20,10 +20,10 @@
 # include "libft.h"
 
 /* Resolution in Pixel */
-# define RESOLUTION_X	2560
-# define RESOLUTION_Y	1440
-# define ANTI_ALIASING	20
-# define MAX_BOUNCES	30
+//# define RESOLUTION_X	2560
+//# define RESOLUTION_Y	1440
+//# define ANTI_ALIASING	20
+//# define MAX_BOUNCES	30
 /* Object-types */
 # define CAMERA		   -2
 # define AMBIENT	   -1
@@ -111,7 +111,7 @@ typedef struct s_cam {
 	t_vector	normal;
 	t_vector	position;
 	t_vector	step;
-	t_vector	vecs[RESOLUTION_Y][RESOLUTION_X];
+	t_vector	**vecs;
 	t_vector	vert;
 }	t_cam;
 
@@ -147,7 +147,11 @@ typedef struct s_mixer {
 	void				*p_mlx_init;
 	void				*p_mlx_window;
 
+	size_t				res_x;
+	size_t				res_y;
+	size_t				antialiasing;
 	int					bounces;
+	int					max_bounces;
 	int					light_count;
 	struct s_ambient	ambient;
 	struct s_cam		cam;
@@ -207,6 +211,7 @@ typedef struct s_test {
  * store the error code.
  */
 t_mixer		*init_mainstruct(int *err);
+void		init_mixer_image(t_mixer *self);
 void		vector_print(t_vector *vec);
 void		rt_start(t_mixer *mixer);
 /*

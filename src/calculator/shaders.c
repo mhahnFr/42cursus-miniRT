@@ -107,7 +107,7 @@ t_rgbof	calc_shader(t_vector *origin, t_vector *ray, t_mixer *mixer, \
 	cp.y = ray->y;
 	cp.z = ray->z;
 	mixer->bounces++;
-	if (mixer->bounces == MAX_BOUNCES + 1)
+	if (mixer->bounces == mixer->max_bounces + 1)
 		return (mixer->ambient.color);
 	color = mixer->ambient.color;
 	col_sum->diff = rgbof_cast_vector(color);
