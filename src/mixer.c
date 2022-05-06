@@ -73,7 +73,7 @@ static inline void	set_res(t_mixer *self, char *width, char *height)
 	if (!string_is_digits(width) || !string_is_digits(height))
 	{
 		print_error("--resolution");
-		return;
+		return ;
 	}
 	tmp_x = ft_atol(width);
 	tmp_y = ft_atol(height);
@@ -126,6 +126,60 @@ static inline void	print_values(t_mixer *self)
 	printf("Antialiasing: %zu\n\n", self->antialiasing);
 }
 
+static inline int	config_mixer_loop(t_mixer *self,
+										char **argv,
+										int argc,
+										int *i)
+{
+	if (string_equals(argv[*i], "-r")
+		|| string_equals(argv[*i], "--resolution"))
+	{
+		if (*i + 2 >= argc)
+			print_error("--resolution");
+		else
+		{
+			set_res(self, argv[*i + 1], argv[*i + 2]);
+			*i += 2;
+		}
+		return (true);
+	}
+	else if (string_equals(argv[*i], "-m")
+		|| string_equals(argv[*i], "--max_bounces"))
+	{
+		*i += 1;
+		if (*i >= argc)
+			print_error("--max_bounces");
+		else
+			set_max_bounces(self, argv[*i]);
+		return (true);
+	}
+	return (false);
+}
+
+static inline bool	config_mixer_loop2(t_mixer *self,
+										char **argv,
+										int argc,
+										int *i)
+{
+	if (string_equals(argv[*i], "-a")
+		|| string_equals(argv[*i], "--antialiasing"))
+	{
+		*i += 1;
+		if (*i >= argc)
+			print_error("--antialiasing");
+		else
+			set_antialiasing(self, argv[*i]);
+		return (true);
+	}
+	else if (string_equals(argv[*i], "-v")
+		|| string_equals(argv[*i], "--values"))
+	{
+		print_values(self);
+		return (true);
+	}
+	return (false);
+}
+
 static inline char	*config_mixer_(t_mixer *self, char **argv, int argc)
 {
 	int		i;
@@ -135,46 +189,20 @@ static inline char	*config_mixer_(t_mixer *self, char **argv, int argc)
 	ret = NULL;
 	while (i < argc)
 	{
-		if (string_equals(argv[i], "-r")
-			|| string_equals(argv[i], "--resolution"))
+		if (!config_mixer_loop(self, argv, argc, &i)
+			&& !config_mixer_loop2(self, argv, argc, &i))
 		{
-			if (i + 2 >= argc)
-				print_error("--resolution");
-			else
+			if (string_equals(argv[i], "-f")
+				|| string_equals(argv[i], "--file"))
 			{
-				set_res(self, argv[i + 1], argv[i + 2]);
-				i += 2;
+				if (++i >= argc)
+					print_error("--file");
+				else
+					ret = argv[i];
 			}
-		}
-		else if (string_equals(argv[i], "-m")
-			|| string_equals(argv[i], "--max_bounces"))
-		{
-			if (++i >= argc)
-				print_error("--max_bounces");
 			else
-				set_max_bounces(self, argv[i]);
+				print_help();
 		}
-		else if (string_equals(argv[i], "-a")
-			|| string_equals(argv[i], "--antialiasing"))
-		{
-			if (++i >= argc)
-				print_error("--antialiasing");
-			else
-				set_antialiasing(self, argv[++i]);
-		}
-		else if (string_equals(argv[i], "-v")
-			|| string_equals(argv[i], "--values"))
-			print_values(self);
-		else if (string_equals(argv[i], "-f")
-			|| string_equals(argv[i], "--file"))
-		{
-			if (++i >= argc)
-				print_error("--file");
-			else
-				ret = argv[i];
-		}
-		else
-			print_help();
 		i++;
 	}
 	return (ret);
@@ -197,7 +225,7 @@ char	*config_mixer(t_mixer *self, char **argv, int argc, int *ret)
 		return (f);
 	}
 	else if (argc == 2 && (string_equals(argv[1], "-h")
-		|| string_equals(argv[1], "--help")))
+			|| string_equals(argv[1], "--help")))
 		print_help();
 	else if (argc == 2)
 		return (argv[1]);
