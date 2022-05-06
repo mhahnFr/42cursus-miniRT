@@ -103,16 +103,16 @@ char	*config_mixer(t_mixer *self, char **argv, int argc, int *ret)
 	self->antialiasing = 20;
 	self->max_bounces = 30;
 	*ret = 0;
-	if (argc > 2)
+	if (argc == 2 && (string_equals(argv[1], "-h")
+			|| string_equals(argv[1], "--help")))
+		print_help();
+	else if (argc >= 2)
 	{
 		f = config_mixer_(self, argv, argc);
 		if (f == NULL)
 			*ret = 21;
 		return (f);
 	}
-	else if (argc == 2 && (string_equals(argv[1], "-h")
-			|| string_equals(argv[1], "--help")))
-		print_help();
 	else if (argc == 2)
 		return (argv[1]);
 	*ret = 21;
