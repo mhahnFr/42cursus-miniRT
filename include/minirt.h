@@ -208,7 +208,14 @@ typedef struct s_test {
  */
 t_mixer		*init_mainstruct(int *err);
 void		print_help(void);
+bool		string_equals(const char *str1, const char *str2);
+void		print_error_cli(const char *arg);
 void		init_mixer_image(t_mixer *self);
+void		set_res(t_mixer *self, char *width, char *height);
+void		set_antialiasing(t_mixer *self, char *factor);
+void		print_values(t_mixer *self);
+bool		string_is_digits(const char *str);
+void		set_max_bounces(t_mixer *self, char *bounces);
 char		*config_mixer(t_mixer *self, char **argv, int argc, int *ret);
 void		vector_print(t_vector *vec);
 void		rt_start(t_mixer *mixer);
