@@ -16,10 +16,10 @@
 #include "mlx.h"
 #include "renderer_image.h"
 
-static inline void	print_help(void)
+inline void	print_help(void)
 {
-	printf("Usage: miniRT <file> [-h | -r <width> <height> "
-		"| -m <bounces> | -a <factor>]\n");
+	printf("Usage: miniRT [<file>] | [-h | -r <width> <height> "
+		"| -m <bounces> | -a <factor> | -f <file>]\n");
 	printf("\n");
 	printf("-r <width> <height>\n");
 	printf("--resolution <width> <height>    Specifies the resolution"
@@ -33,7 +33,17 @@ static inline void	print_help(void)
 		"antialiasing\n");
 	printf("-v\n");
 	printf("--values                         Displays "
-		"the render configuration\n\n");
+		"the render configuration\n");
+	printf("\n");
+	printf("-f\n");
+	printf("--file <file>                    Specifies the scene file\n\n");
+}
+
+static inline bool	string_equals(const char *str1, const char *str2)
+{
+	if (ft_strlen(str1) != ft_strlen(str2))
+		return (false);
+	return (ft_strncmp(str1, str2, ft_strlen(str1)) == 0);
 }
 
 static inline void	set_res(t_mixer *self, char *width, char *height)
@@ -68,15 +78,17 @@ static inline void	print_values(t_mixer *self)
 	printf("Antialiasing: %zu\n\n", self->antialiasing);
 }
 
-static inline void	config_mixer_(t_mixer *self, char **argv, int argc)
+static inline char	*config_mixer_(t_mixer *self, char **argv, int argc)
 {
-	int	i;
+	int		i;
+	char	*ret;
 
-	i = 2;
+	i = 1;
+	ret = NULL;
 	while (i < argc)
 	{
-		if (ft_strncmp(argv[i], "-r", ft_strlen(argv[i])) == 0
-			|| ft_strncmp(argv[i], "--resolution", ft_strlen(argv[i])) == 0)
+		if (string_equals(argv[i], "-r")
+			|| string_equals(argv[i], "--resolution"))
 		{
 			if (i + 2 > argc)
 				print_error();
@@ -86,39 +98,63 @@ static inline void	config_mixer_(t_mixer *self, char **argv, int argc)
 				i += 2;
 			}
 		}
-		else if (ft_strncmp(argv[i], "-m", ft_strlen(argv[i])) == 0
-			|| ft_strncmp(argv[i], "--max_bounces", ft_strlen(argv[i])) == 0)
+		else if (string_equals(argv[i], "-m")
+			|| string_equals(argv[i], "--max_bounces"))
 		{
 			if (++i > argc)
 				print_error();
 			else
 				set_max_bounces(self, argv[i]);
 		}
-		else if (ft_strncmp(argv[i], "-a", ft_strlen(argv[i])) == 0
-			|| ft_strncmp(argv[i], "--antialiasing", ft_strlen(argv[i])) == 0)
+		else if (string_equals(argv[i], "-a")
+			|| string_equals(argv[i], "--antialiasing"))
 		{
 			if (++i > argc)
 				print_error();
 			else
 				set_antialiasing(self, argv[++i]);
 		}
-		else if (ft_strncmp(argv[i], "-v", ft_strlen(argv[i])) == 0
-			|| ft_strncmp(argv[i], "--values", ft_strlen(argv[i])) == 0)
+		else if (string_equals(argv[i], "-v")
+			|| string_equals(argv[i], "--values"))
 			print_values(self);
+		else if (string_equals(argv[i], "-f")
+			|| string_equals(argv[i], "--file"))
+		{
+			if (++i > argc)
+				print_error();
+			else
+				ret = argv[i];
+		}
 		else
 			print_help();
 		i++;
 	}
+	return (ret);
 }
 
-void	config_mixer(t_mixer *self, char **argv, int argc)
+char	*config_mixer(t_mixer *self, char **argv, int argc, int *ret)
 {
+	char	*f;
+
 	self->res_x = 1920;
 	self->res_y = 1080;
 	self->antialiasing = 20;
 	self->max_bounces = 30;
+	*ret = 0;
 	if (argc > 2)
-		config_mixer_(self, argv, argc);
+	{
+		f = config_mixer_(self, argv, argc);
+		if (f == NULL)
+			*ret = 21;
+		return (f);
+	}
+	else if (argc == 2 && (string_equals(argv[1], "-h")
+		|| string_equals(argv[1], "--help")))
+		print_help();
+	else if (argc == 2)
+		return (argv[1]);
+	*ret = 21;
+	return (NULL);
 }
 
 void	init_mixer_image(t_mixer *self)

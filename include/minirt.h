@@ -207,8 +207,9 @@ typedef struct s_test {
  * store the error code.
  */
 t_mixer		*init_mainstruct(int *err);
+void		print_help(void);
 void		init_mixer_image(t_mixer *self);
-void		config_mixer(t_mixer *self, char **argv, int argc);
+char		*config_mixer(t_mixer *self, char **argv, int argc, int *ret);
 void		vector_print(t_vector *vec);
 void		rt_start(t_mixer *mixer);
 /*

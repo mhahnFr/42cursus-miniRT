@@ -67,23 +67,31 @@ static void	open_mlx(t_mixer *all_struct)
 	mlx_loop(all_struct->p_mlx_init);
 }
 
+static inline void	print_error_help(int *ret)
+{
+	*ret = 1;
+	print_help();
+}
+
 int	main(int argc, char **argv)
 {
 	t_mixer	*all_struct;
 	int		ret;
+	char	*file;
 
 	ret = 0;
 	all_struct = NULL;
 	if (argc < 2)
-		ret = 1;
+		print_error_help(&ret);
 	else
 	{
 		all_struct = init_mainstruct(&ret);
-		config_mixer(all_struct, argv, argc);
 		if (all_struct == NULL)
 			print_error(3);
+		file = config_mixer(all_struct, argv, argc, &ret);
+		print_error(ret);
 		init_mixer_image(all_struct);
-		lexer(argv[1], all_struct, &ret);
+		lexer(file, all_struct, &ret);
 		print_error(ret);
 		rt_cam(all_struct);
 		rt_start(all_struct);
