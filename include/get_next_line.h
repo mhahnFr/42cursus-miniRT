@@ -3,27 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkasper <jkasper@student.42Heilbronn.de    +#+  +:+       +#+        */
+/*   By: mhahn <mhahn@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/14 22:37:08 by jkasper           #+#    #+#             */
-/*   Updated: 2022/03/19 15:29:50 by jkasper          ###   ########.fr       */
+/*   Created: 2021/11/25 20:47:54 by mhahn             #+#    #+#             */
+/*   Updated: 2021/11/25 20:47:55 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# include "libft.h"
-# include <unistd.h>
-# include <stdlib.h>
-# include <stddef.h>
-# include <fcntl.h>
-
+/*
+ * Returns the next line of the file indicated by the given file descriptor.
+ * If nothing else to read is left, or an error occures, null is returned.
+ */
+char				*get_next_line(int fd);
 # define GNL_BUFFER	100
 
-char	*get_next_line(int fd);
-int		get_filled(char **str, int fd);
-void	get_moved(char **str, size_t i);
-int		get_memory(char **old);
-char	*e_exit(char **str, char **ret);
-char	*s_exit(char **str, char **ret, size_t i, size_t ii);
 #endif

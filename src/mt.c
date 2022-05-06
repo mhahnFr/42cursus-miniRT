@@ -16,6 +16,47 @@
 #include <stdio.h>
 #include <unistd.h>
 
+void	free_mixer_copy(t_mixer *self)
+{
+	t_obj_l	*tmp;
+	t_obj_l	*tmp2;
+
+	tmp = self->obj_list;
+	while (tmp != NULL)
+	{
+		tmp2 = tmp->next;
+		ft_gc_free(tmp);
+		tmp = tmp2;
+	}
+	ft_gc_free(self->col_sum.sum);
+	ft_gc_free(self->col_sum.fac);
+	ft_gc_free(self);
+}
+
+void	rt_cleaner(t_mixer *self)
+{
+	size_t	i;
+	size_t	tiles_per_axis;
+
+	tiles_per_axis = ceil((double) self->res_y / BLOCK_SIZE);
+	i = 0;
+	while (i < tiles_per_axis)
+	{
+		ft_gc_free(self->tile_array[i]);
+		i++;
+	}
+	ft_gc_free(self->tile_array);
+	self->tile_array = NULL;
+	i = 0;
+	while (i < self->cores)
+	{
+		free_mixer_copy(self->threads[i].mixer);
+		i++;
+	}
+	ft_gc_free(self->threads);
+	self->threads = NULL;
+}
+
 void	rt_joiner(size_t i, size_t ii, t_mixer *mixer)
 {
 	if (ii > 0)
@@ -30,6 +71,7 @@ void	rt_joiner(size_t i, size_t ii, t_mixer *mixer)
 	else
 		rt_runner(&mixer->threads[0]);
 	printf("Done.\n");
+	rt_cleaner(mixer);
 }
 
 void	rt_forker(t_mixer *mixer)

@@ -1,7 +1,8 @@
 ##		HEADER			##
 
 HEAD_FILES	= abs.h arraylist.h hex_str_to_unsigned_int.h matrix.h minirt.h \
-			  point.h vector.h vertex.h renderer_image.h
+			  point.h vector.h vertex.h renderer_image.h parser.h lexer.h   \
+			  get_next_line.h get_next_line_utils.h
 
 HDR         = $(addprefix include/,$(HEAD_FILES))
 ##		UTILITIES		##

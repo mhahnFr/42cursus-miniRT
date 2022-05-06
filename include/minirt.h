@@ -217,7 +217,6 @@ void		print_values(t_mixer *self);
 bool		string_is_digits(const char *str);
 void		set_max_bounces(t_mixer *self, char *bounces);
 char		*config_mixer(t_mixer *self, char **argv, int argc, int *ret);
-void		vector_print(t_vector *vec);
 void		rt_start(t_mixer *mixer);
 /*
  * Initializes the values of the camera. Takes the mixer object as parameter.

@@ -16,6 +16,7 @@
 #include "lexer.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
 
 int	checkfile(char *name)
 {
