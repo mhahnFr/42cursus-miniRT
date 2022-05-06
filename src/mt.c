@@ -16,23 +16,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void	free_mixer_copy(t_mixer *self)
-{
-	t_obj_l	*tmp;
-	t_obj_l	*tmp2;
-
-	tmp = self->obj_list;
-	while (tmp != NULL)
-	{
-		tmp2 = tmp->next;
-		ft_gc_free(tmp);
-		tmp = tmp2;
-	}
-	ft_gc_free(self->col_sum.sum);
-	ft_gc_free(self->col_sum.fac);
-	ft_gc_free(self);
-}
-
 void	rt_cleaner(t_mixer *self)
 {
 	size_t	i;
