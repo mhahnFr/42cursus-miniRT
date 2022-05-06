@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <math.h>
+#include <stdio.h>
 
 #include "vector.h"
 
@@ -46,4 +47,12 @@ void	vector_normalize(t_vector *this)
 
 	l = 1 / vector_length(this);
 	vector_multiply_digit(this, this, l);
+}
+
+void	vector_print(t_vector *vec)
+{
+	if (vec == NULL)
+		printf("(null)");
+	else
+		printf("%f | %f | %f\n", vec->x, vec->y, vec->z);
 }
