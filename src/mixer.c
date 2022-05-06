@@ -46,28 +46,76 @@ static inline bool	string_equals(const char *str1, const char *str2)
 	return (ft_strncmp(str1, str2, ft_strlen(str1)) == 0);
 }
 
+static inline bool	string_is_digits(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (!ft_isdigit(str[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+static inline void	print_error(const char *arg)
+{
+	printf("Argument error! Argument \"%s\" ignored\n", arg);
+}
+
 static inline void	set_res(t_mixer *self, char *width, char *height)
 {
-	// TODO Checks
-	self->res_x = ft_atol(width);
-	self->res_y = ft_atol(height);
+	long	tmp_x;
+	long	tmp_y;
+
+	if (!string_is_digits(width) || !string_is_digits(height))
+	{
+		print_error("--resolution");
+		return;
+	}
+	tmp_x = ft_atol(width);
+	tmp_y = ft_atol(height);
+	if (tmp_x <= 0 || tmp_y <= 0)
+		print_error("--resolution");
+	else
+	{
+		self->res_x = tmp_x;
+		self->res_y = tmp_y;
+	}
 }
 
 static inline void	set_max_bounces(t_mixer *self, char *bounces)
 {
-	// TODO Checks
-	self->max_bounces = ft_atoi(bounces);
+	int	bounce;
+
+	if (!string_is_digits(bounces))
+	{
+		print_error("--max_bounces");
+		return ;
+	}
+	bounce = ft_atoi(bounces);
+	if (bounce < 0)
+		print_error("--max_bounces");
+	else
+		self->max_bounces = bounce;
 }
 
 static inline void	set_antialiasing(t_mixer *self, char *factor)
 {
-	// TODO Checks
-	self->antialiasing = ft_atol(factor);
-}
+	long	fac;
 
-static inline void	print_error(void)
-{
-	printf("Argument error! Argument ignored");
+	if (!string_is_digits(factor))
+	{
+		print_error("--antialiasing");
+		return ;
+	}
+	fac = ft_atol(factor);
+	if (fac < 0)
+		print_error("--antialiasing");
+	else
+		self->antialiasing = fac;
 }
 
 static inline void	print_values(t_mixer *self)
@@ -90,8 +138,8 @@ static inline char	*config_mixer_(t_mixer *self, char **argv, int argc)
 		if (string_equals(argv[i], "-r")
 			|| string_equals(argv[i], "--resolution"))
 		{
-			if (i + 2 > argc)
-				print_error();
+			if (i + 2 >= argc)
+				print_error("--resolution");
 			else
 			{
 				set_res(self, argv[i + 1], argv[i + 2]);
@@ -101,16 +149,16 @@ static inline char	*config_mixer_(t_mixer *self, char **argv, int argc)
 		else if (string_equals(argv[i], "-m")
 			|| string_equals(argv[i], "--max_bounces"))
 		{
-			if (++i > argc)
-				print_error();
+			if (++i >= argc)
+				print_error("--max_bounces");
 			else
 				set_max_bounces(self, argv[i]);
 		}
 		else if (string_equals(argv[i], "-a")
 			|| string_equals(argv[i], "--antialiasing"))
 		{
-			if (++i > argc)
-				print_error();
+			if (++i >= argc)
+				print_error("--antialiasing");
 			else
 				set_antialiasing(self, argv[++i]);
 		}
@@ -120,8 +168,8 @@ static inline char	*config_mixer_(t_mixer *self, char **argv, int argc)
 		else if (string_equals(argv[i], "-f")
 			|| string_equals(argv[i], "--file"))
 		{
-			if (++i > argc)
-				print_error();
+			if (++i >= argc)
+				print_error("--file");
 			else
 				ret = argv[i];
 		}
