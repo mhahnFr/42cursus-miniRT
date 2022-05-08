@@ -62,12 +62,6 @@ static void	open_mlx(t_mixer *all_struct)
 	mlx_loop(all_struct->p_mlx_init);
 }
 
-static inline void	print_error_help(int *ret)
-{
-	*ret = 1;
-	print_help();
-}
-
 int	main(int argc, char **argv)
 {
 	t_mixer	*all_struct;
@@ -77,7 +71,7 @@ int	main(int argc, char **argv)
 	ret = 0;
 	all_struct = NULL;
 	if (argc < 2)
-		print_error_help(&ret);
+		print_help();
 	else
 	{
 		all_struct = init_mainstruct(&ret);
