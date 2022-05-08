@@ -66,6 +66,8 @@ void	determine_normal(t_vector up, t_vector front, int side, t_obj_l *self)
 	vector_normalize(&front);
 	vector_cross_product(&cross, &up, &front);
 	vector_normalize(&cross);
+	vector_cross_product(&front, &up, &cross);
+	vector_normalize(&front);
 	if (side == 0 || side == 1)
 	{
 		self->normal = up;
