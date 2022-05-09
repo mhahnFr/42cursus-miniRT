@@ -15,7 +15,7 @@
 
 #include "minirt.h"
 
-/*static inline void	add_to_rendered_rays(size_t pixels)
+static inline void	add_to_rendered_rays(size_t pixels)
 {
 	static size_t			rendered_pixels = 0;
 	static bool				m_init = false;
@@ -30,7 +30,7 @@
 	printf("\r\r\r\r\r\r\r%.2f %%", ((double) ++rendered_pixels
 		/ (double) pixels) * 100);
 	pthread_mutex_unlock(&mutex);
-}*/
+}
 
 static inline void	render_ray(t_thread *self,
 								t_vector *ray,
@@ -41,6 +41,7 @@ static inline void	render_ray(t_thread *self,
 
 	color = calc_first_ray_of_the_day(self->mixer, ray);
 	draw_point(x, y, self->mixer->image, color);
+	add_to_rendered_rays(self->mixer->res_y * self->mixer->res_x);
 }
 
 /*
