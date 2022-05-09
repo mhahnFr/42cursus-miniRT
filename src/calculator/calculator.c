@@ -31,7 +31,7 @@ void	calculator(t_mixer *mixer, int *ret)
 
 	(void) ret;
 	i = 0;
-	printf("00.00 %%");
+	printf("00.00 %%\033[?25l");
 	while (i < mixer->res_y)
 	{
 		ii = 0;
@@ -46,7 +46,7 @@ void	calculator(t_mixer *mixer, int *ret)
 		}
 		i++;
 	}
-	printf("\nFinished!\n");
+	printf("\nFinished!\n\033[?25h");
 }
 
 t_vector	vector_rand(t_vector self, t_vector step)
