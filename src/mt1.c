@@ -11,7 +11,26 @@
 /* ************************************************************************** */
 
 #include <math.h>
+#include <stdio.h>
+
 #include "minirt.h"
+
+/*static inline void	add_to_rendered_rays(size_t pixels)
+{
+	static size_t			rendered_pixels = 0;
+	static bool				m_init = false;
+	static pthread_mutex_t	mutex;
+
+	if (!m_init)
+	{
+		pthread_mutex_init(&mutex, NULL);
+		m_init = true;
+	}
+	pthread_mutex_lock(&mutex);
+	printf("\r\r\r\r\r\r\r%.2f %%", ((double) ++rendered_pixels
+		/ (double) pixels) * 100);
+	pthread_mutex_unlock(&mutex);
+}*/
 
 static inline void	render_ray(t_thread *self,
 								t_vector *ray,

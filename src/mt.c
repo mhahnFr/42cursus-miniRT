@@ -53,7 +53,7 @@ void	rt_joiner(size_t i, size_t ii, t_mixer *mixer)
 	}
 	else
 		rt_runner(&mixer->threads[0]);
-	printf("Done.\n");
+	printf("\nDone.\n\033[?25h");
 	rt_cleaner(mixer);
 }
 
@@ -65,6 +65,7 @@ void	rt_forker(t_mixer *mixer)
 	mixer->cores = sysconf(_SC_NPROCESSORS_CONF);
 	mixer->threads = ft_gc_malloc(sizeof(t_thread) * mixer->cores);
 	printf("Using %zu threads to render the scene...\n", mixer->cores);
+	printf("\033[?25l       ");
 	i = 0;
 	ii = 0;
 	while (i < mixer->cores)
