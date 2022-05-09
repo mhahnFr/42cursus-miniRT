@@ -27,8 +27,8 @@ static inline void	add_to_rendered_rays(size_t pixels)
 		m_init = true;
 	}
 	pthread_mutex_lock(&mutex);
-	printf("\r\r\r\r\r\r\r%.2f %%", ((double) ++rendered_pixels
-		/ (double) pixels) * 100);
+	printf("\r\r\r\r\r\r\r%.2f %%", ((double)++rendered_pixels \
+	/ (double) pixels) * 100);
 	pthread_mutex_unlock(&mutex);
 }
 
