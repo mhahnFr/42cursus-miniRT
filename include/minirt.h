@@ -207,7 +207,7 @@ typedef struct s_test {
  * store the error code.
  */
 t_mixer		*init_mainstruct(int *err);
-void		print_help(void);
+void		print_help(char *bad_arg);
 bool		string_equals(const char *str1, const char *str2);
 void		print_error_cli(const char *arg);
 void		init_mixer_image(t_mixer *self);

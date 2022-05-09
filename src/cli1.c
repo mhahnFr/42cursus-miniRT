@@ -87,7 +87,7 @@ static inline char	*config_mixer_(t_mixer *self, char **argv, int argc)
 					ret = argv[i];
 			}
 			else
-				print_help();
+				print_help(argv[i]);
 		}
 		i++;
 	}
@@ -105,7 +105,12 @@ char	*config_mixer(t_mixer *self, char **argv, int argc, int *ret)
 	*ret = 0;
 	if (argc == 2 && (string_equals(argv[1], "-h")
 			|| string_equals(argv[1], "--help")))
-		print_help();
+	{
+		print_help(NULL);
+		*ret = 2000;
+	}
+	else if (argc == 2)
+		return (argv[1]);
 	else if (argc >= 2)
 	{
 		f = config_mixer_(self, argv, argc);
@@ -113,8 +118,7 @@ char	*config_mixer(t_mixer *self, char **argv, int argc, int *ret)
 			*ret = 21;
 		return (f);
 	}
-	else if (argc == 2)
-		return (argv[1]);
-	*ret = 21;
+	else
+		*ret = 21;
 	return (NULL);
 }

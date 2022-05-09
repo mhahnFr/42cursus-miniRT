@@ -36,6 +36,8 @@ static void	print_error(int error)
 {
 	if (!error)
 		return ;
+	else if (error == 2000)
+		ft_gc_exit(0);
 	ft_putendl_fd("Error", 1);
 	if (error >= 30)
 		ft_putendl_fd("execution failed", 1);
@@ -71,7 +73,7 @@ int	main(int argc, char **argv)
 	ret = 0;
 	all_struct = NULL;
 	if (argc < 2)
-		print_help();
+		print_help(NULL);
 	else
 	{
 		all_struct = init_mainstruct(&ret);

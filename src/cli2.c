@@ -14,8 +14,10 @@
 
 #include <stdio.h>
 
-inline void	print_help(void)
+inline void	print_help(char *bad_arg)
 {
+	if (bad_arg != NULL)
+		printf("Unrecognized option: \"%s\"!\n", bad_arg);
 	printf("Usage: miniRT [<file>] | [-h | -r <width> <height> "
 		"| -m <bounces> | -a <factor> | -f <file>]\n");
 	printf("\n");
