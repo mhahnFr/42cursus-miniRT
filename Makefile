@@ -76,22 +76,23 @@ obj/:
 	mkdir obj/ obj/lexer/ obj/utils obj/utils/gnl obj/utils/math obj/parser obj/calculator obj/painter
 
 $(MLX):
-	make -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter -Ofast"
+	$(MAKE) -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter -Ofast"
 
 $(LIBFT):
-	make -C libft
+	$(MAKE) -C libft
 
 clean:
-	- $(RM) $(OBJ_)
-	- make -C mlx clean
-	- make -C libft clean
+	- $(RM) $(OBJ)
+	- $(MAKE) -C mlx clean
+	- $(MAKE) -C libft clean
 
 fclean: clean
 	- $(RM) $(NAME)
 	- $(RM) -r $(OBJ_FOLDER)
-	- make -C libft fclean
+	- $(MAKE) -C libft fclean
 	- find . -name \*~ -print -delete
 
-re: fclean all
+re: fclean
+	$(MAKE) all
 
 .PHONY : all clean fclean re 
