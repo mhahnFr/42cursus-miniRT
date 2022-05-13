@@ -4,7 +4,7 @@ using the C programming language and the graphics library of the [42 school], th
 This project has been done by **[kyomawolf]** and **[mhahnFr]**.
 
 ### Screenshots:
-<p><img src="https://www.github.com/mhahnFr/42cursus-miniRT/raw/main/screenshots/the_green_man.png" alt="The green man" width="400"/>
+<p><img src="https://www.github.com/mhahnFr/42cursus-miniRT/raw/main/screenshots/the_green_man_low.png" alt="The green man" width="400"/>
 <img src="https://www.github.com/mhahnFr/42cursus-miniRT/raw/main/screenshots/reflection_room_wide_low.png" alt="Reflection room" width="400"/></p>
 <p><img src="https://www.github.com/mhahnFr/42cursus-miniRT/raw/main/screenshots/hall.png" alt="Temple" width="400"/>
 <img src="https://www.github.com/mhahnFr/42cursus-miniRT/raw/main/screenshots/the_violent.png" alt="The violent" width="400"/></p>
