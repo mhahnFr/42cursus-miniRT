@@ -10,7 +10,17 @@ This project has been done by **[kyomawolf]** and **[mhahnFr]**.
 <img src="https://www.github.com/mhahnFr/42cursus-miniRT/raw/main/screenshots/the_violent.png" alt="The violent" width="400"/></p>
 
 ### Approach
-_Description coming soon!_
+At first, the command line arguments are parsed. After they set the rendering configuration as well as the scene file,
+the scene is rendered as described below.
+
+#### Rendering
+In order to render a pixel, a ray is shot into the world. For every hit object, the distance between the camera and the
+intersection point is calculated. The colour for the pixel is defined by this object. If that object is reflective, a
+reflected ray is shot into the world, and the colour of the object is mixed with the colour of the reflected ray.  
+If no object is hit by a ray, the ambient colour is used for further calculations.
+
+The antialiasing is simply done by shooting multiple rays for each pixel into the world, all of them shifted a little.
+All of them are then mixed together and define the colour of the pixel.
 
 ### Usage
 In order to get started, clone and build the project:
