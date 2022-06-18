@@ -42,8 +42,15 @@ option is invoked.
 ### Platforms
 This project has been written for and was tested on _macOS 10.15.7_.
 
+> As all other C projects at the [42 school], the code has to written in accordance
+> with the [norm]:
+> - Only 25 lines per function,
+> - only 5 functions per file,
+> - usage of only the allowed external functions.
+
 © Copyright 2022 [mhahnFr], [kyomawolf]
 
 [42 school]: https://www.42heilbronn.de/learncoderepeat
 [kyomawolf]: https://www.github.com/kyomawolf
 [mhahnFr]: https://www.github.com/mhahnFr
+[norm]: https://www.github.com/42School/norminette
