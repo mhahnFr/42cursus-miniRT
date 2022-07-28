@@ -84,7 +84,7 @@ inline bool	trace_hardshadow(t_mixer *mixer, t_col *colsum, t_vector *origin, \
 	{
 		if (list->obj_type != LIGHT
 			&& intersec_next(list, origin, ray, &vs[0])
-			&& (!sw || (sw && curr->disthit > list->disthit)))
+			&& (!sw || (curr->disthit > list->disthit)))
 		{
 			sw = true;
 			curr = list;
