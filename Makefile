@@ -60,6 +60,14 @@ LIBFT       = ./libft/libft.a
 ##		RULES			##
 all: $(NAME)
 
+ifeq ($(OS), Windows_NT)
+else
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S), Linux)
+	else ifeq ($(UNAME_S), Darwin)
+	endif
+endif
+
 $(NAME): $(LIBFT) $(MLX) obj/ $(OBJ)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJ)
 
