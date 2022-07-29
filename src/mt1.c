@@ -94,7 +94,7 @@ static bool	rt_block_fetcher(t_tile **tile_array,
 void	rt_runner(t_thread *self)
 {
 	t_tile	to_render;
-	size_t	numbers[4];
+	int32_t	numbers[4];
 
 	numbers[3] = 0;
 	while (rt_block_fetcher(self->mixer->tile_array, &to_render,

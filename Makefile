@@ -51,22 +51,27 @@ NAME        = miniRT
 
 #/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-profdata
 CFLAGS      = -Wall -Werror -Wextra -Ofast -march=native -funroll-loops -fno-trapping-math -fno-signed-zeros -fomit-frame-pointer -pedantic
-INC         = -Iinclude -Imlx -Ilibft
-LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit
+INC         = -Iinclude -Ilibft -Imlx_updated/include
+#LDFLAGS     = -Lmlx -lmlx -Llibft -lft -framework OpenGL -framework AppKit
+LDFLAGS     = -Lmlx_updated -lmlx42 -Llibft -lft
 
 MLX         = ./mlx/libmlx.a
 LIBFT       = ./libft/libft.a
 
-##		RULES			##
-all: $(NAME)
-
 ifeq ($(OS), Windows_NT)
+	$(LDFLAGS) +=-lglfw3 -lopengl32 -lgdi32
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S), Linux)
+		LDFLAGS += -ldl -lglfw
 	else ifeq ($(UNAME_S), Darwin)
+		LDFLAGS += -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit
 	endif
 endif
+
+##		RULES			##
+all: $(NAME)
+
 
 $(NAME): $(LIBFT) $(MLX) obj/ $(OBJ)
 	$(CC) $(LDFLAGS) -o $(NAME) $(OBJ)
@@ -83,8 +88,11 @@ $(OBJ_UTILS_FOLDER)%.o: $(UTILS_FOLDER)%.c $(HDR)
 obj/:
 	mkdir obj/ obj/lexer/ obj/utils obj/utils/gnl obj/utils/math obj/parser obj/calculator obj/painter
 
+#$(MLX):
+	#$(MAKE) -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter -Ofast"
+
 $(MLX):
-	$(MAKE) -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter -Ofast"
+	$(MAKE) -C mlx_updated
 
 $(LIBFT):
 	$(MAKE) -C libft

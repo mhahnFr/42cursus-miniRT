@@ -18,6 +18,7 @@
 # include "vector.h"
 # include "renderer_image.h"
 # include "libft.h"
+# include "MLX42/MLX42.h"
 
 /* Resolution in Pixel */
 /* Object-types */
@@ -124,8 +125,8 @@ typedef struct s_col_calc
 
 typedef struct s_tile {
 	pthread_mutex_t	m_rendered;
-	size_t			x;
-	size_t			y;
+	int32_t			x;
+	int32_t			y;
 	bool			rendered;
 }	t_tile;
 
@@ -140,11 +141,12 @@ typedef struct s_threads {
 /* Mainstruct for MiniRT */
 typedef struct s_mixer {
 	t_renderer_image	*image;
-	void				*p_mlx_init;
-	void				*p_mlx_window;
+//	void				*p_mlx_init;
+//	void				*p_mlx_window;
+	mlx_t				*mlx;
 
-	size_t				res_x;
-	size_t				res_y;
+	int32_t				res_x;
+	int32_t				res_y;
 	size_t				antialiasing;
 	int					bounces;
 	int					max_bounces;
@@ -390,8 +392,8 @@ bool		specular_highlight(
 				t_vector *result);
 
 /* MLX window handler */
-int			key_redcross(t_mixer *p_null);
-int			key_handler(int key, t_mixer *p_null);
+void		key_redcross(t_mixer *p_null);
+void		key_handler(int key, t_mixer *p_null);
 
 /*				Lexer */
 /* Validation */

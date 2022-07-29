@@ -14,6 +14,7 @@
 # define RENDERER_IMAGE_H
 
 # include <stddef.h>
+# include "MLX42/MLX42.h"
 
 /*
  * Represents an image. Contains all information of the MiniLibX image.
@@ -27,9 +28,9 @@ typedef struct s_renderer_image
 	size_t			width;
 	size_t			height;
 	unsigned int	background_color;
-	char			*raw;
-	void			*mlx_img;
-	void			*mlx_ptr;
+	u_int8_t		*raw;
+	mlx_image_t		*mlx_img;
+	mlx_t			*mlx_ptr;
 }	t_renderer_image;
 
 /*

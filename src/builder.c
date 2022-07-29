@@ -56,8 +56,8 @@ t_vector	rt_cam_pyvec(t_vector norm, t_vector px, t_mixer *mixer)
 
 void	build_rays(t_mixer *mixer, t_vector s)
 {
-	size_t		i;
-	size_t		ii;
+	int32_t		i;
+	int32_t		ii;
 
 	mixer->cam.vecs = ft_gc_malloc(mixer->res_y * sizeof(t_vector *));
 	i = 0;

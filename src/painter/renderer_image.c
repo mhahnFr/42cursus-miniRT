@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 
-#include "mlx.h"
+#include "MLX42/MLX42.h"
 
 #include "libft.h"
 #include "renderer_image.h"
@@ -47,8 +47,7 @@ void	renderer_image_create(
 	this->width = width;
 	this->height = height;
 	this->background_color = 0;
-	this->raw = mlx_get_data_addr(mlx_img, &(this->depth), &(this->line_size),
-			&(this->endian));
+	this->raw = this->mlx_img->pixels;
 }
 
 void	renderer_image_destroy(t_renderer_image *this)
@@ -56,7 +55,7 @@ void	renderer_image_destroy(t_renderer_image *this)
 	if (this == NULL)
 		return ;
 	if (this->mlx_img != NULL)
-		mlx_destroy_image(this->mlx_ptr, this->mlx_img);
+		mlx_delete_image(this->mlx_ptr, this->mlx_img);
 	this->mlx_img = NULL;
 }
 
