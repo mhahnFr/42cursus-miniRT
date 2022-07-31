@@ -48,8 +48,6 @@ bool	read_line(t_string_builder **builder, int fd)
 		if (ret <= 0)
 		{
 			ft_gc_free(tmp);
-			if (ret < 0)
-				return (false);
 			break ;
 		}
 		tmp->new_line = ft_memchr(tmp->part, '\n', ret);

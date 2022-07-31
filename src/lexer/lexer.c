@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
 #include "get_next_line.h"
 #include "libft.h"
 #include "lexer.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include "minirt.h"
 
 int	checkfile(char *name)
 {

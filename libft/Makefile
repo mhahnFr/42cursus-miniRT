@@ -29,6 +29,11 @@ OBJ_BON = $(patsubst %.c, %.o, $(BONUS))
 
 FLAGS = -Wall -Werror -Wextra -Ofast -funroll-loops
 
+ifeq ($(OS), Windows_NT)
+	CC 		= gcc
+	FLAGS += -DWINDOWS --verbose
+endif
+
 all : $(NAME) 
 	
 %.o : %.c
@@ -43,7 +48,15 @@ bonus : $(OBJ_BON) $(OBJ)
 re : fclean all
 
 fclean : clean
+ifeq ($(OS), Windows_NT)
+	- powershell "rm -Force $(NAME)"
+else
 	rm -f $(NAME)
+endif
 
 clean : 
+ifeq ($(OS), Windows_NT)
+	- powershell "rm -Force *.o"
+else
 	rm -f *.o *~ *.out
+endif

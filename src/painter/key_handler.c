@@ -48,13 +48,21 @@ void	key_escape(t_mixer *p_null)
 	ft_gc_exit(0);
 }
 
+#ifdef WINDOWS
+void key_handler(int key, void *p_null)
+#else
 void key_handler(int key, t_mixer *p_null)
+#endif
 {
 	if (key == MLX_KEY_ESCAPE)
 		key_escape(p_null);
 }
 
-void	key_redcross(t_mixer *p_null)
+#ifdef WINDOWS
+void key_redcross(void *p_null)
+#else
+void key_redcross(t_mixer *p_null)
+#endif
 {
 	key_escape(p_null);
 }

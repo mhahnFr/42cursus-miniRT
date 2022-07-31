@@ -15,7 +15,11 @@
 
 # include <stddef.h>
 # include "MLX42/MLX42.h"
-
+#ifdef WINDOWS
+typedef unsigned char u_int8_t;
+#else
+#include <stdint.h>
+#endif
 /*
  * Represents an image. Contains all information of the MiniLibX image.
  * Contains the background color as well.

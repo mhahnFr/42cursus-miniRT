@@ -13,6 +13,10 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
+#ifdef WINDOWS
+# define printf __mingw_printf
+#endif
+
 # include <stdbool.h>
 # include <pthread.h>
 # include "vector.h"
@@ -392,8 +396,18 @@ bool		specular_highlight(
 				t_vector *result);
 
 /* MLX window handler */
+
+#ifdef WINDOWS
+void		key_redcross(void *p_null);
+#else
 void		key_redcross(t_mixer *p_null);
-void		key_handler(int key, t_mixer *p_null);
+#endif
+
+#ifdef WINDOWS
+void key_handler(int key, void *p_null);
+#else
+void key_handler(int key, t_mixer *p_null);
+#endif
 
 /*				Lexer */
 /* Validation */

@@ -14,7 +14,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+// #ifdef WINDOWS
+// #include <winpthreads.h>
+// #else
 #include <pthread.h>
+// #endif
 
 static pthread_mutex_t	*ft_gc_mutex(void)
 {
@@ -82,7 +86,11 @@ void	ft_gc_exit(int code)
 	pthread_mutex_lock(ft_gc_mutex());
 	leak_count = arraylist_size_unsafe(*ft_gc_list());
 	if (leak_count > 0)
+	#ifdef WINDOWS
+		printf("WARNING: some allocations were not freed\n");
+	#else
 		printf("%zu non-freed mallocs\n", leak_count);
+	#endif
 	arraylist_clear(ft_gc_list(), free);
 	pthread_mutex_unlock(ft_gc_mutex());
 	pthread_mutex_destroy(ft_gc_mutex());

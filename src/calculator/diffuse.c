@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include <sys/time.h>
 
 inline t_vector	diffuse_rand(t_diff diff)
 {
@@ -25,9 +26,21 @@ inline t_vector	diffuse_rand(t_diff diff)
 		x *= -1;
 	vector_multiply_digit(&reflection, &diff.hit->col_normal, x * 2);
 	vector_addition(&reflection, &reflection, diff.ray);
+	#ifdef WINDOWS
+	struct timeval start;
+	gettimeofday(&start, NULL);
+	srand(start.tv_sec);
+	x = ((float) rand()) * 0.1;
+	x = (float) (x - (int) x) + reflection.x;
+	y = ((float) rand()) * 0.2;
+	y = (float) (y - (int) y) + reflection.y;
+	z = ((float) rand()) * 0.3;
+	z = (float) (z - (int) z) + reflection.z;
+	#else
 	x = (float) drand48() + reflection.x;
 	y = (float) drand48() + reflection.y;
 	z = (float) drand48() + reflection.z;
+	#endif
 	tmp.x = (x - 0.5f) * (diff.hit->diffusion * 0.5f);
 	tmp.y = (y - 0.5f) * (diff.hit->diffusion * 0.5f);
 	tmp.z = (z - 0.5f) * (diff.hit->diffusion * 0.5f);

@@ -92,6 +92,7 @@ bool	intersect_object(
 	bool		sw;
 
 	sw = false;
+	distsf = 0;
 	i_struc->curr = NULL;
 	i_struc->list = mixer->obj_list;
 	while (i_struc->list != NULL)

@@ -59,8 +59,13 @@ MLX         = ./mlx/libmlx.a
 LIBFT       = ./libft/libft.a
 
 ifeq ($(OS), Windows_NT)
-	$(LDFLAGS) +=-lglfw3 -lopengl32 -lgdi32
+	MAKEDIR = MD
+	RM      = rm -Force -Recurse
+	CC 			= gcc
+	LDFLAGS += -lglfw3 -lopengl32 -lgdi32 -lm -lpthread
+	CFLAGS += -DWINDOWS -Wno-error=cast-function-type -Wno-error=deprecated-declarations
 else
+	MAKEDIR = mkdir
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S), Linux)
 		LDFLAGS += -ldl -lglfw
@@ -73,8 +78,8 @@ endif
 all: $(NAME)
 
 
-$(NAME): $(LIBFT) $(MLX) obj/ $(OBJ)
-	$(CC) $(LDFLAGS) -o $(NAME) $(OBJ)
+$(NAME): $(LIBFT) $(MLX) obj $(OBJ)
+	$(CC) -o $(NAME) $(OBJ) mlx_updated/lib/glad/glad.o $(LDFLAGS)
 
 $(OBJ_FOLDER)%.o: $(SRC_FOLDER)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
@@ -85,11 +90,21 @@ run: $(NAME)
 $(OBJ_UTILS_FOLDER)%.o: $(UTILS_FOLDER)%.c $(HDR)
 	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
-obj/:
+obj:
+ifeq ($(OS), Windows_NT)
+	-cmd /c "MD obj"
+	-cmd /c "MD obj\lexer"
+	-cmd /c "MD obj\utils"
+	-cmd /c "MD obj\utils\gnl"
+	-cmd /c "MD obj\utils\math"
+	-cmd /c "MD obj\parser"
+	-cmd /c "MD obj\calculator"
+	-cmd /c "MD obj\painter"
+else
 	mkdir obj/ obj/lexer/ obj/utils obj/utils/gnl obj/utils/math obj/parser obj/calculator obj/painter
-
+endif
 #$(MLX):
-	#$(MAKE) -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter -Ofast"
+#$(MAKE) -C mlx CFLAGS="-D GL_SILENCE_DEPRECATION -Wno-unused-variable -Wno-unused-parameter -Ofast"
 
 $(MLX):
 	$(MAKE) -C mlx_updated
@@ -98,15 +113,24 @@ $(LIBFT):
 	$(MAKE) -C libft
 
 clean:
+ifeq ($(OS), Windows_NT)
+	- powershell $(RM) obj
+else
 	- $(RM) $(OBJ)
 	- $(MAKE) -C mlx clean
+endif
 	- $(MAKE) -C libft clean
 
 fclean: clean
+ifeq ($(OS), Windows_NT)
 	- $(RM) $(NAME)
-	- $(RM) -r $(OBJ_FOLDER)
-	- $(MAKE) -C libft fclean
+	- $(RM) tmp
+else
+	- $(RM) $(NAME)
+	- $(RM) $(OBJ_FOLDER)
 	- find . -name \*~ -print -delete
+endif
+	- $(MAKE) -C libft fclean
 
 re: fclean
 	$(MAKE) all

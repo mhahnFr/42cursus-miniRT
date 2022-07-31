@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <sys/time.h>
 #include "minirt.h"
 #include "renderer_image.h"
 
@@ -53,8 +54,16 @@ void	calculator(t_mixer *mixer, int *ret)
 
 t_vector	vector_rand(t_vector self, t_vector step)
 {
+	#ifdef WINDOWS
+	struct timeval start;
+	gettimeofday(&start, NULL);
+	srand(start.tv_sec);
+	self.x += (float)(((float)(rand() % 10) / 10) * step.x);
+	self.y += (float)(((float)(rand() % 10) / 10) * step.y);
+	#else
 	self.x += (float)(((float)(arc4random() % 10) / 10) * step.x);
 	self.y += (float)(((float)(arc4random() % 10) / 10) * step.y);
+	#endif
 	vector_normalize(&self);
 	return (self);
 }
