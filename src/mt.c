@@ -6,7 +6,7 @@
 /*   By: mhahn   <mhahn@student.42Heilbronn.de      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 1970/01/01 00:00:01 by mhahn             #+#    #+#             */
-/*   Updated: 1970/01/01 00:00:02 by mhahn            ###   ########.fr       */
+/*   Updated: 2022/08/01 14:58:19 by mhahn            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,25 @@ void	rt_forker(t_mixer *mixer)
 	
 	FILE   *pPipe;
 
-	if( (pPipe = _popen( "WMIC CPU Get NumberOfLogicalProcessors", "rt" )) == NULL )
-    	exit( 1 );
-	int iii = 0;
-	while(fgets(psBuffer, 128, pPipe)) {
-		iii = 0;
-		while (iii < 128 && psBuffer[iii] < '0' && psBuffer[iii] > '9') {
-		iii++;
-	}
-		if (atoi(psBuffer + iii) != 0) {
-			mixer->cores = atoi(psBuffer + iii);
-			break;
+	if( (pPipe = _popen( "WMIC CPU Get NumberOfLogicalProcessors", "rt" )) != NULL ) {
+		int iii = 0;
+		while(fgets(psBuffer, 128, pPipe)) {
+			iii = 0;
+			while (iii < 128 && psBuffer[iii] < '0' && psBuffer[iii] > '9') {
+				iii++;
+			}
+			if (atoi(psBuffer + iii) != 0) {
+				mixer->cores = atoi(psBuffer + iii);
+				break;
+			}
 		}
 	}
 	feof( pPipe);
 	#else
 	mixer->cores = sysconf(_SC_NPROCESSORS_CONF);
+	if (mixer->cores < 1) {
+		mixer->cores = 1;
+	}
 	#endif
 	mixer->threads = ft_gc_malloc(sizeof(t_thread) * mixer->cores);
 	printf("Using %zu threads to render the scene...\n", mixer->cores);
