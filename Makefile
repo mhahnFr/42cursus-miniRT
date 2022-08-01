@@ -117,7 +117,7 @@ ifeq ($(OS), Windows_NT)
 	- powershell $(RM) obj
 else
 	- $(RM) $(OBJ)
-	- $(MAKE) -C mlx clean
+	- $(MAKE) -C mlx_updated clean
 endif
 	- $(MAKE) -C libft clean
 
