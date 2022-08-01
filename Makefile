@@ -127,7 +127,7 @@ ifeq ($(OS), Windows_NT)
 	- $(RM) tmp
 else
 	- $(RM) $(NAME)
-	- $(RM) $(OBJ_FOLDER)
+	- $(RM) -r $(OBJ_FOLDER)
 	- find . -name \*~ -print -delete
 endif
 	- $(MAKE) -C libft fclean
