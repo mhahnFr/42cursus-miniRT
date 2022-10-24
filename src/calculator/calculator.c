@@ -13,6 +13,9 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include "minirt.h"
+#ifdef LINUX
+#include <bsd/stdlib.h>
+#endif
 #include "renderer_image.h"
 
 void	draw_point(size_t x, size_t y, t_renderer_image *buf, t_rgbof color)

@@ -68,7 +68,8 @@ else
 	MAKEDIR = mkdir
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S), Linux)
-		LDFLAGS += -ldl -lglfw
+		LDFLAGS += -ldl -l pthread -lbsd -lm -lglfw
+		CFLAGS  += -DLINUX -Wno-cast-function-type -D_XOPEN_SOURCE=700
 	else ifeq ($(UNAME_S), Darwin)
 		LDFLAGS += -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit
 	endif
