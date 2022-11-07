@@ -6,7 +6,7 @@
 /*   By: W2Wizard <w2.wizzard@gmail.com>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/28 00:33:01 by W2Wizard      #+#    #+#                 */
-/*   Updated: 2022/05/10 10:23:50 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/06/29 15:34:58 by lde-la-h      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ extern "C" {
  * 
  * @param width The width of the texture.
  * @param height The height of the texture.
- * @param bytes_per_pixel The amounst of bytes in a pixel, always 4.
  * @param pixels The literal pixel data.
+ * @param bytes_per_pixel The amounst of bytes in a pixel, always 4.
  */
 typedef struct mlx_texture
 {
@@ -74,12 +74,14 @@ typedef struct xpm
  * @param x The x location.
  * @param y The y location.
  * @param z The z depth, controls if the image is on the fore or background.
+ * @param enabled If true, the instance is drawn else its not.
  */
 typedef struct mlx_instance
 {
 	int32_t	x;
 	int32_t	y;
 	int32_t	z;
+	bool	enabled;
 }	mlx_instance_t;
 
 /**
@@ -152,6 +154,7 @@ typedef enum mlx_errno
 	MLX_INVXPM,			// Something is wrong the given XPM file.
 	MLX_INVPOS,			// The specified X/Y positions are out of bounds.
 	MLX_INVDIM,			// The specified W/H dimensions are out of bounds.
+	MLX_INVIMG,			// The provided image is invalid, might indicate mismanagement of images.
 	MLX_SHDRFAIL,		// Failed to compile a shader.
 	MLX_MEMFAIL,		// Dynamic memory allocation has failed.
 	MLX_GLADFAIL,		// OpenGL loader has failed.
@@ -173,6 +176,7 @@ typedef enum mlx_settings
 	MLX_FULLSCREEN,			// Should the window be in Fullscreen, note it will fullscreen at the given resolution. Default: false
 	MLX_MAXIMIZED,			// Start the window in a maximized state, overwrites the fullscreen state if this is true. Default: false
 	MLX_DECORATED,			// Have the window be decorated with a window bar. Default: true
+	MLX_HEADLESS,			// Run in headless mode, no window is created. (NOTE: Still requires some form of window manager such as xvfb)
 	MLX_SETTINGS_MAX,		// Setting count.
 }	mlx_settings_t;
 
@@ -348,8 +352,8 @@ void mlx_set_window_pos(mlx_t* mlx, int32_t xpos, int32_t ypos);
  * Gets the windows position.
  * 
  * @param[in] mlx The MLX instance handle.
- * @param[in] xpos The x position.
- * @param[in] ypos The y position.
+ * @param[out] xpos The x position.
+ * @param[out] ypos The y position.
  */
 void mlx_get_window_pos(mlx_t* mlx, int32_t* xpos, int32_t* ypos);
 
@@ -357,22 +361,31 @@ void mlx_get_window_pos(mlx_t* mlx, int32_t* xpos, int32_t* ypos);
  * Changes the window size to the newly specified values.
  * Use this to update the the window width and heigth values in the mlx ptr.
  * 
- * @param mlx The MLX instance handle.
- * @param new_width The new desired width.
- * @param new_height The new desired height.
+ * @param[in] mlx The MLX instance handle.
+ * @param[in] new_width The new desired width.
+ * @param[in] new_height The new desired height.
  */
 void mlx_set_window_size(mlx_t* mlx, int32_t new_width, int32_t new_height);
 
 /**
- * Sets a desired min and max window width and height.
+ * Sets the size limits of the specified window.
  * Will force the window to not be resizable past or below the given values.
- * Due to norme constraints this is a bit ugly, sorry.
  * 
- * @param mlx The MLX instance handle.
- * @param min_wh The min width and height values.
- * @param max_wh The max width and height values.
+ * @param[in] mlx The MLX instance handle.
+ * @param[in] min_w The min width of the window.
+ * @param[in] max_w The max width of the window.
+ * @param[in] min_h The min height of the window.
+ * @param[in] max_h The max height of the window.
  */
 void mlx_set_window_limit(mlx_t* mlx, int32_t min_w, int32_t min_h, int32_t max_w, int32_t max_h);
+
+/**
+ * Sets the title of the window.
+ * 
+ * @param[in] mlx The MLX instance handle.
+ * @param[in] title The window title.
+ */
+void mlx_set_window_title(mlx_t* mlx, const char* title);
 
 //= Input Functions =//
 
@@ -402,9 +415,10 @@ bool mlx_is_mouse_down(mlx_t* mlx, mouse_key_t key);
  * indicate that it is outside the window.
  * 
  * @param[in] mlx The MLX instance handle. 
- * @param[in] pos_out The position.
+ * @param[out] x The position.
+ * @param[out] x The position.
  */
-void mlx_get_mouse_pos(mlx_t* mlx, int32_t* x_out, int32_t* y_out);
+void mlx_get_mouse_pos(mlx_t* mlx, int32_t* x, int32_t* y);
 
 /**
  * Sets the mouse position.
@@ -426,23 +440,29 @@ void mlx_set_mouse_pos(mlx_t* mlx, int32_t x, int32_t y);
 void mlx_set_cursor_mode(mlx_t* mlx, mouse_mode_t mode);
 
 /**
- * Allows for the creation of custom cursors with a given
- * XPM image.
+ * Retrieves the system standart cursor.
+ * 
+ * @param[in] type The standart cursor type to create.
+ * @return The cursor object or null on failure.
+ */
+void* mlx_create_std_cursor(cursor_t type);
+
+/**
+ * Allows for the creation of custom cursors with a given texture.
  * 
  * Use mlx_set_cursor to select the specific cursor.
  * Cursors are destroyed at mlx_terminate().
  * 
- * @param[in] mlx The MLX instance handle.
- * @param[in] image The XPM image to use as cursor.
- * @returns The cursor pointer.
+ * @param[in] texture The texture to use as cursor.
+ * @returns The cursor object or null on failure.
  */
-void* mlx_create_cursor(mlx_t* mlx, mlx_texture_t* image);
+void* mlx_create_cursor(mlx_texture_t* texture);
 
 /**
- * Sets the current cursor to the given custom cursor.
+ * Sets the current cursor to the given custom cursor. 
  * 
  * @param[in] mlx The MLX instance handle.
- * @param[in] cursor The cursor to display.
+ * @param[in] cursor The cursor object to display, if null default cursor is selected.
  */
 void mlx_set_cursor(mlx_t* mlx, void* cursor);
 
@@ -522,7 +542,7 @@ bool mlx_loop_hook(mlx_t* mlx, void (*f)(void*), void* param);
 //= Texture Functions =//
 
 /**
- * Decode/load a PNG file onto a buffer. BPP will always be 4.
+ * Decode/load a PNG file onto a buffer.
  * 
  * @param[in] path Path to the PNG file.
  * @return If successful the texture data is returned, else NULL.
@@ -550,7 +570,7 @@ void mlx_delete_texture(mlx_texture_t* texture);
  * This will not remove any already drawn XPMs, it simply
  * deletes the XPM buffer.
  * 
- * @param xpm[in] The xpm texture to delete.
+ * @param[in] xpm The xpm texture to delete.
  */
 void mlx_delete_xpm42(xpm_t* xpm);
 

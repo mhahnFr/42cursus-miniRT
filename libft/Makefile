@@ -27,7 +27,7 @@ OBJ = $(patsubst %.c, %.o, $(SRC))
 
 OBJ_BON = $(patsubst %.c, %.o, $(BONUS))
 
-FLAGS = -Wall -Werror -Wextra -Ofast -funroll-loops
+FLAGS = -Wall -Werror -Wextra -Ofast -funroll-loops -Wno-unused-result
 
 ifeq ($(OS), Windows_NT)
 	CC 		= gcc

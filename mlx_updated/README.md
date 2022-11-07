@@ -3,7 +3,7 @@
   <img src="https://user-images.githubusercontent.com/63303990/150698103-7e908ff3-abf8-4b0f-ad54-07a76b6c45e2.png" alt="42MLX_Logo">
 </div>
 <div align="center">
-  <sub>Written by <a href="https://w2wizard.github.io/">W2.Wizard</a> for the 42 Network</sub>
+  <sub>Written by <a href="https://portfolio.w2wizard.dev/">W2.Wizard</a> for the 42 Network</sub>
     <div align="center">
 	</br>
 	<img src="https://img.shields.io/github/license/codam-coding-college/MLX42" alt="License GPL2.0"> 
@@ -146,7 +146,7 @@ OR (if you use sway/wlroots compositor or other wayland compositor)
 ➜  ~ make
 ```
 
-3. Create a ```main.c``` file, include ```MLX42/MLX42.h```, compile with ```-ldl -lglfw ```, make sure to also do ```-I <include_path>```.
+3. Create a ```main.c``` file, include ```MLX42/MLX42.h```, compile with ```-ldl -lglfw (or -lglfw3) -pthread -lm```, make sure to also do ```-I <include_path>```.
  
 4. Run.
 

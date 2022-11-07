@@ -6,7 +6,7 @@
 /*   By: W2Wizard <w2.wizzard@gmail.com>              +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/12/27 23:55:34 by W2Wizard      #+#    #+#                 */
-/*   Updated: 2022/05/10 10:24:39 by lde-la-h      ########   odam.nl         */
+/*   Updated: 2022/07/21 10:46:43 by sbos          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@
 #  include <limits.h>
 # endif
 # if defined(_WIN32)
-#  include <malloc.h> /* alloca */
+#  include <windows.h>
+# else
+#  include <err.h>
 # endif
 # include <ctype.h> /* isspace, isprint, ... */
 # include <string.h> /* strlen, memmove, ... */
@@ -43,21 +45,22 @@
 #  define MLX_BATCH_SIZE 12000
 # endif
 # define BPP sizeof(int32_t) /* Only support RGBA */
-# define MLX_ASSERT(cond) assert(!(cond));
 # define GETLINE_BUFF 1280
 # define MLX_MAX_STRING 512 /* Arbitrary string limit */
+# define MLX_ASSERT(cond, msg) assert(cond && msg);
+# define MLX_NONNULL(var) MLX_ASSERT(var, "Value can't be null"); /* Assert instead of attribute */
 
 /**
  * The shader code is extracted from the shader files
- * and converted into a .c file as a single string at 
- * compile time. This keeps shader files external but 
- * still integrated into the program letting you use 
+ * and converted into a .c file as a single string at
+ * compile time. This keeps shader files external but
+ * still integrated into the program letting you use
  * the executable anywhere without having to take the
  * shaders with you.
- * 
+ *
  * Most modern frameworks like .NET do this by having resource files
  * instead.
- * 
+ *
  * See: https://bit.ly/3LJYG0r
  */
 
@@ -94,21 +97,21 @@ typedef struct mlx_list
 //= Hook structs =//
 /**
  * There are 2 types of hooks, special and generics.
- * 
+ *
  * Specials: Are specific callback functions to a specific action
  * such as window resizing or key presses. These are attached to the
  * callbacks of glfw. In case MLX itself needs the callback we call
  * the specials in that callback since there can only ever be a single
  * callback.
- * 
+ *
  * Generics: Generics are MLX42 specific hooks and can have multiple
  * hooks at the same time, these are executed every frame and can be
  * used as an alternative for key presses or animations for instance.
- * 
+ *
  * NOTE: Hooks could be achieved with va_args to have any amount
  * of args sized functor but we can't/don't want to let the user
  * deal with va_args and having to look up what args are what, etc...
- * 
+ *
  * We want to keep it straight forward with functors already describing
  * what params they have.
  */
@@ -160,15 +163,14 @@ typedef struct mlx_hook
  * For rendering we need to store most of OpenGLs stuff
  * such as the vertex array object, vertex buffer object &
  * the shader program. As well as hooks and the zdepth level.
- * 
+ *
  * Additionally we represent draw calls with a linked list
  * queue that point to the image and the index of which instance.
- * Again, instances only carry xyz data so coupled with the image it
- * lets us know which image and where to draw a copy.
- * 
- * Texture contexts are kept in a struct purely for convience of
- * expanding the variables in potential later updates. As well as
- * having had more variables before, now just one.
+ * Again, instances only carry xyz data, so coupled with the image it
+ * lets us know where to draw a copy of the image.
+ *
+ * Texture contexts are kept in a struct alongside the capacity
+ * of the array of instances, since the array is realloced like a vector.
  */
 
 // MLX instance context.
@@ -177,6 +179,9 @@ typedef struct mlx_ctx
 	GLuint			vao;
 	GLuint			vbo;
 	GLuint			shaderprogram;
+
+	uint32_t		initialWidth;
+	uint32_t		initialHeight;
 
 	mlx_list_t*		hooks;
 	mlx_list_t*		images;
@@ -206,6 +211,7 @@ typedef struct draw_queue
 typedef struct mlx_image_ctx
 {
 	GLuint	texture;
+	size_t	instances_capacity;
 }	mlx_image_ctx_t;
 
 //= Functions =//
@@ -238,7 +244,6 @@ bool mlx_freen(int32_t count, ...);
 
 //= OpenGL Functions =//
 
-void mlx_on_resize(GLFWwindow* window, int32_t width, int32_t height);
 void mlx_update_matrix(const mlx_t* mlx, int32_t width, int32_t height);
 void mlx_draw_instance(mlx_ctx_t* mlx, mlx_image_t* img, mlx_instance_t* instance);
 void mlx_flush_batch(mlx_ctx_t* mlx);
