@@ -32,10 +32,8 @@ void	shader_reflection_shadow(
 {
 	t_vector	s_col;
 	t_vector	l_col;
-	t_vector	intersect;
 
 	colsum->diff = rgbof_cast_vector(mixer->ambient.color);
-	intersect = rgbof_cast_vector(curr->color);
 	vector_create(&s_col, 1, 1, 1);
 	vector_create(&l_col, 1, 1, 1);
 	if (curr->reflec_fac > 0)

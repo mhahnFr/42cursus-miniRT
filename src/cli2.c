@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
-
 #include <stdio.h>
+#include "minirt.h"
 
 inline void	print_help(char *bad_arg)
 {

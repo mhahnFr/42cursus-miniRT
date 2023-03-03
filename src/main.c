@@ -10,10 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
-#include "mlx.h"
+#include "MLX42/MLX42.h"
 #include "libft.h"
 #include <stdio.h>
+#include "minirt.h"
 
 static void	print_lexer_error(int error)
 {
@@ -54,14 +54,21 @@ static void	print_error(int error)
 
 static void	open_mlx(t_mixer *all_struct)
 {
-	all_struct->p_mlx_window = mlx_new_window(
-			all_struct->p_mlx_init, all_struct->res_x,
-			all_struct->res_y, "miniRT");
-	mlx_put_image_to_window(all_struct->p_mlx_init,
-		all_struct->p_mlx_window, all_struct->image->mlx_img, 0, 0);
-	mlx_key_hook(all_struct->p_mlx_window, key_handler, all_struct);
-	mlx_hook(all_struct->p_mlx_window, 17, 0, key_redcross, all_struct);
-	mlx_loop(all_struct->p_mlx_init);
+//	all_struct->p_mlx_window = mlx_new_window(
+//			all_struct->p_mlx_init, all_struct->res_x,
+//			all_struct->res_y, "miniRT");
+	mlx_image_to_window(all_struct->mlx,
+		 all_struct->image->mlx_img, 0, 0);
+	#ifdef WINDOWS
+	// typedef void (*mlx_keyfunc)(mlx_key_data_t keydata, t_mixer* param);
+	// typedef void (*mlx_closefunc)(t_mixer* param);
+	mlx_key_hook(all_struct->mlx, (mlx_keyfunc) key_handler, (void*) all_struct);
+	mlx_close_hook(all_struct->mlx, (mlx_closefunc) key_redcross, (void*) all_struct);
+	#else
+	mlx_key_hook(all_struct->mlx, (mlx_keyfunc) key_handler, all_struct);
+	mlx_close_hook(all_struct->mlx, (mlx_closefunc) key_redcross, all_struct);
+	#endif
+	mlx_loop(all_struct->mlx);
 }
 
 int	main(int argc, char **argv)

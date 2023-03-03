@@ -86,11 +86,14 @@ t_vector	trace_rand(t_vector ray, t_vector normal, float diffusion)
 	vector_addition(&reflection, &reflection, &ray);
 	if (diffusion == 0)
 		return (reflection);
-	rand_val = (float) drand48();
+	rand_val = ((float) rand()) * 0.1;
+	rand_val -= (int) rand_val;
 	tmp.x = ((rand_val - 0.5f) * diffusion) + reflection.x;
-	rand_val = (float) drand48();
+	rand_val = ((float) rand()) * 0.2;
+	rand_val -= (int) rand_val;
 	tmp.y = ((rand_val - 0.5f) * diffusion) + reflection.y;
-	rand_val = (float) drand48();
+	rand_val = ((float) rand()) * 0.3;
+	rand_val -= (int) rand_val;
 	tmp.z = ((rand_val - 0.5f) * diffusion) + reflection.z;
 	vector_normalize(&tmp);
 	vector_addition(&tmp, &tmp, &reflection);

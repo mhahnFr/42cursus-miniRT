@@ -11,23 +11,29 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <sys/time.h>
 #include "minirt.h"
+#ifdef LINUX
+#include <bsd/stdlib.h>
+#endif
 #include "renderer_image.h"
 
 void	draw_point(size_t x, size_t y, t_renderer_image *buf, t_rgbof color)
 {
-	char	*dst;
-
-	dst = buf->raw + (long)x * (buf->depth / 8) + (long)y * buf->line_size;
-	*(unsigned int *) dst = (0 << 24) + (color.r << 16) + (color.g << 8)
-		+ (color.b << 0);
+//	u_int8_t	*dst;
+//
+//	dst = buf->raw + (long)x * (buf->depth / 8) + (long)y * buf->line_size;
+//	*(unsigned int *) dst = (0 << 24) + (color.r << 16) + (color.g << 8)
+//		+ (color.b << 0);
+	mlx_put_pixel(buf->mlx_img, x, y, (color.r << 24) + (color.g << 16)
+									  + (color.b << 8) + 255);
 }
 
 void	calculator(t_mixer *mixer, int *ret)
 {
 	t_rgbof	color;
-	size_t	i;
-	size_t	ii;
+	int32_t	i;
+	int32_t	ii;
 
 	(void) ret;
 	i = 0;
@@ -51,8 +57,16 @@ void	calculator(t_mixer *mixer, int *ret)
 
 t_vector	vector_rand(t_vector self, t_vector step)
 {
+	#ifdef WINDOWS
+	struct timeval start;
+	gettimeofday(&start, NULL);
+	srand(start.tv_sec);
+	self.x += (float)(((float)(rand() % 10) / 10) * step.x);
+	self.y += (float)(((float)(rand() % 10) / 10) * step.y);
+	#else
 	self.x += (float)(((float)(arc4random() % 10) / 10) * step.x);
 	self.y += (float)(((float)(arc4random() % 10) / 10) * step.y);
+	#endif
 	vector_normalize(&self);
 	return (self);
 }

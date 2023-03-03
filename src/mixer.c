@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 #include "minirt.h"
-#include "mlx.h"
+#include "MLX42/MLX42.h"
 #include "renderer_image.h"
 
 inline void	set_max_bounces(t_mixer *self, char *bounces)
@@ -51,16 +51,18 @@ inline void	set_antialiasing(t_mixer *self, char *factor)
 inline void	print_values(t_mixer *self)
 {
 	printf("The current rendering configuration:\n");
-	printf("Resolution:   %zu x %zu\n", self->res_x, self->res_y);
+	printf("Resolution:   %i x %i\n", self->res_x, self->res_y);
 	printf("Max bounces:  %d\n", self->max_bounces);
 	printf("Antialiasing: %zu\n\n", self->antialiasing);
 }
 
 void	init_mixer_image(t_mixer *self)
 {
+
+	self->mlx = mlx_init(self->res_x, self->res_y, "miniRT", false);
 	self->cam.aspect_ratio = (float) self->res_x / (float) self->res_y;
 	self->image
-		= renderer_image_new(self->p_mlx_init, self->res_x, self->res_y);
+		= renderer_image_new(self->mlx, self->res_x, self->res_y);
 }
 
 t_mixer	*init_mainstruct(int *err)
@@ -73,6 +75,6 @@ t_mixer	*init_mainstruct(int *err)
 		*err = 3;
 		return (NULL);
 	}
-	ret->p_mlx_init = mlx_init();
+//	ret->mlx = mlx_init();
 	return (ret);
 }

@@ -97,8 +97,7 @@ t_mixer	*copy_mixer(t_mixer *self)
 
 	ret = ft_gc_malloc(sizeof(t_mixer));
 	ret->image = self->image;
-	ret->p_mlx_init = self->p_mlx_init;
-	ret->p_mlx_window = self->p_mlx_window;
+	ret->mlx = self->mlx;
 	ret->bounces = 0;
 	ret->light_count = self->light_count;
 	ret->ambient = self->ambient;

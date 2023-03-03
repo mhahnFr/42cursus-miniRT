@@ -43,17 +43,27 @@ bool	intersec_next(
  */
 float	light_distance_factor(float number)
 {
-	uint32_t	sec;
-	float		result;
-	void		*num_cp;
-
-	num_cp = &number;
-	sec = *(uint32_t *)num_cp;
-	sec = 0x5f3759df - (sec >> 1);
-	num_cp = &sec;
-	result = (float)((1.5F - (number * 0.5F * \
-	(*(float *) num_cp) * (*(float *) num_cp))) * (*(float *) num_cp));
-	return (result);
+//	uint32_t	sec;
+//	float		result;
+//	void		*num_cp;
+//
+//    sec = 0;
+//	num_cp = &number;
+//	sec = *(uint32_t *)num_cp;
+//	sec = 0x5f3759df - (sec >> 1);
+//	num_cp = &sec;
+//	result = (float)((1.5F - (number * 0.5F * \
+//	(*(float *) num_cp) * (*(float *) num_cp))) * (*(float *) num_cp));
+//	return (result);
+    union
+    {
+        float f;
+        uint32_t i;
+    }
+            conv = {.f = number};
+    conv.i = 0x5f3759df - (conv.i >> 1);
+    conv.f *= 1.5F - (number * 0.5F * conv.f * conv.f);
+    return conv.f;
 }
 
 void	intersect_obj_color(t_iobj *i_struc, float length)
@@ -61,6 +71,7 @@ void	intersect_obj_color(t_iobj *i_struc, float length)
 	t_vector	intercol;
 	float		fact;
 
+    fact = 0;
 	intercol = rgbof_cast_vector(i_struc->obj_col->color);
 	i_struc->shadow = true;
 	if (i_struc->curr != NULL)
@@ -92,6 +103,7 @@ bool	intersect_object(
 	bool		sw;
 
 	sw = false;
+	distsf = 0;
 	i_struc->curr = NULL;
 	i_struc->list = mixer->obj_list;
 	while (i_struc->list != NULL)

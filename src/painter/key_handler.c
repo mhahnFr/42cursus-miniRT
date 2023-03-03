@@ -11,12 +11,12 @@
 /* ************************************************************************** */
 
 #include <math.h>
-#include "mlx.h"
+#include "MLX42/MLX42.h"
 #include "minirt.h"
 
 static inline void	free_cam_vecs(t_mixer *self)
 {
-	size_t	i;
+	int32_t	i;
 
 	i = 0;
 	while (i < self->res_y)
@@ -32,8 +32,8 @@ void	key_escape(t_mixer *p_null)
 	t_obj_l	*tmp;
 	t_obj_l	*tmp2;
 
-	mlx_destroy_window(p_null->p_mlx_init, p_null->p_mlx_window);
 	renderer_image_delete(p_null->image);
+	mlx_terminate(p_null->mlx);
 	tmp = p_null->obj_list;
 	while (tmp != NULL)
 	{
@@ -48,15 +48,21 @@ void	key_escape(t_mixer *p_null)
 	ft_gc_exit(0);
 }
 
-int	key_handler(int key, t_mixer *p_null)
+#ifdef WINDOWS
+void key_handler(int key, void *p_null)
+#else
+void key_handler(int key, t_mixer *p_null)
+#endif
 {
-	if (key == ESC_KEY)
+	if (key == MLX_KEY_ESCAPE)
 		key_escape(p_null);
-	return (0);
 }
 
-int	key_redcross(t_mixer *p_null)
+#ifdef WINDOWS
+void key_redcross(void *p_null)
+#else
+void key_redcross(t_mixer *p_null)
+#endif
 {
 	key_escape(p_null);
-	return (0);
 }

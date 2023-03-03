@@ -44,6 +44,7 @@ bool	diffuse_nearest(
 
 	objs = mixer->obj_list;
 	sw = false;
+	curr = NULL;
 	while (objs != NULL)
 	{
 		if (diff->hit != objs && diffuse_next(objs, start, diff->ray, \
